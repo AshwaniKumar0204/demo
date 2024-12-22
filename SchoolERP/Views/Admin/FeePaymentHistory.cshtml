@@ -1,0 +1,188 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Fee Payment History</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Fee Payment History</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    <label class="col-form-label  col-lg-4">Admission No <span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <angucomplete-alt id="StudentAutoComplete"
+                                          placeholder="Enter Admission No/Student Name"
+                                          pause="100"
+                                          selected-object="afterStudentSelected"
+                                          local-data="AdmissionList"
+                                          search-fields="SearchAdmission"
+                                          title-field="SearchAdmission"
+                                          minlength="1"
+                                          input-class="form-control"
+                                          match-class="highlight"
+                                          input-changed="selectionChanged"
+                                          field-required="true"
+                                          auto-match="true"
+                                          focus-in="focusIn()">
+                        </angucomplete-alt>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                </div>
+            </div>
+            <div ng-if="SelectedAdmission.AdmissionId > 0">
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">Full Name :</label>
+                        <label class="col-form-label col-lg-8 col-8" ng-bind="SelectedAdmission.FullName"></label>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">Session :</label>
+                        <label class="col-form-label col-lg-8 col-8" ng-bind="SelectedAdmission.SessionName"></label>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">Course :</label>
+                        <label class="col-form-label col-lg-8 col-8" ng-bind="SelectedAdmission.ClassName"></label>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">Branch :</label>
+                        <label class="col-form-label col-lg-8 col-8" ng-bind="SelectedAdmission.SectionName"></label>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">Registration No :</label>
+                        <label class="col-form-label col-lg-8 col-8" ng-bind="SelectedAdmission.AdmissionNo"></label>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">Roll No :</label>
+                        <label class="col-form-label col-lg-8 col-8" ng-bind="SelectedAdmission.RollNo"></label>
+                    </div>
+                </div>
+                <fieldset class="mb-3">
+                    <legend class="text-uppercase font-size-sm font-weight-bold">Fee Due Detail</legend>
+                    <div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">Course Fee :</label>
+                        <label class="col-form-label col-lg-8 col-8">{{FeeDueReport.ClassFee | number : 2}}</label>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">Transport Fee :</label>
+                        <label class="col-form-label col-lg-8 col-8">{{FeeDueReport.TransportFee | number : 2}}</label>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">Charge Amount :</label>
+                        <label class="col-form-label col-lg-8 col-8">{{FeeDueReport.ChargeAmount | number : 2}}</label>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">Arrear :</label>
+                        <label class="col-form-label col-lg-8 col-8">{{FeeDueReport.ArrearAmount | number : 2}}</label>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">Hostel Charge :</label>
+                        <label class="col-form-label col-lg-8 col-8">{{FeeDueReport.HostelCharge | number : 2}}</label>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">Fine Amount :</label>
+                        <label class="col-form-label col-lg-8 col-8">{{FeeDueReport.FineAmount | number : 2}}</label>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">Previous Dues :</label>
+                        <label class="col-form-label col-lg-8 col-8">{{FeeDueReport.PreviousDues | number : 2}}</label>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">Total Dues :</label>
+                        <label class="col-form-label col-lg-8 col-8">{{FeeDueReport.TotalDues | number : 2}}</label>
+                    </div>
+                </fieldset>
+                <fieldset class="mb-3">
+                    <legend class="text-uppercase font-size-sm font-weight-bold">Due Fee Heads</legend>
+                    <div class="form-group col-sm-12 table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Sl. No.</th>
+                                    <th style="cursor: pointer;" ng-click="sort('FeeHeadTitle')">Head <span class="fa" ng-show="sortKey=='FeeHeadTitle'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('FeeAmount')">Fee Amount <span class="fa" ng-show="sortKey=='FeeAmount'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('Concession')">Concession <span class="fa" ng-show="sortKey=='Concession'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('LineTotal')">Line Total <span class="fa" ng-show="sortKey=='LineTotal'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="head in DueFeeHeads|orderBy:sortKey:reverse">
+                                    <td>{{$index + 1}}</td>
+                                    <td>{{head.FeeHeadTitle}}</td>
+                                    <td>{{head.FeeAmount | number:2}}</td>
+                                    <td>{{head.Concession | number:2}}</td>
+                                    <td>{{head.LineTotal | number:2}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </fieldset>
+                <fieldset class="mb-3">
+                    <legend class="text-uppercase font-size-sm font-weight-bold">Fee Payment History</legend>
+                    <div class="form-group col-sm-6 float-right">
+                        <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+                    </div>
+                    @*<div class="form-group col-sm-6" ng-if="SelectedAdmission.AdmissionId > 0 && CanEdit">
+                Display
+                <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+                Records Per Page
+            </div>*@
+                    <div class="form-group col-sm-12 table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Sl. No.</th>
+                                    <th style="cursor: pointer;" ng-click="sort('PaymentDate')">Date <span class="fa" ng-show="sortKey=='PaymentDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('OnlinePaymentDate')">Online Payment Date <span class="fa" ng-show="sortKey=='OnlinePaymentDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('ReceiptNo')">Receipt No <span class="fa" ng-show="sortKey=='ReceiptNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('PaidAmount')">Amount <span class="fa" ng-show="sortKey=='PaidAmount'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('PaymentMode')">Mode <span class="fa" ng-show="sortKey=='PaymentMode'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('Remarks')">Remarks <span class="fa" ng-show="sortKey=='Remarks'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th>Print</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="feeCollection in FeeCollectionList|orderBy:sortKey:reverse">
+                                    <td>{{$index + 1}}</td>
+                                    <td style="white-space:nowrap">{{feeCollection.PaymentDate | date:'dd-MM-yyyy'}}</td>
+                                    <td style="white-space:nowrap">{{feeCollection.OnlinePaymentDate | date:'dd-MM-yyyy'}}</td>
+                                    <td>{{feeCollection.ReceiptNo}}</td>
+                                    <td>{{feeCollection.PaidAmount | number:2}}</td>
+                                    <td>{{PaymentModes[feeCollection.PaymentMode]}}</td>
+                                    <td>{{feeCollection.Remarks}}</td>
+                                    <td>
+                                        <a class="btn btn-sm btn-icon btn-outline-primary" target="_blank" href="/admin/PrintCaseFeeReceipt/{{feeCollection.FeeCollectionId}}"><i class="fa fa-print"></i></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</div>
+

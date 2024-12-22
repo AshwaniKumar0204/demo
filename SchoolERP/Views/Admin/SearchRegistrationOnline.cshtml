@@ -1,0 +1,267 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <a class="breadcrumb-item"> Registration Online</a>
+                <span class="breadcrumb-item active">Search Registration </span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Search Registration </h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group row">
+                <div class="col-sm-8">
+                    <label class=" col-lg-3 col-form-label">Registration No :</label>
+                    <div class="col-lg-9">
+                        <angucomplete-alt id="StudentAutoComplete"
+                                          placeholder="Enter Registration No/Student Name"
+                                          pause="100"
+                                          selected-object="afterStudentSelected"
+                                          local-data="RegistrationOnlineList"
+                                          search-fields="SearchRegistration"
+                                          title-field="SearchRegistration"
+                                          minlength="1"
+                                          input-class="form-control"
+                                          match-class="highlight"
+                                          input-changed="selectionChanged"
+                                          field-required="true"
+                                          auto-match="true"
+                                          focus-in="focusIn()">
+                        </angucomplete-alt>
+                    </div>
+                </div>
+            </div>
+            <div ng-show="RegistrationOnline.RegistrationOnlineId > 0">
+                <fieldset class="mb-3">
+                    <legend class="text-uppercase font-size-sm font-weight-bold"></legend>
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <div class="col-md-6">
+                                <label class="font-weight-bold col-lg-5">Registration No :</label>
+                                <label class="col-sm-7">{{RegistrationOnline.RegistrationNo}}</label>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="font-weight-bold col-lg-5">Session :</label>
+                                <label class="col-sm-7">{{RegistrationOnline.SessionName}}</label>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="font-weight-bold col-lg-5">Class :</label>
+                                <label class="col-sm-7">{{RegistrationOnline.ClassName2}}</label>
+                            </div>
+                            <div class="col-md-6" ng-show="RegistrationOnline.ClassNo == 11">
+                                <label class="font-weight-bold col-lg-5">Stream Type :</label>
+                                <label class="col-sm-7">{{RegistrationOnline.ClassStreamTypeName}}</label>
+                            </div>
+                            <div class="col-md-6" ng-show="RegistrationOnline.ClassNo == 11">
+                                <label class="font-weight-bold col-lg-5">Option 1 :</label>
+                                <label class="col-sm-7">{{RegistrationOnline.SubjectOptionOneName}}</label>
+                            </div>
+                            <div class="col-md-6" ng-show="RegistrationOnline.ClassNo == 11">
+                                <label class="font-weight-bold col-lg-5">Option 2 :</label>
+                                <label class="col-sm-7">{{RegistrationOnline.SubjectOptionTwoName}}</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <img src="{{RegistrationOnline.StudentPhoto}}"  class="img-responsive img-rounded" width="120"/>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="mb-3">
+                    <legend class="text-uppercase font-size-sm font-weight-bold">Personal Details</legend>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="font-weight-bold col-lg-4">Full Name :</label>
+                            <label class="col-sm-8">{{RegistrationOnline.StudentName}}</label>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="font-weight-bold col-lg-4">DOB :</label>
+                            <label class="col-sm-8">{{RegistrationOnline.DOB |date:'dd-MM-yyyy'}}</label>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="font-weight-bold col-lg-4">Gender :</label>
+                            <label class="col-sm-8">{{GenderList[RegistrationOnline.Gender].Value}}</label>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="font-weight-bold col-lg-4">Category :</label>
+                            <label class="col-sm-8">{{CategoryList[RegistrationOnline.Category].Value}}</label>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="font-weight-bold col-lg-4">Nationality :</label>
+                            <label class="col-sm-8">{{NationalityList[RegistrationOnline.Nationality].Value}}</label>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="font-weight-bold col-lg-4">Religion :</label>
+                            <label class="col-sm-8">{{ReligionList[RegistrationOnline.Religion].Value}}</label>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="font-weight-bold col-lg-4">Blood Group :</label>
+                            <label class="col-sm-8">{{BloodGroupList[RegistrationOnline.BloodGroup].Value}}</label>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="font-weight-bold col-lg-4">Mobile No :</label>
+                            <label class="col-sm-8">{{RegistrationOnline.MobileNo}}</label>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="font-weight-bold col-lg-4">Whatsapp No :</label>
+                            <label class="col-sm-8">{{RegistrationOnline.WhatsappNo}}</label>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="font-weight-bold col-lg-4">SMS Alert No :</label>
+                            <label class="col-sm-8">{{RegistrationOnline.SMSAlertNo}}</label>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="font-weight-bold col-lg-4">Email Id :</label>
+                            <label class="col-sm-8">{{RegistrationOnline.EmailId}}</label>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="mb-3">
+                    <legend class="text-uppercase font-size-sm font-weight-bold">Name(s) of Siblings</legend>
+                    <div class="col-md-12" ng-if="RegistrationOnline.RegistrationSiblingList.length > 0">
+                        <div class="table-responsive">
+                            <table class="table align-items-center table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Sl. No.</th>
+                                        <th>Student Name</th>
+                                        <th>Class</th>
+                                        <th>delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="sibling in RegistrationOnline.RegistrationSiblingList">
+                                        <td>{{$index+1}}</td>
+                                        <td>{{sibling.StudentName}}</td>
+                                        <td>{{sibling.ClassName}}</td>
+                                        <td><button class="btn btn-sm btn-danger" ng-click="deleteSibling($index)">Delete</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="mb-3">
+                    <legend class="text-uppercase font-size-sm font-weight-bold">Parent Details</legend>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="font-weight-bold col-lg-4">Father's Name :</label>
+                            <label class="col-sm-8">{{RegistrationOnline.FathersName}}</label>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="font-weight-bold col-lg-4">Father's Occupation :</label>
+                            <label class="col-sm-8">{{FathersOccupationList[RegistrationOnline.FathersOccupation].Value}}</label>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="font-weight-bold col-lg-4">Occupation Detail :</label>
+                            <label class="col-sm-8">{{RegistrationOnline.FathersOccupationDetail}}</label>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="font-weight-bold col-lg-4">Father's Qualification :</label>
+                            <label class="col-sm-8">{{RegistrationOnline.FathersQualification}}</label>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="font-weight-bold col-lg-4">Father's Designation :</label>
+                            <label class="col-sm-8">{{RegistrationOnline.FathersDesignation}}</label>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="font-weight-bold col-lg-4">Father's Annual Income :</label>
+                            <label class="col-sm-8">₹ {{RegistrationOnline.FathersAnnualIncome|number:2}}</label>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="font-weight-bold col-lg-4">Father's Mobile No :</label>
+                            <label class="col-sm-8">{{RegistrationOnline.FathersMobileNo}}</label>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="font-weight-bold col-lg-4">Father's/Mother's Email :</label>
+                            <label class="col-sm-8">{{RegistrationOnline.FathersOrMothersEmail}}</label>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="font-weight-bold col-lg-4">Father's Address :</label>
+                            <label class="col-sm-8">{{RegistrationOnline.FatherPresentAddress}}</label>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="font-weight-bold col-lg-4">Mother's Name :</label>
+                            <label class="col-sm-8">{{RegistrationOnline.MothersName}}</label>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="font-weight-bold col-lg-4">Mother's Occupation :</label>
+                            <label class="col-sm-8">{{RegistrationOnline.MothersOccupation}}</label>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="font-weight-bold col-lg-4">Mother's Qualification :</label>
+                            <label class="col-sm-8">{{RegistrationOnline.MothersQualification}}</label>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="font-weight-bold col-lg-4">Mother's Mobile No:</label>
+                            <label class="col-sm-8">{{RegistrationOnline.MothersMobileNo}}</label>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="font-weight-bold col-lg-5">Mother's Annual Income :</label>
+                            <label class="col-sm-7">₹ {{RegistrationOnline.MothersAnnualIncome|number:2}}</label>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="font-weight-bold col-lg-4">Guardian's Name :</label>
+                            <label class="col-sm-8">{{RegistrationOnline.GuardiansName}}</label>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="font-weight-bold col-lg-4">Guardian's Mobile No :</label>
+                            <label class="col-sm-8">{{RegistrationOnline.GuardiansMobileNo}}</label>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="font-weight-bold col-lg-4">Guardian's Address :</label>
+                            <label class="col-sm-8">{{RegistrationOnline.GuardiansAddress}}</label>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="mb-3">
+                    <legend class="text-uppercase font-size-sm font-weight-bold">Previous School Details</legend>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label disabled class="font-weight-bold col-lg-4">Previous School Name :</label>
+                            <label class="col-sm-8">{{RegistrationOnline.PreviousSchoolName}}</label>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="font-weight-bold col-lg-4"> Admission No :</label>
+                            <label class="col-sm-8">{{RegistrationOnline.PreviousSchoolAdmissionNo}}</label>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="font-weight-bold col-lg-4">Medium Of Instruction :</label>
+                            <label class="col-sm-8">{{RegistrationOnline.PreviousSchoolMedium}}</label>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,170 @@
+﻿@{
+    Layout = null;
+}
+<style>
+    .form-control:disabled {
+        color: #3e3c3c !important;
+    }
+</style>
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Book Return</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Book Return</h6>
+        </div>
+        <div class="card-body">
+            <form name="formBookIssue" novalidate autocomplete="off">
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+                        <label class="col-form-label col-lg-4">Accession No <span class="text-danger">*</span></label>
+                        <div class="col-lg-8">
+                            <input type="text" ng-model="AccessionNo"  ng-change="changeAccessionNo()"  placeholder="Enter Accession No" name="AccessionNo" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control" required autofocus>
+                            <span class="text-danger" ng-if="(formBookIssue.AccessionNo.$dirty || IsSubmitted) && formBookIssue.AccessionNo.$error.required">Accession No is required!</span>
+                            @*<div angucomplete-alt id="BookAccessionAutoComplete"
+                                     placeholder="Enter Accession No"
+                                     pause="300"
+                                     selected-object="afterBookAccessionSelected"
+                                     local-data="BookAccessionList"
+                                     local-search="localSearch"
+                                     title-field="AccessionNo"
+                                     description-field="BookName"
+                                     minlength="1"
+                                     input-class="form-control form-control-small"
+                                     match-class="highlight">
+                                </div>*@
+                            @*<angucomplete-alt id="BookAccessionAutoComplete"
+                                                  placeholder="Enter Accession No"
+                                                  pause="100"
+                                                  selected-object="afterBookAccessionSelected"
+                                                  local-data="BookAccessionList"
+                                                  search-fields="AccessionNo"
+                                                  title-field="SearchBook"
+                                                  minlength="1"
+                                                  input-class="form-control"
+                                                  match-class="highlight"
+                                                  input-changed="inputChangeBookAccession"
+                                                  field-required="true"
+                                                  auto-match="true"
+                                                  focus-in="focusIn()">
+                                </angucomplete-alt>*@
+                        </div>
+                    </div>
+
+                    <div ng-show="BookIssue.BookIssueId >0">
+                        <div class="col-sm-6 form-group">
+                            <label class="col-form-label col-lg-4">Book Name </label>
+                            <div class="col-lg-8">
+                                <input type="text" value="{{BookIssue.BookName}}" class="form-control" ng-disabled="true">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label class="col-form-label col-lg-4">Author </label>
+                            <div class="col-lg-8">
+                                <input type="text" value="{{BookIssue.Author}}" class="form-control" ng-disabled="true">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label class="col-form-label col-lg-4">Publisher </label>
+                            <div class="col-lg-8">
+                                <input type="text" value="{{BookIssue.Publisher}}" class="form-control" ng-disabled="true">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label class="col-form-label col-lg-4">Edition </label>
+                            <div class="col-lg-8">
+                                <input type="text" value="{{BookIssue.Edition}}" class="form-control" ng-disabled="true">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label class="col-form-label col-lg-4">Date Of Issue </label>
+                            <div class="col-lg-8">
+                                <input type="text" value="{{BookIssue.DateOfIssue | date:'dd-MM-yyyy'}}" class="form-control" ng-disabled="true">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label class="col-form-label col-lg-4">Due Date </label>
+                            <div class="col-lg-8">
+                                <input type="text" value="{{BookIssue.DueDate | date:'dd-MM-yyyy'}}" class="form-control" ng-disabled="true">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-group" ng-if="BookIssue.Staff != null">
+                            <label class="col-form-label col-lg-4">Staff Name </label>
+                            <div class="col-lg-8">
+                                <input type="text" value="{{BookIssue.Staff.StaffName}}" class="form-control" ng-disabled="true">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-group" ng-if="BookIssue.Staff != null">
+                            <label class="col-form-label col-lg-4">Staff Code </label>
+                            <div class="col-lg-8">
+                                <input type="text" value="{{BookIssue.Staff.StaffCode}}" class="form-control" ng-disabled="true">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-group" ng-if="BookIssue.Student != null">
+                            <label class="col-form-label col-lg-4">Student Name </label>
+                            <div class="col-lg-8">
+                                <input type="text" value="{{BookIssue.Student.FullName}}" class="form-control" ng-disabled="true">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-group" ng-if="BookIssue.Student != null">
+                            <label class="col-form-label col-lg-4">Admission No </label>
+                            <div class="col-lg-8">
+                                <input type="text" value="{{BookIssue.Student.AdmissionNo}}" class="form-control" ng-disabled="true">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6 form-group">
+                            <label class="col-form-label col-lg-4">Issue Remarks </label>
+                            <div class="col-lg-8">
+                                <input type="text" value="{{BookIssue.IssueRemarks}}" class="form-control" ng-disabled="true">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label class="col-form-label col-lg-4">Return Date <span class="text-danger">*</span></label>
+                            <div class="col-lg-8">
+                                <input type="date" name="ReturnDate" ng-model="BookIssue.ReturnDate" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus>
+                                <span class="text-danger" ng-if="(formBookIssue.ReturnDate.$dirty || IsSubmitted) && formBookIssue.ReturnDate.$error.required">Return Date is required!</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label class="col-form-label col-lg-4">Fine Amount </label>
+                            <div class="col-lg-8">
+                                <input type="number" ng-model="BookIssue.FineAmount" placeholder="Enter Fine Amount" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label class="col-form-label col-lg-4">Remarks </label>
+                            <div class="col-lg-8">
+                                <textarea ng-model="BookIssue.ReturnRemarks" placeholder="Enter Remarks" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="card-footer text-centre" ng-show="BookIssue.BookIssueId >0">
+            <button class="btn btn-primary" ng-click="bookReturn()">Submit</button>
+        </div>
+    </div>
+</div>
+

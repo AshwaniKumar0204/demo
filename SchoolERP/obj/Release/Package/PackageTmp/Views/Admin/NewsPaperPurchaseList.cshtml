@@ -1,0 +1,100 @@
+﻿@{
+    Layout = null;
+}
+<style>
+    th, td {
+        white-space: nowrap !important;
+    }
+</style>
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">News Paper Purchase List</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">News Paper Purchase List</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group row">
+                <div class="col-sm-5">
+                    <label class="col-form-label  col-lg-4">Year</label>
+                    <div class="col-lg-8">
+                        <select class="form-control" ng-model="Year" ng-options="option as option for option in YearList">
+                            <option value="">--Select Year--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <label class="col-form-label  col-lg-4">Month</label>
+                    <div class="col-lg-8">
+                        <select class="form-control" ng-model="MonthNo" ng-options="option.Key as option.Value for option in MonthList">
+                            <option value="">--Select Month--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <button class="btn btn-sm btn-success" ng-click="getNewPaperPurchaseList()">Search</button>
+                </div>
+            </div>
+            <fieldset class="mb-3" ng-show="NewsPaperPurchaseList.length >0">
+                <legend class="text-uppercase font-size-sm font-weight-bold">Purchase List</legend>
+                <div class="form-group col-sm-6 float-right">
+                    <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+                </div>
+                <div class="form-group col-sm-6">
+                    Display
+                    <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+                    Records Per Page
+                </div>
+                <div class="col-sm-12">
+                    <a class="text-link font-weight-bold" ng-click="tablesToExcel(['table_BookAccession_list'],['Book Accession List'],'Book AccessionList','BookAccessionList')">Export To Excel</a>&nbsp;&nbsp;&nbsp;|
+                    <a class="text-link font-weight-bold" ng-click="printA4Portrait('div_table_BookAccession_list')">Export to PDF </a>
+                </div>
+                <div class="form-group col-sm-12 table-responsive" id="div_table_BookAccession_list">
+                    <table class="table table-bordered table-hover" id="table_BookAccession_list">
+                        <thead>
+                            <tr>
+                                <th ng-if="!IsExporting">Sl. No.</th>
+                                <th ng-repeat="head in HeaderList" style="cursor: pointer;" ng-click="sort('head.Value')">{{head.Value}} <span class="fa" ng-show="sortKey=='head.Value'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr dir-paginate="NewsPaperPurchase in NewsPaperPurchaseList|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize" current-page="currentPage" ng-model="search">
+                                <td ng-if="!IsExporting">{{(currentPage*pageSize - (pageSize-1))+ $index}}</td>
+                                <td ng-repeat="news in NewsPaperPurchase.DynamicList">{{$index == 0 ? (news.Value |date:'dd-MM-yyyy' ):(news.Value | number:2) }}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th ng-if="!IsExporting"></th>
+                                <th ng-repeat="foot in FooterList">{{foot.Value}} </th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="clearfix">
+                    <dir-pagination-controls max-size="pageSize" boundary-links="true" template-url="/Scripts/DirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>
+

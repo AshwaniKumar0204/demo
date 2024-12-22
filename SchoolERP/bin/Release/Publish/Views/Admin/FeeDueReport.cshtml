@@ -1,0 +1,202 @@
+﻿
+@{
+    /**/
+
+    Layout = null;
+}
+<style>
+    hr {
+        margin-top: 0;
+    }
+
+    tr, td, th {
+        white-space: nowrap
+    }
+</style>
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <a href="#!" class="breadcrumb-item">Report</a>
+                <span class="breadcrumb-item active">Fee Dues Report</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Fee Dues Report</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="form-group col-lg-4">
+                    <label class="col-form-label font-weight-bold col-lg-4">Course <span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <select ng-model="ClassId" ng-change="changeClass()" ng-options="option.ClassId as option.ClassName for option in ClassList" class="form-control"></select>
+                    </div>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label class="col-form-label font-weight-bold col-lg-4">Session <span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <select ng-model="AcademicSessionId" ng-options="option.AcademicSessionId as option.SessionName for option in AcademicSessionList" class="form-control">
+                            <option value="">--Select Session--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label class="col-form-label font-weight-bold col-lg-4">Branch <span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <select ng-model="SectionId" ng-options="option.SectionId as option.SectionName for option in SectionList" class="form-control"></select>
+                    </div>
+                </div>
+
+                <div class="form-group col-lg-4">
+                    <label class="col-form-label font-weight-bold col-lg-4">Semester Upto</label>
+                    <div class="col-lg-8">
+                        <select ng-model="MonthNo" ng-options="option.MonthNo as option.MonthName for option in MonthList" class="form-control">
+                            <option value="">--Select Semeseter</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group col-lg-4">
+                    <label class="col-form-label font-weight-bold col-lg-4">Month Upto</label>
+                    <div class="col-lg-8">
+                        <select ng-model="MonthDataNo" ng-options="option.Key as option.Value for option in MonthDataList" class="form-control">
+                            <option value="">--Select Month--</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group col-lg-4">
+                    <label class="col-form-label font-weight-bold col-lg-4">Year Upto</label>
+                    <div class="col-lg-8">
+                        <input type="number" ng-model="Year" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-sm-12 text-centre" style="padding-top:10px">
+                <button class="btn btn-icon btn-success" ng-click="getFeeDueReport();">Search</button>
+            </div>
+            <div class="clearfix"></div>
+            <fieldset class="mb-3" ng-if="AdmissionList.length > 0">
+                <legend class="text-uppercase font-size-sm font-weight-bold"></legend>
+                <div class="form-group col-sm-6 float-right">
+                    <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+                </div>
+                <div class="form-group col-sm-6">
+                    Display
+                    <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+                    Records Per Page
+                </div>
+                <div class="col-sm-12">
+                    @*<a class="text-link font-weight-bold" onclick="tableToExcel('tbl_due_fee')">Export To Excel</a> &nbsp;&nbsp;|*@
+                    <a class="text-link font-weight-bold" ng-click="tablesToExcel(['tbl_due_fee'],['tbl_due_fee'],'tbl_due_fee','tbl_due_fee')">Export To Excel</a>&nbsp;&nbsp;&nbsp;|
+                    <a class="text-link font-weight-bold" ng-click="printA4Portrait('print_tbl','A4','')">Export to PDF </a>&nbsp;&nbsp;|
+                    <a class="text-link font-weight-bold" target="_blank" href="/admin/PrintFeeDueReport?SectionId={{SectionId}}&MonthNo={{MonthNo?MonthNo:0}}&ReportNo=1&AcademicSessionId={{AcademicSessionId}}&UpToYear={{Year?Year:0}}&MonthDataNo={{MonthDataNo?MonthDataNo:0}}">Print Report</a> &nbsp;&nbsp;|
+                    <a class="text-link font-weight-bold" target="_blank" href="/admin/PrintFeeDueReport?SectionId={{SectionId}}&MonthNo={{MonthNo?MonthNo:0}}&ReportNo=2&AcademicSessionId={{AcademicSessionId}}&UpToYear={{Year?Year:0}}&MonthDataNo={{MonthDataNo?MonthDataNo:0}}">Print Report 2</a>
+                </div>
+                <div class="form-group col-sm-12 ">
+                    <div class="table-responsive" id="print_tbl">
+                        <table class="table table-bordered table-hover datatable-highlight" style="margin-bottom:10px" id="tbl_due_fee">
+                            <thead>
+                                <tr>
+                                    <th>Sl. No.</th>
+                                    <th style="cursor: pointer;" ng-click="sort('AdmissionNo')">Admission No <span class="fa" ng-show="sortKey=='AdmissionNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('FullName')">Full Name <span class="fa" ng-show="sortKey=='FullName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    @*<th style="cursor: pointer;" ng-click="sort('RollNo')">Roll <span class="fa" ng-show="sortKey=='RollNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                        <th style="cursor: pointer;" ng-click="sort('MobileNo')">Mobile No <span class="fa" ng-show="sortKey=='MobileNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>*@
+                                    @*<th style="cursor: pointer;" ng-click="sort('DueFeeDetail.NotPaidSemesterNames')">Dues Semesters <span class="fa" ng-show="sortKey=='DueFeeDetail.NotPaidSemesterNames'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                        <th style="cursor: pointer;" ng-click="sort('DueFeeDetail.NotPaidMonthNames')">Dues Months <span class="fa" ng-show="sortKey=='DueFeeDetail.NotPaidMonthNames'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>*@
+                                    @*<th style="cursor: pointer;" ng-click="sort('DueFeeDetail.PreviousDues')">Previous Dues <span class="fa" ng-show="sortKey=='DueFeeDetail.PreviousDues'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>*@
+                                    <th style="cursor: pointer;" ng-click="sort('DueFeeDetail.ClassFee')">Class Fee <span class="fa" ng-show="sortKey=='DueFeeDetail.ClassFee'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('DueFeeDetail.TransportFee')">Transport Fee <span class="fa" ng-show="sortKey=='DueFeeDetail.TransportFee'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('DueFeeDetail.ChargeAmount')">Charge Amount <span class="fa" ng-show="sortKey=='DueFeeDetail.ChargeAmount'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    @*<th style="cursor: pointer;" ng-click="sort('DueFeeDetail.ArrearAmount')">Arrear <span class="fa" ng-show="sortKey=='DueFeeDetail.ArrearAmount'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>*@
+                                    <th style="cursor: pointer;" ng-click="sort('DueFeeDetail.HostelCharge')">Hostel Charge <span class="fa" ng-show="sortKey=='DueFeeDetail.HostelCharge'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    @*<th style="cursor: pointer;" ng-click="sort('DueFeeDetail.FineAmount')">Fine <span class="fa" ng-show="sortKey=='DueFeeDetail.FineAmount'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>*@
+                                    <th style="cursor: pointer;" ng-click="sort('DueFeeDetail.TotalDues')">Total <span class="fa" ng-show="sortKey=='DueFeeDetail.TotalDues'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr dir-paginate="admission in AdmissionList|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize" current-page="currentPage" ng-model="search">
+                                    <td>{{(currentPage*pageSize - (pageSize-1))+ $index}}</td>
+                                    <td>{{admission.AdmissionNo}}</td>
+                                    <td>{{admission.FullName}}</td>
+                                    @*<td>{{admission.RollNo}}</td>
+                                        <td>{{admission.MobileNo}}</td>*@
+                                    @*<td style="width:300px;white-space:initial;min-width:150px">{{admission.DueFeeDetail.NotPaidSemesterNames}}</td>
+                                        <td style="width:300px;white-space:initial;min-width:150px">{{admission.DueFeeDetail.NotPaidMonthNames}}</td>
+                                        <td>{{admission.DueFeeDetail.PreviousDues | number : 2}}</td>*@
+                                    <td>{{admission.DueFeeDetail.ClassFee | number : 2}}</td>
+                                    <td>{{admission.DueFeeDetail.TransportFee | number : 2}}</td>
+                                    <td>{{admission.DueFeeDetail.ChargeAmount | number : 2}}</td>
+                                    @*<td>{{admission.DueFeeDetail.ArrearAmount | number : 2}}</td>*@
+                                    <td>{{admission.DueFeeDetail.HostelCharge | number : 2}}</td>
+                                    @*<td>{{admission.DueFeeDetail.FineAmount | number : 2}}</td>*@
+                                    <td>{{admission.DueFeeDetail.TotalDues | number : 2}}</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>Total</th>
+                                    <th></th>
+                                    @*<th></th>
+                                        <th></th>*@
+                                    @*<th></th>
+                                        <th></th>*@
+                                    <th></th>
+                                    @*<th>{{TotalDuesAmount | number:2}}</th>*@
+                                    <th>{{TotalClassFee | number:2}}</th>
+                                    <th>{{TotalTransportFee | number:2}}</th>
+                                    <th>{{TotalChargeAmount | number:2}}</th>
+                                    @*<th>{{TotalArrearAmount | number:2}}</th>*@
+                                    <th>{{TotalHostelCharge | number:2}}</th>
+                                    @*<th>{{TotalFineAmount | number:2}}</th>*@
+                                    <th>{{TotalAmount | number:2}}</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <dir-pagination-controls max-size="pageSize" boundary-links="true" template-url="/Scripts/DirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+                </div>
+            </fieldset>
+
+        </div>
+    </div>
+</div>
+
+<div id="modal_photo" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Student Photo</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <img src="{{PhotoUrl}}" width="360" class="img-responsive" />
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

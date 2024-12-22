@@ -1,0 +1,102 @@
+﻿
+@{
+    Layout = null;
+}
+<style>
+    hr {
+        margin-top: 0;
+    }
+</style>
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="index-2.html" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Dashboard</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Student Transport Report</h6>
+        </div>
+        <div class="card-body">
+            <form novalidate name="formReport">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Class</label>
+                            <select ng-model="ClassId" ng-change="getAcademicSessionList()||changeClass()" name="ClassId" ng-options="option.ClassId as option.ClassName for option in ClassList" class="form-control">
+                                <option value="">--All Class--</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+
+
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Section </label>
+                            <select ng-model="SectionId" name="SectionId" ng-options="option.SectionId as option.SectionName for option in SectionList" class="form-control">
+                                <option value="">--All Section--</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Session <span class="text-danger">*</span> <span></span></label>
+                            <select ng-model="AcademicSessionId" name="AcademicSessionId" ng-options="option.AcademicSessionId as option.SessionName for option in AcademicSessionList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                <option value="">--Select Session--</option>
+                            </select>
+                            <span class="text-danger" ng-if="(formReport.AcademicSessionId.$dirty || IsSubmitted) && formReport.AcademicSessionId.$error.required">Session is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Report For <span class="text-danger">*</span> <span></span></label>
+                            <select ng-model="ReportFor" name="Gender" ng-change="ReportForChange();" ng-options="option.Key as option.Value for option in FilterOptions" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                <option value="">--Select Report For--</option>
+                            </select>
+                            <span class="text-danger" ng-if="(formReport.ReportFor.$dirty || IsSubmitted) && formReport.ReportFor.$error.required">Report For is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3" ng-show="ReportFor==2">
+                        <div class="form-group">
+                            <label>Transport Group </label>
+                            <select class="form-control" ng-model="TransportGroupTitle" ng-options="b.TransportGroupId as b.TransportGroupTitle for b in groups">
+                                <option value="">Select Transport Group</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3" ng-show="ReportFor==3">
+                        <div class="form-group">
+                            <label>Vehicle (Bus/Auto/Van) </label>
+                            <select name="BusTitle" ng-model="BusTitle" class="form-control" ng-options="b.BusId as b.BusTitle for b in buses">
+                                <option value="">Select Transport Bus/Auto</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer text-centre">
+            <button class="btn btn-primary" ng-click="SubmitReport()">Submit</button>
+        </div>
+    </div>
+</div>

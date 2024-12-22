@@ -1,0 +1,173 @@
+﻿@{
+    Layout = null;
+}
+<style>
+    td, th {
+        white-space: nowrap
+    }
+</style>
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Fuel Consumption Report</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Fuel Consumption Report</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-4 form-group">
+                    <label class="col-form-label col-lg-4">From Date <span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <input type="date" ng-model="FromDate" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-sm-4 form-group">
+                    <label class="col-form-label col-lg-4">To Date <span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <input type="date" ng-model="ToDate" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-sm-4 form-group">
+                    <label class="col-form-label col-lg-4">Vehicle <span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <angucomplete-alt id="BusAutoComplete"
+                                          placeholder="Enter Vehicle No"
+                                          pause="100"
+                                          selected-object="afterBusSelected"
+                                          local-data="BusList"
+                                          search-fields="BusTitle"
+                                          title-field="BusTitle"
+                                          minlength="1"
+                                          input-class="form-control"
+                                          match-class="highlight"
+                                          input-changed="selectionChanged"
+                                          field-required="true"
+                                          auto-match="true"
+                                          focus-in="focusIn()">
+                        </angucomplete-alt>
+                    </div>
+                </div>
+                <div class="col-sm-4 form-group">
+                    <label class="col-form-label col-lg-4">Party <span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <angucomplete-alt id="SupplierAutoComplete"
+                                          placeholder="Enter Party Name"
+                                          pause="100"
+                                          selected-object="afterSupplierSelected"
+                                          local-data="SupplierList"
+                                          search-fields="SupplierName"
+                                          title-field="SupplierName"
+                                          minlength="1"
+                                          input-class="form-control"
+                                          match-class="highlight"
+                                          input-changed="selectionChanged"
+                                          field-required="true"
+                                          auto-match="true"
+                                          focus-in="focusIn()">
+                        </angucomplete-alt>
+                    </div>
+                </div>
+                <div class="col-sm-4 form-group">
+                    <button class="btn btn-sm btn-success" ng-click="getVehicleFuelConsumptionList()"><i class="fa fa-search"></i> Search</button>
+                </div>
+            </div>
+            <fieldset class="mb-3" ng-show="VehicleFuelConsumptionList.length > 0">
+                <legend class="text-uppercase font-size-sm font-weight-bold">Fuel Consumption Report</legend>
+                <div class="form-group col-sm-6 float-right">
+                    <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+                </div>
+                <div class="form-group col-sm-6">
+                    Display
+                    <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+                    Records Per Page
+                </div>
+                <div class="col-sm-12">
+                    <a class="text-link font-weight-bold" ng-click="tablesToExcel(['table_purchase_list'],['FuelConsumptionDetail'],'FuelConsumptionDetail','FuelConsumptionDetail')">Export To Excel</a>&nbsp;&nbsp;&nbsp;|
+                    @*<a class="text-link font-weight-bold" ng-click="printA4Landscape('div_table_purchase_list','A4','')">Export to PDF </a>*@
+                    <a href="/print/PrintVehicleFuelConsumptionReport?BusId={{BusId>0?BusId:0}}&SupplierId={{SupplierId>0?SupplierId:0}}&FromDate={{FromDate?(FromDate|date:'MM-dd-yyyy'):null}}&ToDate={{ToDate?(ToDate|date:'MM-dd-yyyy'):null}}" target="_blank" class="text-link font-weight-bold">Print Report</a>
+                </div>
+                <div class="form-group col-sm-12 table-responsive" id="div_table_purchase_list">
+                    <table class="table table-bordered table-hover" id="table_purchase_list">
+                        <thead>
+                            <tr>
+                                <th ng-if="!IsExporting">Sl. No.</th>
+                                <th style="cursor: pointer;" ng-click="sort('BillDate')">Date <span class="fa" ng-show="sortKey=='BillDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('BillNo')">Bill No <span class="fa" ng-show="sortKey=='BillNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('BusTitle')">Vehicle <span class="fa" ng-show="sortKey=='BusTitle'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('SupplierName')">Party Name <span class="fa" ng-show="sortKey=='SupplierName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Material')">Material <span class="fa" ng-show="sortKey=='Material'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('PreviousKillometeres')">Previous KM <span class="fa" ng-show="sortKey=='PreviousKillometeres'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('CurrentKillometers')">Current KM <span class="fa" ng-show="sortKey=='CurrentKillometers'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Quantity')">Quantity <span class="fa" ng-show="sortKey=='Quantity'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('UnitName')">Unit <span class="fa" ng-show="sortKey=='UnitName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Average')">Average <span class="fa" ng-show="sortKey=='Average'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Rate')">Rate <span class="fa" ng-show="sortKey=='Rate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Amount')">Amount <span class="fa" ng-show="sortKey=='Amount'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Remarks')">Remarks <span class="fa" ng-show="sortKey=='Remarks'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-init="$parent.TotalQuantity =$parent.TotalQuantity + vehicle.Quantity;$parent.TotalAmount=$parent.TotalAmount+vehicle.Amount" dir-paginate="vehicle in VehicleFuelConsumptionList|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize" current-page="currentPage" ng-model="search">
+                                <td ng-if="!IsExporting">{{$index + 1}}</td>
+                                <td>{{vehicle.BillDate | date:'dd-MM-yyyy'}}</td>
+                                <td>{{vehicle.BillNo}}</td>
+                                <td>{{vehicle.BusTitle}}</td>
+                                <td>{{vehicle.SupplierName}}</td>
+                                <td>{{vehicle.Material}}</td>
+                                <td>{{vehicle.PreviousKillometeres}}</td>
+                                <td>{{vehicle.CurrentKillometers}}</td>
+                                <td>{{vehicle.Quantity | number:2}}</td>
+                                <td>{{vehicle.UnitName}}</td>
+                                <td>{{vehicle.Average | number:2}}</td>
+                                <td>{{vehicle.Rate| number:2}}</td>
+                                <td>{{vehicle.Amount| number:2}}</td>
+                                <td>{{vehicle.Remarks}}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>TOTAL</th>
+                                <th ng-if="!IsExporting"></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th>{{TotalQuantity | number:2}}</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th>{{TotalAmount | number:2}}</th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="clearfix">
+                    <dir-pagination-controls max-size="pageSize" boundary-links="true" template-url="/Scripts/DirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>
+

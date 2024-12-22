@@ -1,0 +1,329 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Issue Transfer Certificate</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Issue Transfer Certificate</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group row" ng-if="!id">
+                <label class="col-form-label col-lg-2">Admission No <span class="text-danger">*</span></label>
+                <div class="col-lg-5">
+                    <angucomplete-alt id="StudentAutoComplete"
+                                      placeholder="Enter Admission No/Student Name"
+                                      pause="100"
+                                      selected-object="afterStudentSelected"
+                                      local-data="AdmissionList"
+                                      search-fields="SearchAdmission"
+                                      title-field="SearchAdmission"
+                                      minlength="1"
+                                      input-class="form-control"
+                                      match-class="highlight"
+                                      input-changed="selectionChanged"
+                                      field-required="true"
+                                      auto-match="true"
+                                      focus-in="focusIn()">
+                    </angucomplete-alt>
+                </div>
+            </div>
+            <fieldset class="mb-3" ng-show="SelectedAdmission.AdmissionId >0">
+                <legend class="text-uppercase font-size-sm font-weight-bold">Student Detail</legend>
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">Student Name :</label>
+                        <label class="col-form-label col-lg-8 col-8" ng-bind="SelectedAdmission.FullName"></label>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">Class :</label>
+                        <label class="col-form-label col-lg-8 col-8" ng-bind="SelectedAdmission.ClassName"></label>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">Section :</label>
+                        <label class="col-form-label col-lg-8 col-8" ng-bind="SelectedAdmission.SectionName"></label>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">Roll No :</label>
+                        <label class="col-form-label col-lg-8 col-8" ng-bind="SelectedAdmission.RollNo"></label>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">House :</label>
+                        <label class="col-form-label col-lg-8 col-8" ng-bind="SelectedAdmission.HouseName"></label>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">Contact No :</label>
+                        <label class="col-form-label col-lg-8 col-8" ng-bind="SelectedAdmission.MobileNo"></label>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="mb-3" ng-show="SelectedAdmission.AdmissionId >0 || id">
+                <legend class="text-uppercase font-size-sm font-weight-bold">Certificate-Form</legend>
+                <form novalidate name="formTransferCertificate">
+                    <div class="col-md-12 form-group">
+                        <label class="col-sm-7 col-form-label">Name of the Pupil  <span class="text-danger">*</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" disabled="disabled" name="StudentName" ng-model="TransferCertificate.StudentName" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Student Name" required autofocus />
+                            <span class="text-danger" ng-if="(formTransferCertificate.StudentName.$dirty || IsSubmitted) && formTransferCertificate.StudentName.$error.required">Student Name is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <label class="col-sm-7 col-form-label">Father’s /Guardian Name 	 <span class="text-danger">*</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" name="FatherName" ng-model="TransferCertificate.FatherName" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Father Name" required autofocus />
+                            <span class="text-danger" ng-if="(formTransferCertificate.FatherName.$dirty || IsSubmitted) && formTransferCertificate.FatherName.$error.required">Father Name is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <label class="col-sm-7 col-form-label">Mother’s Name  <span class="text-danger">*</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" name="MotherName" ng-model="TransferCertificate.MotherName" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Mother Name" required autofocus />
+                            <span class="text-danger" ng-if="(formTransferCertificate.MotherName.$dirty || IsSubmitted) && formTransferCertificate.MotherName.$error.required">Mother Name is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <label class="col-sm-7 col-form-label">Nationality  <span class="text-danger">*</span></label>
+                        <div class="col-sm-4">
+                            <select ng-model="TransferCertificate.Nationality" name="Nationality" ng-options="option.Key as option.Value for option in NationalityList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus /></select>
+                            <span class="text-danger" ng-if="(formTransferCertificate.Nationality.$dirty || IsSubmitted) && formTransferCertificate.Nationality.$error.required">Nationality is required!</span>
+                        </div>
+                    </div>
+
+
+                    @*<div class="col-md-12 form-group">
+                            <label class="col-sm-7 col-form-label">Whether the candidate belongs to Schedule Caste or Schedule Tribe  <span class="text-danger">*</span></label>
+                            <div class="col-sm-4">
+                                <select ng-model="TransferCertificate.WhetherSCOrST" name="WhetherSCOrST" ng-options="option.Key as option.Value for option in CategoryList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus /></select>
+                                <span class="text-danger" ng-if="(formTransferCertificate.WhetherSCOrST.$dirty || IsSubmitted) && formTransferCertificate.WhetherSCOrST.$error.required">Caste is required!</span>
+                            </div>
+                        </div>*@
+
+
+                    <div class="col-md-12 form-group">
+                        <label class="col-sm-7 col-form-label">Whether the candidate belongs to Schedule Caste or Schedule Tribe  <span class="text-danger">*</span></label>
+                        <div class="col-sm-4">
+
+                            <input type="text" placeholder="Enter Caste" ng-model="TransferCertificate.Category" name="Category" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                            <span class="text-danger" ng-if="(formTransferCertificate.Category.$dirty || IsSubmitted) && formTransferCertificate.Category.$error.required">Caste is required!</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 form-group">
+                        <label class="col-sm-7 col-form-label">Date of First Admission in School  <span class="text-danger">*</span></label>
+                        <div class="col-sm-4">
+                            <input type="date" name="AdmissionDate" ng-model="TransferCertificate.AdmissionDate" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Class Name" required autofocus />
+                            <span class="text-danger" ng-if="(formTransferCertificate.AdmissionDate.$dirty || IsSubmitted) && formTransferCertificate.AdmissionDate.$error.required">Class Name is required!</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 form-group">
+                        <label class="col-sm-7 col-form-label">Class name on First Admission  <span class="text-danger">*</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" name="ClassName" ng-model="TransferCertificate.ClassName" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Class Name" required autofocus />
+                            <span class="text-danger" ng-if="(formTransferCertificate.ClassName.$dirty || IsSubmitted) && formTransferCertificate.ClassName.$error.required">Class Name is required!</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 form-group">
+                        <label class="col-sm-7 col-form-label">Date of Birth (in Christian Era) according to Admission Register <span class="text-danger">*</span></label>
+                        <div class="col-sm-4">
+                            <input type="date" ng-disabled="SelectedAdmission.DateOfBirth != null" name="DateOfBirth" ng-model="TransferCertificate.DateOfBirth" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Date Of Birth" required autofocus />
+                            <span class="text-danger" ng-if="(formTransferCertificate.DateOfBirth.$dirty || IsSubmitted) && formTransferCertificate.DateOfBirth.$error.required">Date Of Birth is required!</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 form-group">
+                        <label class="col-sm-7 col-form-label">Class in which pupil last studied  <span class="text-danger">*</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" name="LastStudiedClass" ng-model="TransferCertificate.LastStudiedClass" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Last Studied Class" required autofocus />
+                            <span class="text-danger" ng-if="(formTransferCertificate.LastStudiedClass.$dirty || IsSubmitted) && formTransferCertificate.LastStudiedClass.$error.required">Last Studied Class is required!</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 form-group">
+                        <label class="col-sm-7 col-form-label">Last taken Annual Exam with result <span class="text-danger">*</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" name="ExamPassedClass" ng-model="TransferCertificate.ExamPassedClass" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter School/Board Annual Examination last taken with result" required autofocus />
+                            <span class="text-danger" ng-if="(formTransferCertificate.ExamPassedClass.$dirty || IsSubmitted) && formTransferCertificate.ExamPassedClass.$error.required">School/Board Annual Examination last taken with result is required!</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 form-group">
+                        <label class="col-sm-7 col-form-label">Whether failed, if so once/twice in the same class <span class="text-danger">*</span></label>
+                        <div class="col-sm-4">
+                            <select ng-model="TransferCertificate.WhetherFailedTwice" name="WhetherFailedTwice" ng-options="option.Key as option.Value for option in WhetherFailedTwiceList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus /></select>
+                            <span class="text-danger" ng-if="(formTransferCertificate.WhetherFailedTwice.$dirty || IsSubmitted) && formTransferCertificate.WhetherFailedTwice.$error.required">Whether failed, if so once/twice in the same class is required!</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 form-group">
+                        <label class="col-sm-7 col-form-label">Subject Studied 1 <span class="text-danger">*</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" disabled name="SubjectStudied1" ng-model="TransferCertificate.SubjectStudied1" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Subject Studied 1" required autofocus />
+                            <span class="text-danger" ng-if="(formTransferCertificate.SubjectStudied1.$dirty || IsSubmitted) && formTransferCertificate.SubjectStudied1.$error.required">Subject Studied 1 is required!</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 form-group">
+                        <label class="col-sm-7 col-form-label">Subject Studied 2 <span class="text-danger">*</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" disabled name="SubjectStudied2" ng-model="TransferCertificate.SubjectStudied2" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Subject Studied 2" required autofocus />
+                            <span class="text-danger" ng-if="(formTransferCertificate.SubjectStudied2.$dirty || IsSubmitted) && formTransferCertificate.SubjectStudied2.$error.required">Subject Studied 2 is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <label class="col-sm-7 col-form-label">Subject Studied 3 <span class="text-danger">*</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" disabled name="SubjectStudied3" ng-model="TransferCertificate.SubjectStudied3" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Subject Studied 3" required autofocus />
+                            <span class="text-danger" ng-if="(formTransferCertificate.SubjectStudied3.$dirty || IsSubmitted) && formTransferCertificate.SubjectStudied3.$error.required">Subject Studied 3 is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <label class="col-sm-7 col-form-label">Subject Studied 4 </label>
+                        <div class="col-sm-4">
+                            <input type="text" disabled name="SubjectStudied4" ng-model="TransferCertificate.SubjectStudied4" class="form-control" placeholder="Enter Subject Studied 4" />
+                        </div>
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <label class="col-sm-7 col-form-label">Subject Studied 5 </label>
+                        <div class="col-sm-4">
+                            <input type="text" disabled name="SubjectStudied5" ng-model="TransferCertificate.SubjectStudied5" class="form-control" placeholder="Enter Subject Studied 5" />
+                        </div>
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <label class="col-sm-7 col-form-label">Subject Studied 6 </label>
+                        <div class="col-sm-4">
+                            <input type="text" disabled name="SubjectStudied6" ng-model="TransferCertificate.SubjectStudied6" class="form-control" placeholder="Enter Subject Studied 6" />
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12 form-group">
+                        <label class="col-sm-7 col-form-label">Whether qualified for promotion to Higher class  <span class="text-danger">*</span></label>
+                        <div class="col-sm-4">
+                            <select ng-model="TransferCertificate.WhetherQualifiedForPromotion" name="WhetherQualifiedForPromotion" ng-options="option.Key as option.Value for option in WhetherQualifiedForPromotionList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus /></select>
+                            <span class="text-danger" ng-if="(formTransferCertificate.WhetherQualifiedForPromotion.$dirty || IsSubmitted) && formTransferCertificate.WhetherQualifiedForPromotion.$error.required">WhetherQualifiedForPromotion is required!</span>
+                            <label class="col-form-label" ng-show="TransferCertificate.WhetherQualifiedForPromotion == 1">If Yes, which class</label>
+                            <input type="text" ng-show="TransferCertificate.WhetherQualifiedForPromotion == 1" name="QualifiedForClass" ng-model="TransferCertificate.QualifiedForClass" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 form-group">
+                        <label class="col-sm-7 col-form-label">Month Upto which the (pupil has paid)school dues <span class="text-danger">*</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" name="MonthUptoPaid" ng-model="TransferCertificate.MonthUptoPaid" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Month Name Upto which Fees paid" required autofocus />
+                            <span class="text-danger" ng-if="(formTransferCertificate.MonthUptoPaid.$dirty || IsSubmitted) && formTransferCertificate.MonthUptoPaid.$error.required">Month Name Upto which Fees paid is required.</span>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12 form-group">
+                        <label class="col-sm-7 col-form-label">Any fee concession availed of if so, the nature of such concession <span class="text-danger">*</span></label>
+                        <div class="col-sm-4">
+                            <select ng-model="TransferCertificate.AnyFeeConcessionAvailed" name="AnyFeeConcessionAvailed" ng-options="option.Key as option.Value for option in AnyFeeConcessionAvailedList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus /></select>
+                            <span class="text-danger" ng-if="(formTransferCertificate.AnyFeeConcessionAvailed.$dirty || IsSubmitted) && formTransferCertificate.AnyFeeConcessionAvailed.$error.required">Whether Fee Concession was availed.</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 form-group">
+                        <label class="col-sm-7 col-form-label">Total no. of working days <span class="text-danger">*</span></label>
+                        <div class="col-sm-4">
+                            <input type="number" name="TotalWorkingDays" ng-model="TransferCertificate.TotalWorkingDays" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Total no. of working days" required autofocus />
+                            <span class="text-danger" ng-if="(formTransferCertificate.TotalWorkingDays.$dirty || IsSubmitted) && formTransferCertificate.TotalWorkingDays.$error.required">Total no. of working days is required.</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 form-group">
+                        <label class="col-sm-7 col-form-label">Total no. of working days present <span class="text-danger">*</span></label>
+                        <div class="col-sm-4">
+                            <input type="number" name="TotalPresentDays" ng-model="TransferCertificate.TotalPresentDays" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Total no. of working days present" required autofocus />
+                            <span class="text-danger" ng-if="(formTransferCertificate.TotalPresentDays.$dirty || IsSubmitted) && formTransferCertificate.TotalPresentDays.$error.required">Total no. of working days present is required.</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 form-group">
+                        <label class="col-sm-7 col-form-label">Whether NCC cadet/Boy Scout/Girl Guide(details may be given) <span class="text-danger">*</span></label>
+                        <div class="col-sm-4">
+                            <select ng-model="TransferCertificate.WhetherNCCCadet" name="WhetherNCCCadet" ng-options="option.Key as option.Value for option in WhetherNCCCadetList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus /></select>
+                            <span class="text-danger" ng-if="(formTransferCertificate.WhetherNCCCadet.$dirty || IsSubmitted) && formTransferCertificate.WhetherNCCCadet.$error.required">Whether Candidate is NCC Cadet.</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 form-group">
+                        <label class="col-sm-7 col-form-label" style="line-height:initial">Games played or extra curricular activities in which the pupil usually took part(mention the achievement level therein) </label>
+                        <div class="col-sm-4">
+                            <input type="text" name="ExtraCurricularActivities" ng-model="TransferCertificate.ExtraCurricularActivities" class="form-control" placeholder="Enter Extra Curricular Activities" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 form-group">
+                        <label class="col-sm-7 col-form-label">General Conduct <span class="text-danger">*</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" name="GeneralConduct" ng-model="TransferCertificate.GeneralConduct" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter General Conduct" required autofocus />
+                            <span class="text-danger" ng-if="(formTransferCertificate.GeneralConduct.$dirty || IsSubmitted) && formTransferCertificate.GeneralConduct.$error.required">General Conduct is required.</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 form-group">
+                        <label class="col-sm-7 col-form-label">Date of application of certificate <span class="text-danger">*</span></label>
+                        <div class="col-sm-4">
+                            <input type="date" name="DateOfApplicationOfCertiticate" ng-model="TransferCertificate.DateOfApplicationOfCertiticate" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus />
+                            <span class="text-danger" ng-if="(formTransferCertificate.DateOfApplicationOfCertiticate.$dirty || IsSubmitted) && formTransferCertificate.DateOfApplicationOfCertiticate.$error.required">Date of application of certificate is required.</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 form-group">
+                        <label class="col-sm-7 col-form-label">Date of issue of certificate <span class="text-danger">*</span></label>
+                        <div class="col-sm-4">
+                            <input type="date" name="DateOfIssue" ng-model="TransferCertificate.DateOfIssue" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus />
+                            <span class="text-danger" ng-if="(formTransferCertificate.DateOfIssue.$dirty || IsSubmitted) && formTransferCertificate.DateOfIssue.$error.required">Date of issue of certificate is required.</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 form-group">
+                        <label class="col-sm-7 col-form-label">Reason for leaving the school <span class="text-danger">*</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" name="ReasonForLeaving" ng-model="TransferCertificate.ReasonForLeaving" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Reason for leaving the school" required autofocus />
+                            <span class="text-danger" ng-if="(formTransferCertificate.ReasonForLeaving.$dirty || IsSubmitted) && formTransferCertificate.ReasonForLeaving.$error.required">Reason for leaving the school is required.</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 form-group">
+                        <label class="col-sm-7 col-form-label">Any other remarks </label>
+                        <div class="col-sm-4">
+                            <input type="text" name="Remarks" ng-model="TransferCertificate.Remarks" class="form-control" placeholder="Enter Remarks" />
+                        </div>
+                    </div>
+
+                </form>
+            </fieldset>
+        </div>
+        <div class="card-footer text-centre" ng-show="SelectedAdmission.AdmissionId >0 || id">
+            <button class="btn btn-primary" ng-click="saveTransferCertificate()">Submit</button>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,127 @@
+﻿@{
+    Layout = null;
+}
+<style>
+    th, td {
+        white-space: nowrap
+    }
+</style>
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Manage Role</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Manage Role</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group col-sm-6 float-right">
+                <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+            </div>
+            <div class="form-group col-sm-6">
+                <button class="btn btn-sm btn-primary" ng-click="newRole()"> <i class="fa fa-plus"></i> New Role</button>
+            </div>
+            <div class="form-group col-sm-12">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Sl. No.</th>
+                                <th style="cursor: pointer;" ng-click="sort('RoleTitle')">Role Title <span class="fa" ng-show="sortKey=='RoleTitle'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('RoleStatus')">Role Status <span class="fa" ng-show="sortKey=='RoleStatus'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th>View Tasks </th>
+                                <th>Edit </th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="Role in RoleList|orderBy:sortKey:reverse|filter:search" ng-model="search">
+                                <td>{{$index + 1}}</td>
+                                <td>{{Role.RoleTitle}}</td>
+                                <td><a ng-class="Role.RoleStatus == 1 ? 'badge bg-success-400' : 'badge bg-danger'"> {{RoleStatusList[Role.RoleStatus].Value}}</a></td>
+                                <td><button class="btn btn-sm" ng-click="viewTasks(Role.RoleId)"><i class="fa fa-eye"></i></button></td>
+                                <td><button class="btn btn-sm btn-primary" ng-click="editRole(Role)"><i class="icon-pencil3"></i></button></td>
+                                <td><button class="btn btn-sm btn-danger" ng-click="deleteConfirmation(Role.RoleId)"><i class="fa fa-trash"></i></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal_Student_Charge" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{Role.RoleId > 0 ? 'Update' : 'New' }} Role</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <form name="formRole" novalidate>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <label>Role Title <span class="text-danger">*</span></label>
+                                <input type="text" name="RoleTitle" ng-model="Role.RoleTitle" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Role Title" required autofocus>
+                                <span class="text-danger" ng-if="(formRole.RoleTitle.$dirty || IsSubmitted) && formRole.RoleTitle.$error.required">Role Title is required!</span>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label>Status <span class="text-danger">*</span></label>
+                                <select ng-model="Role.RoleStatus" name="RoleStatus" ng-options="option.Key as option.Value for option in RoleStatusList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                                <span class="text-danger" ng-if="(formRole.RoleStatus.$dirty || IsSubmitted) && formRole.RoleStatus.$error.required">Status is required!</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer text-centre">
+                        <div class="col-sm-12">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn bg-primary" ng-click="saveRole()">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal_confirmation" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmation</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <h6 class="font-weight-semibold">Are you sure want to delete this record?</h6>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn bg-primary" ng-click="deleteRole()">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

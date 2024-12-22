@@ -1,0 +1,195 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Magazine Purchase</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Magazine Purchase</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-6 form-group">
+                    <label class="col-form-label font-weight-bold col-lg-4">Select Magazine </label>
+                    <div class="col-lg-8">
+                        <select ng-model="MagazineId" ng-change="getMagazinePurchaseList()" ng-options="option.MagazineId as option.MagazineName for option in MagazineList" class="form-control">
+                            <option value="">--Select Magazine--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-2 form-group">
+                    <button class="btn btn-sm btn-primary" ng-click="newMagazinePurchase()"> <i class="fa fa-plus"></i> New Purchase</button>
+                </div>
+            </div>
+            <fieldset class="mb-3" ng-show="MagazinePurchaseList.length > 0">
+                <legend class="text-uppercase font-size-sm font-weight-bold">Magazine Purchase List</legend>
+                <div class="form-group col-sm-6 float-right">
+                    <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+                </div>
+                <div class="form-group col-sm-6" ng-if="CanEdit">
+                    Display
+                    <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+                    Records Per Page
+                </div>
+                <div class="col-sm-12">
+                    <a class="text-link font-weight-bold" ng-click="tablesToExcel(['table_Purchase_list'],['Magazine Purchase List'],'MagazinePurchaseList','MagazinePurchaseList')">Export To Excel</a>&nbsp;&nbsp;&nbsp;|
+                    <a class="text-link font-weight-bold" ng-click="printA4Portrait('div_PurchaseList')">Export to PDF </a>
+                </div>
+                <div class="form-group col-sm-12 table-responsive" id="div_PurchaseList">
+                    <table class="table table-bordered table-hover" id="table_Purchase_list">
+                        <thead>
+                            <tr>
+                                <th ng-if="!IsExporting">Sl. No.</th>
+                                @*<th style="cursor: pointer;" ng-click="sort('MagazineName')">Magazine <span class="fa" ng-show="sortKey=='MagazineName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>*@
+                                <th style="cursor: pointer;" ng-click="sort('PublishDate')">Month <span class="fa" ng-show="sortKey=='PublishDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('PublishDate')">Publish Date <span class="fa" ng-show="sortKey=='PublishDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('ReceiveDate')">Receive Date <span class="fa" ng-show="sortKey=='ReceiveDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('MediumName')">Medium <span class="fa" ng-show="sortKey=='MediumName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Source')">Source <span class="fa" ng-show="sortKey=='Source'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Amount')">Amount <span class="fa" ng-show="sortKey=='Amount'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Remarks')">Remarks <span class="fa" ng-show="sortKey=='Remarks'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="CanEdit && !IsExporting" class="not_print">Edit </th>
+                                <th ng-if="CanDelete && !IsExporting" class="not_print">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-init="$parent.TotalAmount= $parent.TotalAmount+ MagazinePurchase.Amount" dir-paginate="MagazinePurchase in MagazinePurchaseList|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize" current-page="currentPage" ng-model="search">
+                                <td ng-if="!IsExporting">{{(currentPage*pageSize - (pageSize-1))+ $index}}</td>
+                                @*<td>{{MagazinePurchase.MagazineName}}</td>*@
+                                <td>{{MagazinePurchase.PublishDate | date:'MMMM'}}</td>
+                                <td>{{MagazinePurchase.PublishDate | date:'dd-MM-yyyy'}}</td>
+                                <td>{{MagazinePurchase.ReceiveDate | date:'dd-MM-yyyy'}}</td>
+                                <td>{{MagazinePurchase.MediumName}}</td>
+                                <td>{{MagazinePurchase.Source}}</td>
+                                <td>{{MagazinePurchase.Amount|number:2}}</td>
+                                <td>{{MagazinePurchase.Remarks}}</td>
+                                <td ng-if="CanEdit && !IsExporting" class="not_print"><button class="btn btn-sm btn-primary" ng-click="editMagazinePurchase(MagazinePurchase)"><i class="icon-pencil3"></i></button></td>
+                                <td ng-if="CanDelete && !IsExporting" class="not_print"><button class="btn btn-sm btn-danger" ng-click="deleteConfirmation(MagazinePurchase.MagazinePurchaseId)"><i class="fa fa-trash"></i></button></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th ng-if="!IsExporting"></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th>Total</th>
+                                <th>{{TotalAmount |number:2}}</th>
+                                <th></th>
+                                <th ng-if="CanEdit && !IsExporting" class="not_print"></th>
+                                <th ng-if="CanDelete && !IsExporting" class="not_print"></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="clearfix">
+                    <dir-pagination-controls max-size="pageSize" boundary-links="true" template-url="/Scripts/DirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+                </div>
+            </fieldset>
+        </div>
+
+        <div id="modal_Student_Charge" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{MagazinePurchase.MagazinePurchaseId > 0 ? 'Update' : 'New' }} Magazine Purchase</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <form name="formMagazinePurchase" novalidate>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label>Select Magazine <span class="text-danger">*</span></label>
+                                    <select ng-model="MagazinePurchase.MagazineId" name="MagazineId" ng-options="option.MagazineId as option.MagazineName for option in MagazineList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                        <option value="">--Selecty Magazine--</option>
+                                    </select>
+                                    <span class="text-danger" ng-if="(formMagazinePurchase.MagazineId.$dirty || IsSubmitted) && formMagazinePurchase.MagazineId.$error.required">Magazine is required!</span>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label>Publish Date <span class="text-danger">*</span></label>
+                                    <input type="date" ng-model="MagazinePurchase.PublishDate" name="PublishDate" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                                    <span class="text-danger" ng-if="(formMagazinePurchase.PublishDate.$dirty || IsSubmitted) && formMagazinePurchase.PublishDate.$error.required">Purchase Date is required!</span>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label>Date Of Receive <span class="text-danger">*</span></label>
+                                    <input type="date" ng-model="MagazinePurchase.ReceiveDate" name="ReceiveDate" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                                    <span class="text-danger" ng-if="(formMagazinePurchase.ReceiveDate.$dirty || IsSubmitted) && formMagazinePurchase.ReceiveDate.$error.required">Date of receive is required!</span>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label>Medium <span class="text-danger">*</span></label>
+                                    <select ng-model="MagazinePurchase.Medium" name="Medium" ng-options="option.Key as option.Value for option in MediumList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                        <option value="">--Selecty Medium--</option>
+                                    </select>
+                                    <span class="text-danger" ng-if="(formMagazinePurchase.Medium.$dirty || IsSubmitted) && formMagazinePurchase.Medium.$error.required">Medium is required!</span>
+                                </div>
+
+                                <div class="col-md-12 form-group">
+                                    <label>Source <span class="text-danger">*</span></label>
+                                    <input type="text" ng-model="MagazinePurchase.Source" name="Source" placeholder="Enter Source" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                                    <span class="text-danger" ng-if="(formMagazinePurchase.Source.$dirty || IsSubmitted) && formMagazinePurchase.Source.$error.required">Source is required!</span>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label>Amount <span class="text-danger">*</span></label>
+                                    <input type="number" ng-model="MagazinePurchase.Amount" name="Amount" placeholder="Enter Amount" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                                    <span class="text-danger" ng-if="(formMagazinePurchase.Amount.$dirty || IsSubmitted) && formMagazinePurchase.Amount.$error.required">Amount is required!</span>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label>Remarks </label>
+                                    <textarea ng-model="MagazinePurchase.Remarks" name="Remarks" placeholder="Enter Remarks" class="form-control"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn bg-primary" ng-click="saveMagazinePurchase()">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal_confirmation" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <h6 class="font-weight-semibold">Are you sure want to delete this record?</h6>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn bg-primary" ng-click="deleteMagazinePurchase()">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

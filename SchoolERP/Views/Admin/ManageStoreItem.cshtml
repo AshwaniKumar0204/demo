@@ -1,0 +1,180 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Manage Item</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Manage Item</h6>
+        </div>
+        <div class="card-body">
+            @*<div class="row">
+            <div class="col-lg-6 form-group">
+                <label class="col-form-label font-weight-bold col-lg-4">Select Unit </label>
+                <div class="col-lg-8">
+                    <select ng-model="UnitId" ng-change="getStoreItemList()" ng-options="option.UnitId as option.UnitName for option in UnitList" class="form-control">
+                        <option value="">--Select Unit--</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-2 form-group">
+            </div>
+        </div>*@
+            @*<fieldset class="mb-3">
+        <legend class="text-uppercase font-size-sm font-weight-bold">Item List</legend>*@
+            <div class="form-group col-sm-6 float-right">
+                Display
+                <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+                <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+            </div>
+            <div class="form-group col-sm-2" ng-if="CanEdit">
+                <button class="btn btn-sm btn-primary" ng-click="newStoreItem()" ng-if="CanEdit"> <i class="fa fa-plus"></i> New Item</button>
+            </div>
+            <div class="form-group col-sm-4 float-right">
+                <select ng-model="ItemTypeId" ng-change="getStoreItemList()" ng-options="option.ItemTypeId as option.ItemTypeName for option in ItemTypeList" class="form-control">
+                    <option value="">--Selecty Item Type--</option>
+                </select>
+            </div>
+            <div class="col-sm-12">
+                <a class="text-link font-weight-bold" ng-click="tablesToExcel(['table_Purchase_list'],['Item List'],'StoreItemList','StoreItemList')">Export To Excel</a>
+
+                @*<a class="text-link font-weight-bold" ng-click="printA4Landscape('div_PurchaseList')">Export to PDF </a>*@
+            </div>
+            <div class="form-group col-sm-12 table-responsive" id="div_PurchaseList">
+                <table class="table table-bordered table-hover" id="table_Purchase_list">
+                    <thead>
+                        <tr>
+                            <th >Sl. No.</th>
+                            <th style="cursor: pointer;" ng-click="sort('ItemName')">Item Name <span class="fa" ng-show="sortKey=='ItemName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('ItemCode')">Item Code <span class="fa" ng-show="sortKey=='ItemName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('UnitName')">Unit <span class="fa" ng-show="sortKey=='UnitName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('ItemTypeName')">Item Type <span class="fa" ng-show="sortKey=='ItemTypeName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('Quantity')">Quantity <span class="fa" ng-show="sortKey=='Quantity'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('StoreItemStatus')">Status <span class="fa" ng-show="sortKey=='StoreItemStatus'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th ng-if="CanEdit && !IsExporting">Edit </th>
+                            <th ng-if="CanDelete && !IsExporting">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr dir-paginate="StoreItem in StoreItemList|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize" current-page="currentPage" ng-model="search">
+                            <td >{{(currentPage*pageSize - (pageSize-1))+ $index}}</td>
+                            <td>{{StoreItem.ItemName}}</td>
+                            <td>{{StoreItem.ItemCode}}</td>
+                            <td>{{StoreItem.UnitName}}</td>
+                            <td>{{StoreItem.ItemTypeName}}</td>
+                            <td>{{StoreItem.Quantity}}</td>
+                            <td><a ng-class="StoreItem.StoreItemStatus == 1 ? 'badge bg-success-400' : 'badge bg-danger'"> {{StoreItemStatusList[StoreItem.StoreItemStatus].Value}}</a></td>
+                            <td ng-if="CanEdit && !IsExporting"><button class="btn btn-sm btn-primary" ng-click="editStoreItem(StoreItem)"><i class="icon-pencil3"></i></button></td>
+                            <td ng-if="CanDelete && !IsExporting"><button class="btn btn-sm btn-danger" ng-click="deleteConfirmation(StoreItem.StoreItemId)"><i class="fa fa-trash"></i></button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="clearfix">
+                <dir-pagination-controls max-size="pageSize" boundary-links="true" template-url="/Scripts/DirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+            </div>
+            @*</fieldset>*@
+        </div>
+
+        <div id="modal_Student_Charge" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{StoreItem.StoreItemId > 0 ? 'Update' : 'New' }} Item</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <form name="formStoreItem" novalidate>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label>Item Name <span class="text-danger">*</span></label>
+                                    <input type="text" ng-model="StoreItem.ItemName" name="ItemName" placeholder="Enter Item Name" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                                    <span class="text-danger" ng-if="(formStoreItem.ItemName.$dirty || IsSubmitted) && formStoreItem.ItemName.$error.required">Item Name is required!</span>
+                                </div>
+                                @*<div class="col-md-12 form-group">
+                                    <label>Item Code <span class="text-danger">*</span></label>
+                                    <input type="text" ng-model="StoreItem.ItemCode" name="ItemCode" placeholder="Enter Item Code" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                                    <span class="text-danger" ng-if="(formStoreItem.ItemCode.$dirty || IsSubmitted) && formStoreItem.ItemCode.$error.required">Item Code is required!</span>
+                                </div>*@
+                                <div class="col-md-12 form-group" ng-show="StoreItem.StoreItemId == null">
+                                    <label>Opening Quantity <span class="text-danger">*</span></label>
+                                    <input type="text" ng-model="StoreItem.Quantity" name="Quantity" placeholder="Enter Quantity" class="form-control" />
+                                    @*<span class="text-danger" ng-if="(formStoreItem.Quantity.$dirty || IsSubmitted) && formStoreItem.Quantity.$error.required">Quantity is required!</span>*@
+                                </div>
+
+                                <div class="col-md-12 form-group">
+                                    <label>Select Unit <span class="text-danger">*</span></label>
+                                    <select ng-model="StoreItem.UnitId" name="UnitId" ng-options="option.UnitId as option.UnitName for option in UnitList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                        <option value="">--Selecty Unit--</option>
+                                    </select>
+                                    <span class="text-danger" ng-if="(formStoreItem.UnitId.$dirty || IsSubmitted) && formStoreItem.UnitId.$error.required">Unit is required!</span>
+                                </div>
+
+                                <div class="col-md-12 form-group">
+                                    <label>Item Type <span class="text-danger">*</span></label>
+                                    <select ng-model="StoreItem.ItemTypeId" name="ItemTypeId" ng-options="option.ItemTypeId as option.ItemTypeName for option in ItemTypeList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                        <option value="">--Selecty Item Type--</option>
+                                    </select>
+                                    <span class="text-danger" ng-if="(formStoreItem.ItemType.$dirty || IsSubmitted) && formStoreItem.ItemType.$error.required">Item Type is required!</span>
+                                </div>
+
+                                <div class="col-md-12 form-group">
+                                    <label>Status <span class="text-danger">*</span></label>
+                                    <select ng-model="StoreItem.StoreItemStatus" name="StoreItemStatus" ng-options="option.Key as option.Value for option in StoreItemStatusList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                                    <span class="text-danger" ng-if="(formStoreItem.StoreItemStatus.$dirty || IsSubmitted) && formStoreItem.StoreItemStatus.$error.required">Status is required!</span>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn bg-primary" ng-click="saveStoreItem()">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal_confirmation" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <h6 class="font-weight-semibold">Are you sure want to delete this record?</h6>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn bg-primary" ng-click="deleteStoreItem()">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

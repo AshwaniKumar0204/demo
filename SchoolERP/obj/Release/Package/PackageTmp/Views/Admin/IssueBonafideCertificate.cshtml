@@ -1,0 +1,150 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Issue Bonafide Certificate</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Issue Bonafide Certificate</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group row" ng-show="!id">
+                <label class="col-form-label col-lg-2">Admission No <span class="text-danger">*</span></label>
+                <div class="col-lg-5">
+                    <angucomplete-alt id="StudentAutoComplete"
+                                      placeholder="Enter Admission No/Student Name"
+                                      pause="100"
+                                      selected-object="afterStudentSelected"
+                                      local-data="AdmissionList"
+                                      search-fields="SearchAdmission"
+                                      title-field="SearchAdmission"
+                                      minlength="1"
+                                      input-class="form-control"
+                                      match-class="highlight"
+                                      input-changed="selectionChanged"
+                                      field-required="true"
+                                      auto-match="true"
+                                      focus-in="focusIn()">
+                    </angucomplete-alt>
+                </div>
+            </div>
+            <fieldset class="mb-3" ng-show="SelectedAdmission.AdmissionId >0">
+                <legend class="text-uppercase font-size-sm font-weight-bold">Student Detail</legend>
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">Student Name :</label>
+                        <label class="col-form-label col-lg-8 col-8" ng-bind="SelectedAdmission.FullName"></label>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">Class :</label>
+                        <label class="col-form-label col-lg-8 col-8" ng-bind="SelectedAdmission.ClassName"></label>
+                    </div>
+                    @*<div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">Section :</label>
+                        <label class="col-form-label col-lg-8 col-8" ng-bind="SelectedAdmission.SectionName"></label>
+                    </div>*@
+                    <div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">Roll No :</label>
+                        <label class="col-form-label col-lg-8 col-8" ng-bind="SelectedAdmission.RollNo"></label>
+                    </div>
+                    @*<div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">House :</label>
+                        <label class="col-form-label col-lg-8 col-8" ng-bind="SelectedAdmission.HouseName"></label>
+                    </div>*@
+                    <div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">Contact No :</label>
+                        <label class="col-form-label col-lg-8 col-8" ng-bind="SelectedAdmission.MobileNo"></label>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="mb-3" ng-show="SelectedAdmission.AdmissionId >0 || id">
+                <legend class="text-uppercase font-size-sm font-weight-bold">Certificate-Form</legend>
+                <form novalidate name="formBonafideCertificate">
+                    <div class="col-md-6 form-group">
+                        <label class="col-sm-4 col-form-label">Certificate No <span class="text-danger">*</span></label>
+                        <div class="col-md-8">
+                            <input type="text" name="CertificateNo" ng-model="BonafideCertificate.CertificateNo" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Certificate No" required autofocus>
+                            <span class="text-danger" ng-if="(formBonafideCertificate.CertificateNo.$dirty || IsSubmitted) && formBonafideCertificate.CertificateNo.$error.required">Certificate No is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label class="col-sm-4 col-form-label">Issue Date <span class="text-danger">*</span></label>
+                        <div class="col-md-8">
+                            <input type="date" name="DateOfIssue" ng-model="BonafideCertificate.DateOfIssue" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Issue Date" required autofocus>
+                            <span class="text-danger" ng-if="(formBonafideCertificate.DateOfIssue.$dirty || IsSubmitted) && formBonafideCertificate.DateOfIssue.$error.required">Issue Date is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label class="col-sm-4 col-form-label">Session <span class="text-danger">*</span></label>
+                        <div class="col-md-8">
+                            <input type="text" disabled="disabled" name="SessionName" ng-model="BonafideCertificate.SessionName" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Session" required autofocus>
+                            <span class="text-danger" ng-if="(formBonafideCertificate.SessionName.$dirty || IsSubmitted) && formBonafideCertificate.SessionName.$error.required">Session is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label class="col-sm-4 col-form-label">Student Name <span class="text-danger">*</span></label>
+                        <div class="col-md-8">
+                            <input type="text" disabled="disabled" name="StudentName" ng-model="BonafideCertificate.StudentName" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Student Name" required autofocus>
+                            <span class="text-danger" ng-if="(formBonafideCertificate.StudentName.$dirty || IsSubmitted) && formBonafideCertificate.StudentName.$error.required">Student Name is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label class="col-sm-4 col-form-label">Father Name <span class="text-danger">*</span></label>
+                        <div class="col-md-8">
+                            <input type="text" name="FatherName" ng-model="BonafideCertificate.FatherName" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Father Name" required autofocus>
+                            <span class="text-danger" ng-if="(formBonafideCertificate.FatherName.$dirty || IsSubmitted) && formBonafideCertificate.FatherName.$error.required">Father Name is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label class="col-sm-4 col-form-label">Class Name <span class="text-danger">*</span></label>
+                        <div class="col-md-8">
+                            <input type="text" disabled="disabled" name="ClassName" ng-model="BonafideCertificate.ClassName" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Class Name" required autofocus>
+                            <span class="text-danger" ng-if="(formBonafideCertificate.ClassName.$dirty || IsSubmitted) && formBonafideCertificate.ClassName.$error.required">Class Name is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label class="col-sm-4 col-form-label">DOB <span class="text-danger">*</span></label>
+                        <div class="col-md-8">
+                            <input type="date" ng-disabled="SelectedAdmission.DateOfBirth != null" name="DateOfBirth" ng-model="BonafideCertificate.DateOfBirth" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Date Of Birth" required autofocus>
+                            <span class="text-danger" ng-if="(formBonafideCertificate.DateOfBirth.$dirty || IsSubmitted) && formBonafideCertificate.DateOfBirth.$error.required">Date Of Birth is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label class="col-sm-4 col-form-label">Issue Purpose <span class="text-danger">*</span></label>
+                        <div class="col-md-8">
+                            <input type="text" name="IssuePurpose" ng-model="BonafideCertificate.IssuePurpose" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Issue Purpose" required autofocus>
+                            <span class="text-danger" ng-if="(formBonafideCertificate.IssuePurpose.$dirty || IsSubmitted) && formBonafideCertificate.IssuePurpose.$error.required">Issue Purpose is required!</span>
+                        </div>
+                    </div>
+                </form>
+            </fieldset>
+        </div>
+        <div class="card-footer text-centre" ng-show="(SelectedAdmission.AdmissionId > 0 || id)">
+            <button class="btn btn-primary" ng-click="saveBonafideCertificate()">{{id?'Update':'Submit'}}</button>
+        </div>
+    </div>
+</div>
+

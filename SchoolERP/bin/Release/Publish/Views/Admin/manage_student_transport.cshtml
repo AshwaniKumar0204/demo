@@ -1,0 +1,222 @@
+﻿
+@{
+    Layout = null;
+}
+<style>
+    hr {
+        margin-top: 0;
+    }
+</style>
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!Index" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Student Transport</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card-body">
+
+        <div class="card col-sm-12">
+            <div class="card-header bg-white header-elements-inline">
+                <h6 class="card-title">Student Transport</h6>
+            </div>
+            <div class="ng-pristine ng-valid col-sm-12">
+                <div class="card-body">
+                    <div class="form-group row">
+                        <label class="col-form-label  col-lg-3">Admission No <span class="text-danger">*</span></label>
+                        <div class="col-lg-5">
+                            <angucomplete-alt id="StudentAutoComplete"
+                                              placeholder="Enter Admission No/Student Name"
+                                              pause="100"
+                                              selected-object="afterStudentSelected"
+                                              local-data="AdmissionList"
+                                              search-fields="SearchAdmission"
+                                              title-field="SearchAdmission"
+                                              minlength="1"
+                                              input-class="form-control"
+                                              match-class="highlight"
+                                              input-changed="selectionChanged"
+                                              field-required="true"
+                                              auto-match="true"
+                                              focus-in="focusIn()">
+                            </angucomplete-alt>
+
+                        </div>
+
+                        @*<div class="col-4">
+                                <div class="col-sm-5 form-group">
+                                    <img src="{{Admission.Student.PhotoUrl != null ?Admission.Student.PhotoUrl :'/Content/Images/user.png'}}" width="200" height="200" />
+                                </div>
+                            </div>*@
+                        <div ng-show="Admission.AdmissionId >0">
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-lg-7 form-group">
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-lg-4 col-4 font-weight-bold">Full Name :</label>
+                                            <label class="col-form-label col-lg-8 col-8" ng-bind="Admission.Student.FullName"></label>
+                                            <label class="col-form-label col-lg-4 col-4 font-weight-bold">Session :</label>
+                                            <label class="col-form-label col-lg-8 col-8" ng-bind="Admission.SessionName"></label>
+                                            <label class="col-form-label col-lg-4 col-4 font-weight-bold">Class :</label>
+                                            <label class="col-form-label col-lg-8 col-8" ng-bind="Admission.ClassName"></label>
+                                            <label class="col-form-label col-lg-4 col-4 font-weight-bold">Section :</label>
+                                            <label class="col-form-label col-lg-8 col-8" ng-bind="Admission.SectionName"></label>
+                                            <label class="col-form-label col-lg-4 col-4 font-weight-bold">Admission No :</label>
+                                            <label class="col-form-label col-lg-8 col-8" ng-bind="Admission.Student.AdmissionNo"></label>
+                                            <label class="col-form-label col-lg-4 col-4 font-weight-bold">Roll No :</label>
+                                            <label class="col-form-label col-lg-8 col-8" ng-bind="Admission.RollNo"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="col-sm-5 form-group">
+                                    <img src="{{Admission.Student.PhotoUrl != null ?Admission.Student.PhotoUrl :'/Content/Images/user.png'}}" width="200" height="200" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" ng-show="Admission.AdmissionId >0">
+            <div class="card-header bg-white header-elements-inline">
+                <h6 class="card-title">Student Transport List</h6>
+            </div>
+            <div class="card-body">
+                <div class="form-group col-sm-6 float-right">
+                    <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+                </div>
+                <div class="form-group col-sm-6" ng-if="CanEdit">
+                    <button type="button" class="btn bg-primary" ng-click="NewTransport();">+ Add New Transport Details</button>
+                </div>
+                <div class="form-group col-sm-12 table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Sl. No.</th>
+                                <th ng-if="CanEdit">Action </th>
+                                <th style="cursor: pointer;" ng-click="sort('TransportGroupTitle')">Group <span class="fa" ng-show="sortKey=='TransportGroupTitle'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('BusTitle')">Vechicle<span class="fa" ng-show="sortKey=='BusTitle'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('PickupPoint')">Pickup Point<span class="fa" ng-show="sortKey=='PickupPoint'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('PickupTime')">Pickup Time <span class="fa" ng-show="sortKey=='PickupTime'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('StartDateString')">Start Date <span class="fa" ng-show="sortKey=='StartDateString'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('EndDateString')">End Date <span class="fa" ng-show="sortKey=='EndDateString'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                @*<th style="cursor: pointer;" ng-click="sort('Status')">Status <span class="fa" ng-show="sortKey=='Status'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>*@
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="per in TransportList|orderBy:sortKey:reverse|filter:search" current-page="currentPage" ng-model="search">
+                                <td>{{$index + 1}}</td>
+                                <td ng-if="CanEdit"><button class="btn btn-sm btn-primary" ng-click="editTransportDetails(per)"><i class="icon-pencil3"></i></button></td>
+                                <td>{{per.TransportGroupTitle}}</td>
+                                <td>{{per.BusTitle}}</td>
+                                <td>{{per.PickupPoint}}</td>
+                                <td>{{per.PickupTime}}</td>
+                                <td>{{per.StartDateString}}</td>
+                                <td>{{per.EndDateString}}</td>
+                                @*<td>
+                                    <span class="badge badge-success" ng-show="{{per.Status}}==1?true:false">Active</span>
+                                    <span ng-show="{{per.Status}}==2?true:false" class="badge badge-danger">Inactive</span>
+                                </td>*@
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="modal_theme_primary" class="modal fade" tabindex="-1" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary">
+                        <h6 class="modal-title">Save Student Transport Details</h6>
+                        <button type="button" class="close" data-dismiss="modal">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <form name="formTransport">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Transport Group<span class="text-danger"> *</span></label>
+                                        <select name="TransportGroupTitle" ng-model="TransportGroupTitle" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus ng-options="b as b.TransportGroupTitle for b in groups" value="{{TransportGroupId}}">
+                                            <option value="">Select Transport Group</option>
+                                        </select>
+                                        <span class="text-danger" ng-if="(formTransport.TransportGroupTitle.$dirty || IsSubmitted) && formTransport.TransportGroupTitle.$error.required">Transport Group is required!</span>
+                                    </div>
+                                   
+                                    <div class="form-group">
+                                        <label>Pickup Point<span class="text-danger"> *</span></label>
+                                        <input type="text" name="PickupPoint" placeholder="Pickup Point" ng-model="PickupPoint" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus>
+                                        <span class="text-danger" ng-if="(formTransport.PickupPoint.$dirty || IsSubmitted) && formTransport.PickupPoint.$error.required">Pickup Point is required!</span>
+                                    </div>
+
+
+                                   
+                                    <div class="form-group">
+                                        <label>Start Date<span class="text-danger"> *</span></label>
+                                        <input type="date" name="StartDate" placeholder="Start Date" ng-model="StartDate" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus>
+                                        <span class="text-danger" ng-if="(formTransport.StartDate.$dirty || IsSubmitted) && formTransport.StartDate.$error.required">Start Date is required!</span>
+                                    </div>
+                                    
+                                    @*<div class="form-group">
+                                        <label>Status<span class="text-danger"> *</span></label>
+                                        <select ng-model="Status" class="form-control" name="Status" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                            <option value="">Select Staus</option>
+                                            <option value="1">Active</option>
+                                            <option value="2">Inactive</option>
+                                        </select>
+                                        <span class="text-danger" ng-if="(formTransport.Status.$dirty || IsSubmitted) && formTransport.Status.$error.required">Status is required!</span>
+                                    </div>*@
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Vehicle (Bus/Auto)<span class="text-danger"> *</span></label>
+                                        <select name="BusTitle" ng-model="BusTitle" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus ng-options="b as b.BusTitle for b in buses" value="{{BusId}}">
+                                            <option value="">Select Transport Bus/Auto</option>
+                                        </select>
+                                        <span class="text-danger" ng-if="(formTransport.BusTitle.$dirty || IsSubmitted) && formTransport.BusTitle.$error.required">Transport Vehicle is required!</span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Pickup Time </label>
+                                        <input type="time" class="form-control" ng-model="PickupTime" placeholder="Pickup Time">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>End Date </label>
+                                        <input type="date" class="form-control" placeholder="End Date" ng-model="EndDate">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn badge-danger"  data-dismiss="modal">Close</button>
+                        <button type="button" class="btn bg-primary" ng-click="SaveTransportDetails();">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

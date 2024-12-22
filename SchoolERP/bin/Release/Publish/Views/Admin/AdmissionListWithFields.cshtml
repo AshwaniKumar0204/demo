@@ -1,0 +1,473 @@
+﻿
+@{
+    Layout = null;
+}
+<style>
+    hr {
+        margin-top: 0;
+    }
+
+    tr, td, th {
+        white-space: nowrap
+    }
+
+    .not_print {
+        display: none !important;
+    }
+</style>
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Student</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">List Student</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="col-form-label font-weight-bold col-lg-4">Course </label>
+                    <div class="col-lg-8">
+                        <select ng-model="ClassId" ng-change="changeClass()" ng-options="option.ClassId as option.ClassName for option in ClassList" class="form-control"></select>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="col-form-label font-weight-bold col-lg-4">Branch</label>
+                    <div class="col-lg-8">
+                        <select ng-model="SectionId" ng-options="option.SectionId as option.SectionName for option in SectionList" class="form-control"></select>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="col-form-label font-weight-bold col-lg-4">Session </label>
+                    <div class="col-lg-8">
+                        <select ng-model="AcademicSessionId" ng-options="option.AcademicSessionId as option.SessionName for option in AcademicSessionList" class="form-control">
+                            <option value="">--All Session--</option>
+                        </select>
+                    </div>
+                </div>
+                @*<div class="col-lg-4 form-group">
+            <label class="col-form-label font-weight-bold col-lg-5">Admission From</label>
+            <div class="col-lg-7">
+                <select ng-model="AdmissionFrom" ng-options="option.Key as option.Value for option in AdmissionFromList" class="form-control">
+                    <option value="">--Select Admission Form--</option>
+                </select>
+            </div>
+        </div>*@
+            </div>
+            <fieldset class="mb-3">
+                <legend class="text-uppercase font-size-sm font-weight-bold">Select Fields</legend>
+                <div class="form-group row">
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-change="checkedAll()" ng-model="IsCheckedAll"> Select All
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsSLNo"> Sl. No.
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsAdmissionNo"> Admission No
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsFullName"> Full Name
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsSessionName"> Session
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsClassName"> Course
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsSectionName"> Branch
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsRollNo"> Roll No
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsDateOfBirth"> Date Of Birth
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsGender"> Gender
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsFatherName"> Father Name
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsMotherName"> Mother Name
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsFatherOccupation"> Father Occupation
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsFatherAadhaarNo"> Father Aadhaar No
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsCategory"> Category
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsBloodGroup"> Blood Group
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsHouseName"> House Name
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsCorrespondenceAddressLine1"> Correspondence Address Line 1
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsCorrespondenceAddressLine2"> Correspondence Address Line 2
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsPermanentCityName"> Permanent City
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsPermanentStateName"> Permanent State
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsPermanentPinCode"> Permanent Pin Code
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsMobileNo"> Mobile No
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsAlternateNo"> Alternate No
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsEmail"> Email
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsAadhaarNo"> Aadhaar No
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsFamilyAnnualIncome"> Family Annual Income
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsAdmissionDate"> Admission Date
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsPreviousSchoolName"> Previous School Name
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsPreviousBoardName"> Previous Board Name
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsLastClassAttend"> Last Class Attend
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsMediumOfInstruction"> Medium Of Instruction
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsPreviousSchoolTCNo"> Previous School TC No
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsPreviousSchoolTCIssueDate"> TC Issue Date
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsHeight"> Height
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsWeight"> Weight
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsJoiningDate"> Joining Date
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="IsRemarks">Remarks
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 form-group text-centre">
+                        <button class="btn btn-sm btn-success" ng-click="getAdmissionList()"><i class="fa fa-search"></i> Search</button>
+                    </div>
+                </div>
+            </fieldset>
+
+            <div class="clearfix"></div>
+            <fieldset class="mb-3" ng-if="AdmissionList.length >0">
+                <legend class="text-uppercase font-size-sm font-weight-bold"></legend>
+                <div class="form-group col-sm-6 float-right">
+                    <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+                </div>
+                <div class="form-group col-sm-6">
+                    Display
+                    <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+                    Records Per Page &nbsp;&nbsp;|&nbsp;&nbsp;
+                </div>
+                <div class="col-sm-12">
+                    <a class="text-link font-weight-bold" ng-click="tablesToExcel(['tbl_admission_list'],['Student List'],'StudentList','StudentList')">Export To Excel</a>&nbsp;&nbsp;&nbsp;|
+                    <a class="text-link font-weight-bold" ng-click="printA4Landscape('div_admission_list','A4','')">Export to PDF </a>
+                </div>
+                <div class="form-group col-sm-12 table-responsive" id="div_admission_list">
+                    <table class="table table-bordered table-hover datatable-highlight" id="tbl_admission_list">
+                        <thead>
+                            <tr>
+                                <th ng-if="IsSLNo">Sl. No.</th>
+                                <th ng-if="IsAdmissionNo" style="cursor: pointer;" ng-click="sort('Student.AdmissionNo')">Admission No <span class="fa" ng-if="sortKey=='Student.AdmissionNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsFullName" style="cursor: pointer;" ng-click="sort('Student.FullName')">Full Name <span class="fa" ng-if="sortKey=='Student.FullName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsSessionName" style="cursor: pointer;" ng-click="sort('SessionName')">Session <span class="fa" ng-if="sortKey=='SessionName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsClassName" style="cursor: pointer;" ng-click="sort('ClassName')">Course <span class="fa" ng-if="sortKey=='ClassName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsSectionName" style="cursor: pointer;" ng-click="sort('SectionName')">Section <span class="fa" ng-if="sortKey=='SectionName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsRollNo" style="cursor: pointer;" ng-click="sort('RollNo')">Roll <span class="fa" ng-if="sortKey=='RollNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsDateOfBirth" style="cursor: pointer;" ng-click="sort('Student.DateOfBirth')">Date Of Birth <span class="fa" ng-if="sortKey=='Student.DateOfBirth'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsGender" style="cursor: pointer;" ng-click="sort('Student.Gender')">Gender <span class="fa" ng-if="sortKey=='Student.Gender'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsFatherName" style="cursor: pointer;" ng-click="sort('Student.FatherName')">Father Name <span class="fa" ng-if="sortKey=='Student.FatherName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsMotherName" style="cursor: pointer;" ng-click="sort('Student.MotherName')">Mother Name <span class="fa" ng-if="sortKey=='Student. MotherName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsFatherOccupation" style="cursor: pointer;" ng-click="sort('Student.FatherOccupation')">Father Occupation <span class="fa" ng-if="sortKey=='Student.FatherOccupation'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsFatherAadhaarNo" style="cursor: pointer;" ng-click="sort('Student.FatherAadhaarNo')">Father Aadhaar No <span class="fa" ng-if="sortKey=='Student.FatherOccupation'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsCategory" style="cursor: pointer;" ng-click="sort('Student.Category')">Category <span class="fa" ng-if="sortKey=='Student.Category'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsBloodGroup" style="cursor: pointer;" ng-click="sort('Student.BloodGroup')">Blood Group <span class="fa" ng-if="sortKey=='Student.BloodGroup'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsHouseName" style="cursor: pointer;" ng-click="sort('Student.HouseName')">House <span class="fa" ng-if="sortKey=='Student.HouseName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsCorrespondenceAddressLine1" style="cursor: pointer;" ng-click="sort('Student.CorrespondenceAddressLine1')">Correspondence Address Line 1 <span class="fa" ng-if="sortKey=='Student.CorrespondenceAddressLine1'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsCorrespondenceAddressLine2" style="cursor: pointer;" ng-click="sort('Student.CorrespondenceAddressLine2')">Correspondence Address Line 2 <span class="fa" ng-if="sortKey=='Student.CorrespondenceAddressLine2'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsCorrespondenceCityName" style="cursor: pointer;" ng-click="sort('Student.CorrespondenceCityName')">City <span class="fa" ng-if="sortKey=='Student.CorrespondenceCityName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsCorrespondenceStateName" style="cursor: pointer;" ng-click="sort('Student.CorrespondenceStateName')">State <span class="fa" ng-if="sortKey=='Student.CorrespondenceStateName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsCorrespondecePinCode" style="cursor: pointer;" ng-click="sort('Student.CorrespondecePinCode')">Correspondence Pin Code <span class="fa" ng-if="sortKey=='Student.CorrespondecePinCode'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsPermanentAddressLine1" style="cursor: pointer;" ng-click="sort('Student.PermanentAddressLine1')">Permanent Address Line 1 <span class="fa" ng-if="sortKey=='Student.PermanentAddressLine1'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsPermanentAddressLine2" style="cursor: pointer;" ng-click="sort('Student.PermanentAddressLine2')">Permanent Address Line 2 <span class="fa" ng-if="sortKey=='Student.PermanentAddressLine2'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsPermanentCityName" style="cursor: pointer;" ng-click="sort('Student.PermanentCityName')">City <span class="fa" ng-if="sortKey=='Student.PermanentCityName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsPermanentStateName" style="cursor: pointer;" ng-click="sort('Student.PermanentStateName')">State <span class="fa" ng-if="sortKey=='Student.PermanentStateName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsPermanentPinCode" style="cursor: pointer;" ng-click="sort('Student.PermanentPinCode')">Permanent Pin Code <span class="fa" ng-if="sortKey=='Student.PermanentPinCode'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsMobileNo" style="cursor: pointer;" ng-click="sort('Student.MobileNo')">Mobile No <span class="fa" ng-if="sortKey=='Student.MobileNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsAlternateNo" style="cursor: pointer;" ng-click="sort('Student.AlternateNo')">Alternate No <span class="fa" ng-if="sortKey=='Student.AlternateNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsEmail" style="cursor: pointer;" ng-click="sort('Student.Email')">Email <span class="fa" ng-if="sortKey=='Student.Email'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsAadhaarNo" style="cursor: pointer;" ng-click="sort('Student.AadhaarNo')">Aadhaar No <span class="fa" ng-if="sortKey=='Student.AadhaarNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsFamilyAnnualIncome" style="cursor: pointer;" ng-click="sort('Student.FamilyAnnualIncome')">Family Annual Income <span class="fa" ng-if="sortKey=='Student.FamilyAnnualIncome'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsAdmissionDate" style="cursor: pointer;" ng-click="sort('AdmissionDate')">Admission Date <span class="fa" ng-if="sortKey=='AdmissionDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsPreviousSchoolName" style="cursor: pointer;" ng-click="sort('Student.PreviousSchoolName')">Previous School Name <span class="fa" ng-if="sortKey=='Student.PreviousSchoolName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsPreviousBoardName" style="cursor: pointer;" ng-click="sort('Student.PreviousBoardName')">Previous Board Name <span class="fa" ng-if="sortKey=='Student.PreviousBoardName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsLastClassAttend" style="cursor: pointer;" ng-click="sort('Student.LastClassAttend')">Last Class Attend <span class="fa" ng-if="sortKey=='Student.LastClassAttend'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsMediumOfInstruction" style="cursor: pointer;" ng-click="sort('Student.MediumOfInstruction')">Medium Of Instruction <span class="fa" ng-if="sortKey=='Student.MediumOfInstruction'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsPreviousSchoolTCNo" style="cursor: pointer;" ng-click="sort('Student.PreviousSchoolTCNo')">Previous School TC No <span class="fa" ng-if="sortKey=='Student.PreviousSchoolTCNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsPreviousSchoolTCIssueDate" style="cursor: pointer;" ng-click="sort('Student.PreviousSchoolTCIssueDate')">TC Issue Date <span class="fa" ng-if="sortKey=='Student.PreviousSchoolTCIssueDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsHeight" style="cursor: pointer;" ng-click="sort('Student.Height')">Height <span class="fa" ng-if="sortKey=='Student.Height'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsWeight" style="cursor: pointer;" ng-click="sort('Student.Weight')">Weight <span class="fa" ng-if="sortKey=='Student.Weight'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsJoiningDate" style="cursor: pointer;" ng-click="sort('Student.JoiningDate')">Join Date <span class="fa" ng-if="sortKey=='Student.JoiningDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="IsRemarks" style="cursor: pointer;" ng-click="sort('Student.Remarks')">Remarks <span class="fa" ng-if="sortKey=='Student.Remarks'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr dir-paginate="admission in AdmissionList|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize" current-page="currentPage" ng-model="search">
+                                <td ng-if="IsSLNo">{{(currentPage*pageSize - (pageSize-1))+ $index}}</td>
+                                <td ng-if="IsAdmissionNo">{{admission.Student.AdmissionNo}}</td>
+                                <td ng-if="IsFullName">{{admission.Student.FullName}}</td>
+                                <td ng-if="IsSessionName">{{admission.SessionName}}</td>
+                                <td ng-if="IsClassName">{{admission.ClassName}}</td>
+                                <td ng-if="IsSectionName">{{admission.SectionName}}</td>
+                                <td ng-if="IsRollNo">{{admission.RollNo}}</td>
+                                <td ng-if="IsDateOfBirth">{{admission.Student.DateOfBirth | date:'dd MMM, yyyy'}}</td>
+                                <td ng-if="IsGender">{{GenderList[admission.Student.Gender].Value}}</td>
+                                <td ng-if="IsFatherName">{{admission.Student.FatherName}}</td>
+                                <td ng-if="IsMotherName">{{admission.Student.MotherName}}</td>
+                                <td ng-if="IsFatherOccupation">{{admission.Student.FatherOccupation}}</td>
+                                <td ng-if="IsFatherAadhaarNo">{{admission.Student.FatherAadhaarNo}}</td>
+                                <td ng-if="IsCategory">{{CategoryList[admission.Student.Category].Value}}</td>
+                                <td ng-if="IsBloodGroup">
+                                    <span ng-if="admission.Student.BloodGroup != 0">{{BloodGroupList[admission.Student.BloodGroup].Value}}</span>
+                                    <span ng-if="admission.Student.BloodGroup == 0">N/A</span>
+                                </td>
+                                <td ng-if="IsHouseName">{{admission.Student.HouseName}}</td>
+                                <td ng-if="IsCorrespondenceAddressLine1">{{admission.Student.CorrespondenceAddressLine1}}</td>
+                                <td ng-if="IsCorrespondenceAddressLine2">{{admission.Student.CorrespondenceAddressLine2}}</td>
+                                <td ng-if="IsCorrespondenceCityName">{{admission.Student.CorrespondenceCityName}}</td>
+                                <td ng-if="IsCorrespondenceStateName">{{admission.Student.CorrespondenceStateName}}</td>
+                                <td ng-if="IsCorrespondecePinCode">{{admission.Student.CorrespondecePinCode}}</td>
+                                <td ng-if="IsPermanentAddressLine1">{{admission.Student.PermanentAddressLine1}}</td>
+                                <td ng-if="IsPermanentAddressLine2">{{admission.Student.PermanentAddressLine2}}</td>
+                                <td ng-if="IsPermanentCityName">{{admission.Student.PermanentCityName}}</td>
+                                <td ng-if="IsPermanentStateName">{{admission.Student.PermanentStateName}}</td>
+                                <td ng-if="IsPermanentPinCode">{{admission.Student.PermanentPinCode}}</td>
+                                <td ng-if="IsMobileNo">{{admission.Student.MobileNo}}</td>
+                                <td ng-if="IsAlternateNo">{{admission.Student.AlternateNo}}</td>
+                                <td ng-if="IsEmail">{{admission.Student.Email}}</td>
+                                <td ng-if="IsAadhaarNo">{{admission.Student.AadhaarNo}}</td>
+                                <td ng-if="IsFamilyAnnualIncome">{{admission.Student.FamilyAnnualIncome | number:2}}</td>
+                                <td ng-if="IsAdmissionDate">{{admission.AdmissionDate | date:'dd MMM, yyyy'}}</td>
+                                <td ng-if="IsPreviousSchoolName">{{admission.Student.PreviousSchoolName}}</td>
+                                <td ng-if="IsPreviousBoardName">{{admission.Student.PreviousBoardName}}</td>
+                                <td ng-if="IsLastClassAttend">{{admission.Student.LastClassAttend}}</td>
+                                <td ng-if="IsMediumOfInstruction">{{admission.Student.MediumOfInstruction}}</td>
+                                <td ng-if="IsPreviousSchoolTCNo">{{admission.Student.PreviousSchoolTCNo}}</td>
+                                <td ng-if="IsPreviousSchoolTCIssueDate">{{admission.Student.PreviousSchoolTCIssueDate | date:'dd MMM, yyyy'}}</td>
+                                <td ng-if="IsHeight">{{admission.Student.Height}}</td>
+                                <td ng-if="IsWeight">{{admission.Student.Weight}}</td>
+                                <td ng-if="IsJoiningDate">{{admission.Student.JoiningDate | date:'dd-MM-yyyy'}}</td>
+                                <td ng-if="IsRemarks">{{admission.Student.Remarks}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="clearfix">
+                    <dir-pagination-controls max-size="pageSize" boundary-links="true" template-url="/Scripts/DirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+                </div>
+            </fieldset>
+
+        </div>
+    </div>
+</div>
+

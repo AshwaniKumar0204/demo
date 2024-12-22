@@ -1,0 +1,91 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Upload Student Photo</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Upload Student Photo</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group row">
+                <label class="col-form-label  col-lg-2">Admission No <span class="text-danger">*</span></label>
+                <div class="col-lg-5">
+                    <angucomplete-alt id="StudentAutoComplete"
+                                      placeholder="Enter Admission No/Student Name"
+                                      pause="100"
+                                      selected-object="afterStudentSelected"
+                                      local-data="AdmissionList"
+                                      search-fields="SearchAdmission"
+                                      title-field="SearchAdmission"
+                                      minlength="1"
+                                      input-class="form-control"
+                                      match-class="highlight"
+                                      input-changed="selectionChanged"
+                                      field-required="true"
+                                      auto-match="true"
+                                      focus-in="focusIn()">
+                    </angucomplete-alt>
+                </div>
+            </div>
+
+
+            <fieldset class="mb-3" ng-show="Admission.AdmissionId >0">
+                <legend class="text-uppercase font-size-sm font-weight-bold">Student Detail</legend>
+                <div class="row">
+                    <div class="col-sm-5 form-group">
+                        <img src="{{Admission.Student.PhotoUrl != null ?Admission.Student.PhotoUrl :'/Content/Images/user.png'}}" width="200" height="200" />
+                    </div>
+                    <div class="col-lg-7 form-group">
+                        <div class="form-group row">
+                            <label class="col-form-label col-lg-4 col-4 font-weight-bold">Full Name :</label>
+                            <label class="col-form-label col-lg-8 col-8" ng-bind="Admission.Student.FullName"></label>
+                            <label class="col-form-label col-lg-4 col-4 font-weight-bold">Session :</label>
+                            <label class="col-form-label col-lg-8 col-8" ng-bind="Admission.SessionName"></label>
+                            <label class="col-form-label col-lg-4 col-4 font-weight-bold">Class :</label>
+                            <label class="col-form-label col-lg-8 col-8" ng-bind="Admission.ClassName"></label>
+                            <label class="col-form-label col-lg-4 col-4 font-weight-bold">Section :</label>
+                            <label class="col-form-label col-lg-8 col-8" ng-bind="Admission.SectionName"></label>
+                            <label class="col-form-label col-lg-4 col-4 font-weight-bold">Registration No :</label>
+                            <label class="col-form-label col-lg-8 col-8" ng-bind="Admission.Student.AdmissionNo"></label>
+                            <label class="col-form-label col-lg-4 col-4 font-weight-bold">Roll No :</label>
+                            <label class="col-form-label col-lg-8 col-8" ng-bind="Admission.RollNo"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row" ng-show="CanEdit">
+                    <form novalidate name="formStudent">
+                        <div class="col-lg-7">
+                            <input type="file" class="form-control" id="studentPhoto" onchange="angular.element(this).scope().checkStudentPhoto(this)" accept=".jpg,.jpeg">
+                        </div>
+                        <div class="col-lg-2">
+                            <button class="btn btn-sm btn-primary" ng-click="uploadStudentPhoto()">Upload</button>
+                        </div>
+                    </form>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>
+

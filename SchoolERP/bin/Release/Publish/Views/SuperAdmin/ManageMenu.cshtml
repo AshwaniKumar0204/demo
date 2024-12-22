@@ -1,0 +1,206 @@
+﻿@{
+    Layout = null;
+}
+<style>
+    ul.tree, ul.tree ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+        ul.tree ul {
+            margin-left: 10px;
+            margin-top: 5px;
+            padding-left: 30px;
+        }
+
+        ul.tree li {
+            margin: 0;
+            padding: 5px 20px;
+            line-height: 20px;
+            font-size: 14px;
+            border-left: 1px solid rgb(100,100,100);
+        }
+
+            ul.tree li:last-child {
+                border-left: none;
+            }
+
+            ul.tree li:before {
+                position: relative;
+                top: -0.3em;
+                height: 1em;
+                width: 20px;
+                color: white;
+                border-bottom: 1px solid rgb(100,100,100);
+                content: "";
+                display: inline-block;
+                left: -20px;
+            }
+
+            ul.tree li:last-child:before {
+                border-left: 1px solid rgb(100,100,100);
+            }
+</style>
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Manage Menu</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Manage Menu</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group col-sm-6">
+                <input type="text" class="input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+            </div>
+            <div class="form-group col-sm-12">
+                <ul class="tree">
+                    <li ng-repeat="Menu in MenuList|filter:search">
+                        <span>
+                            {{Menu.MenuTitle}}
+                            <span>
+                                <a href="javascript:void(0);" ng-if="$index != 0" ng-click="menuUp(Menu.MenuId)"><i class="fa fa-arrow-up"></i></a>
+                                <a href="javascript:void(0);" ng-if="($index + 1) != MenuList.length" ng-click="menuDown(Menu.MenuId)"><i class="fa fa-arrow-down"></i></a>
+                                <a href="javascript:void(0);" ng-click="editMenu(Menu)"><i class="icon-pencil3"></i></a>
+                                <a href="javascript:void(0);" class="text-danger" ng-click="deleteConfirmation(Menu.MenuId)"><i class="fa fa-trash"></i></a>
+                            </span>
+                        </span>
+                        <ul>
+                            <li>
+                                <a class="text-link" ng-click="newChildMenu(Menu)">Add a Child Menu</a>
+                            </li>
+                            <li ng-repeat="MenuTwo in Menu.MenuList">
+                                {{ MenuTwo.MenuTitle}}
+                                <span>
+                                    <a href="javascript:void(0);" ng-if="$index != 0" ng-click="menuUp(MenuTwo.MenuId)"><i class="fa fa-arrow-up"></i></a>
+                                    <a href="javascript:void(0);" ng-if="($index + 1) != Menu.MenuList.length" ng-click="menuDown(MenuTwo.MenuId)"><i class="fa fa-arrow-down"></i></a>
+                                    <a href="javascript:void(0);" ng-click="editMenu(MenuTwo)"><i class="icon-pencil3"></i></a>
+                                    <a href="javascript:void(0);" class="text-danger" ng-click="deleteConfirmation(MenuTwo.MenuId)"><i class="fa fa-trash"></i></a>
+                                </span>
+                                <ul>
+                                    <li ng-repeat="MenuThree in MenuTwo.MenuList">
+                                        {{ MenuThree.MenuTitle}}
+                                        <span>
+                                            <a href="javascript:void(0);" ng-if="$index != 0" ng-click="menuUp(MenuThree.MenuId)"><i class="fa fa-arrow-up"></i></a>
+                                            <a href="javascript:void(0);" ng-if="($index + 1) != MenuTwo.MenuList.length" ng-click="menuDown(MenuThree.MenuId)"><i class="fa fa-arrow-down"></i></a>
+                                            <a href="javascript:void(0);" ng-click="editMenu(MenuThree)"><i class="icon-pencil3"></i></a>
+                                            <a href="javascript:void(0);" class="text-danger" ng-click="deleteConfirmation(MenuThree.MenuId)"><i class="fa fa-trash"></i></a>
+                                        </span>
+                                    </li>
+                                    <li class="last" ng-if="MenuTwo.TaskMasterId == null">
+                                        <a class="text-link" ng-click="newChildMenu(MenuTwo)">Add a Child Menu</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="last">
+                                <a class="text-link" ng-click="newChildMenu(Menu)">Add a Child Menu</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="last">
+                        <a class="text-link" ng-click="newMenu()">Add New Menu</a>
+                    </li>
+                </ul>
+                @*<div class="row" ng-repeat="Menu in MenuList">
+                <div class="col-12">
+                    <label class="col-form-label">
+                        {{Menu.MenuTitle}}
+                        <span style="padding-left:100px">
+                            <button class="btn btn-sm btn-primary" ng-click="editMenu(Menu)"><i class="icon-pencil3"></i></button>
+                            <button class="btn btn-sm btn-danger" ng-click="deleteConfirmation(Menu.MenuId)"><i class="fa fa-trash"></i></button>
+                        </span>
+                    </label>
+                </div>
+                <div class="col-12" style="padding:0 50px" ng-repeat="MenuTwo in Menu.MenuList">
+                    <label class="col-form-label">
+                        {{ MenuTwo.MenuTitle}}
+                        <span style="padding-left:100px">
+                            <button class="btn btn-sm btn-primary" ng-click="editMenu(MenuTwo)"><i class="icon-pencil3"></i></button>
+                            <button class="btn btn-sm btn-danger" ng-click="deleteConfirmation(MenuTwo.MenuId)"><i class="fa fa-trash"></i></button>
+                        </span>
+                    </label>
+                </div>
+            </div>*@
+            </div>
+        </div>
+    </div>
+
+    <div id="modal_Student_Charge" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{Menu.MenuId > 0 ? 'Update' : 'New' }} Menu</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <form name="formMenu" novalidate>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <label>Menu Title <span class="text-danger">*</span></label>
+                                <input type="text" name="MenuTitle" ng-model="Menu.MenuTitle" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Menu Title" required autofocus>
+                                <span class="text-danger" ng-if="(formMenu.MenuTitle.$dirty || IsSubmitted) && formMenu.MenuTitle.$error.required">Menu Title is required!</span>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label>Icon Class</label>
+                                <input type="text" name="IconClass" ng-model="Menu.IconClass" class="form-control required" placeholder="Enter Icon Class">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label>Select Task</label>
+                                <select ng-model="Menu.TaskMasterId" name="TaskMasterId" ng-options="option.TaskMasterId as option.ActionName for option in TaskMasterList" class="form-control"></select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer text-centre">
+                        <div class="col-sm-12">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn bg-primary" ng-click="saveMenu()">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal_confirmation" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmation</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <h6 class="font-weight-semibold">Are you sure want to delete this record?</h6>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn bg-primary" ng-click="deleteMenu()">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

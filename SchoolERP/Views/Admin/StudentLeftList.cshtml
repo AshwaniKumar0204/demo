@@ -1,0 +1,108 @@
+﻿
+@{
+    Layout = null;
+}
+<style>
+    hr {
+        margin-top: 0;
+    }
+
+    tr, td, th {
+        white-space: nowrap
+    }
+</style>
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <a href="#!" class="breadcrumb-item">Student</a>
+                <span class="breadcrumb-item active">List Left Student</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">List Left Student</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group col-sm-6 float-right">
+                <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+            </div>
+            <div class="form-group col-sm-6">
+                Display
+                <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+                Records Per Page
+            </div>
+            <div class="form-group col-sm-12 table-responsive">
+                <table class="table table-bordered table-hover datatable-highlight">
+                    <thead>
+                        <tr class="panel-dark-blue">
+                            <th>Sl. No.</th>
+                            <th style="cursor: pointer;" ng-click="sort('AdmissionNo')">Admission No <span class="fa" ng-show="sortKey=='AdmissionNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('FullName')">Full Name <span class="fa" ng-show="sortKey=='FullName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('ClassName')">Class Name <span class="fa" ng-show="sortKey=='ClassName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('MobileNo')">Mobile No <span class="fa" ng-show="sortKey=='MobileNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('Reason')">Reason <span class="fa" ng-show="sortKey=='Reason'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('DuesAmount')">DuesAmount <span class="fa" ng-show="sortKey=='DuesAmount'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('LeftDate')">Left Date <span class="fa" ng-show="sortKey=='LeftDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('LeftStudentType')">Left Type <span class="fa" ng-show="sortKey=='LeftStudentType'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th ng-if="CanEdit">ReJoin</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr dir-paginate="admission in LeftStudentList|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize" current-page="currentPage" ng-model="search">
+                            <td>{{(currentPage*pageSize - (pageSize-1))+ $index}}</td>
+                            <td>{{admission.AdmissionNo}}</td>
+                            <td>{{admission.FullName}}</td>
+                            <td>{{admission.ClassName}}</td>
+                            <td>{{admission.MobileNo}}</td>
+                            <td>{{admission.Reason}}</td>
+                            <td>{{admission.DuesAmount | number:2}}</td>
+                            <td>{{admission.LeftDate | date:'dd-MM-yyyy'}}</td>
+                            <td>{{LeftStudentTypeList[admission.LeftStudentType].Value}}</td>
+                            <td ng-if="CanEdit"><button class="btn btn-icon btn-success" ng-click="rejoinLeftStudentConfirmation(admission.LeftStudentId)"><i class="icon-redo2"></i></button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="clearfix">
+                <dir-pagination-controls max-size="pageSize" boundary-links="true" template-url="/Scripts/DirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal_confirmation" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmation</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <h6 class="font-weight-semibold">Are you sure want to rejoin seleted student?</h6>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn bg-primary" ng-click="rejoinLeftStudent()">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

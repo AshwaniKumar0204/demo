@@ -1,0 +1,223 @@
+﻿
+@{
+    Layout = null;
+}
+<style>
+    hr {
+        margin-top: 0;
+    }
+
+    tr, td, th {
+        white-space: nowrap
+    }
+
+    .redAmount {
+        color: #ce0505;
+        font-weight: bold;
+        text-align: right;
+    }
+
+    .redText {
+        color: #ce0505;
+        font-weight: bold;
+    }
+
+    .normalAmount {
+        text-align: right;
+    }
+
+    .greenAmount {
+        color: #067401;
+        font-weight: bold;
+        text-align: right;
+    }
+
+    .greenText {
+        color: #067401;
+        font-weight: bold;
+    }
+</style>
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Settlement Details</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Settlement Details</h6>
+        </div>
+        <div class="card-body">
+            <form name="formSD" novalidate>
+                <div class="form-group row">
+                    <div class="col-lg-4">
+                        <label class="col-form-label font-weight-bold ">From Date <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" ng-model="FromDate" name="FromDate" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                        <span class="text-danger" ng-if="(formSD.FromDate.$dirty || IsSubmitted) && formSD.FromDate.$error.required">From Date is required!</span>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="col-form-label font-weight-bold">To Date <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" ng-model="ToDate" name="ToDate" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                        <span class="text-danger" ng-if="(formSD.ToDate.$dirty || IsSubmitted) && formSD.ToDate.$error.required">To Date is required!</span>
+                    </div>
+                </div>
+            </form>
+
+            <div class="form-group col-sm-12 text-centre">
+                <button class="btn btn-primary" ng-click="getSettlementDetails()"><i class="fa fa-search"></i> Search</button>
+                @* <button class="btn btn-success" ng-if="DailyCollectionReport.TableItemList.length > 0" onclick="tableToExcel('tbl_daily_collection_report','daily_collection_report')"><i class="fa fa-file"></i> Export to Excel</button>*@
+                <button class="btn btn-success" ng-if="SettlementDetails.length > 0" ng-click="tablesToExcel(['tbl_daily_collection_report'], ['daily-collection-report'], 'SettlementDetails','78457')" @*onclick="tablesToExcel(['tbl_daily_collection_report'], ['daily-collection-report'], 'DailyCollectionReport','78457')"*@><i class="fa fa-file"></i> Export to Excel</button>
+            </div>
+            <div ng-if="SettlementDetails.length > 0">
+                <div class="form-group col-sm-6 float-right">
+                    <input type="text" class="float-right form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+                </div>
+                <div class="form-group col-sm-6">
+                    Display
+                    <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+                    Records Per Page
+                </div>
+                <div class="form-group col-sm-12 table-responsive">
+                    <table class="table table-xm table-bordered table-hover" id="tbl_daily_collection_report">
+                        <thead>
+                            <tr>
+                                <th ng-if="!IsExporting">Sl. No.</th>
+                                <th style="cursor: pointer;" ng-click="sort('UtrNumber')">UTR Number <span class="fa" ng-show="sortKey=='UtrNumber'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('TotalTransaction')">Count<span class="fa" ng-show="sortKey=='TotalTransaction'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Dated')">Dated  <span class="fa" ng-show="sortKey=='Dated'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer; text-align: right" ng-click="sort('CapturedAmount')">Captured Amount  <span class="fa" ng-show="sortKey=='CapturedAmount'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                @*<th style="cursor: pointer; text-align: right" ng-click="sort('ServiceFee')">ServiceFee  <span class="fa" ng-show="sortKey=='ServiceFee'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer; text-align: right" ng-click="sort('ServiceFeeGST')">ServiceFeeGST  <span class="fa" ng-show="sortKey=='ServiceFeeGST'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>*@
+                                <th style="cursor: pointer; text-align: right" ng-click="sort('RefundAmount')">Refund  <span class="fa" ng-show="sortKey=='RefundAmount'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer; text-align: right" ng-click="sort('Chargeback')">Chargeback  <span class="fa" ng-show="sortKey=='Chargeback'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer; text-align: right" ng-click="sort('ChargebackReturned')">Chargeback Returned  <span class="fa" ng-show="sortKey=='ChargebackReturned'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer; text-align: right" ng-click="sort('SettlementAmount')">SettlementAmount  <span class="fa" ng-show="sortKey=='SettlementAmount'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="!IsExporting">View</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr dir-paginate="settlement in SettlementDetails|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize" current-page="currentPage" ng-model="search">
+                                <td ng-if="!IsExporting">{{(currentPage*pageSize - (pageSize-1))+ $index}}</td>
+                                <td>{{settlement.UtrNumber}}</td>
+                                <td>{{settlement.TotalTransaction}}</td>
+                                <td>{{settlement.Dated | date:'dd/MM/yyyy'}}</td>
+                                <td class="normalAmount">{{settlement.CapturedAmount|number : 2}}</td>
+                                @*<td>{{settlement.ServiceFee|number : 2}}</td>
+                                    <td>{{settlement.ServiceFeeGST|number : 2}}</td>*@
+                                <td ng-class="settlement.RefundAmount<0?'redAmount':'normalAmount'">{{settlement.RefundAmount|number : 2}}</td>
+                                <td ng-class="settlement.Chargeback<0?'redAmount':'normalAmount'">{{settlement.Chargeback|number : 2}}</td>
+                                <td ng-class="settlement.ChargebackReturned<0?'redAmount':'greenAmount'">{{settlement.ChargebackReturned|number : 2}}</td>
+                                <td ng-class="settlement.SettlementAmount<0?'redAmount':'normalAmount'">{{settlement.SettlementAmount|number : 2}}</td>
+                                <th ng-if="!IsExporting" class="ng-scope"><button class="btn btn-sm btn-primary" ng-click="getTransactionList(settlement.SettlementId)"><i class="fa fa-eye"></i></button></th>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th ng-if="!IsExporting"></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th class="normalAmount">{{TotalCapturedAmount|number : 2}}</th>
+                                <th class="redAmount">{{TotalRefundAmount|number : 2}}</th>
+                                <th class="normalAmount">{{TotalChargeback|number : 2}}</th>
+                                <th class="greenAmount">{{TotalChargebackReturned|number : 2}}</th>
+                                <th class="normalAmount">{{TotalSettlementAmount|number : 2}}</th>
+                                <th ng-if="!IsExporting"></th>
+                            </tr>
+
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="clearfix">
+                    <dir-pagination-controls max-size="pageSize" boundary-links="true" template-url="/Scripts/DirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div id="modal_Transaction_List" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Transaction List</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <form name="formLeave" novalidate>
+                        <div class="modal-body">
+                            <div>
+                                <fieldset>
+                                    <div class="form-group col-sm-12 table-responsive">
+                                        <table class="table table-bordered table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Sl. No.</th>
+                                                    <th style="cursor: pointer;" ng-click="sort('StudentStudentName')">Student Name<span class="fa" ng-show="sortKey=='StudentStudentName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                                    <th style="cursor: pointer;" ng-click="sort('ReceiptNo')">ReceiptNo<span class="fa" ng-show="sortKey=='ReceiptNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                                    <th style="cursor: pointer;" ng-click="sort('PayUId')">PayU Id<span class="fa" ng-show="sortKey=='PayUId'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                                    <th style="cursor: pointer;" ng-click="sort('MerchantTransactionId')">Merchant Transaction Id <span class="fa" ng-show="sortKey=='MerchantTransactionId'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                                    <th style="cursor: pointer;" ng-click="sort('TransactionDate')">Transaction Date <span class="fa" ng-show="sortKey=='TransactionDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                                    <th style="cursor: pointer;" ng-click="sort('Mode')">Mode <span class="fa" ng-show="sortKey=='Mode'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                                    <th style="cursor: pointer;" ng-click="sort('RequestAction')">Action <span class="fa" ng-show="sortKey=='RequestAction'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                                    @*<th style="cursor: pointer;" ng-click="sort('Amount')">Amount <span class="fa" ng-show="sortKey=='Amount'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                                        <th style="cursor: pointer;" ng-click="sort('MerchantServiceFee')">Merchant Service Fee <span class="fa" ng-show="sortKey=='MerchantServiceFee'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                                        <th style="cursor: pointer;" ng-click="sort('MerchantServiceTax')">Merchant Service Tax <span class="fa" ng-show="sortKey=='MerchantServiceTax'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>*@
+                                                    <th style="cursor: pointer;" ng-click="sort('MerchantNetAmount')">MerchantNetAmount <span class="fa" ng-show="sortKey=='MerchantNetAmount'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="settlementDetails in TransactionList">
+                                                    <td>{{$index + 1}}</td>
+                                                    <td> {{settlementDetails.StudentStudentName}}{{settlementDetails.RegistrationStudentName}} </td>
+                                                    <td> {{settlementDetails.ReceiptNo}} </td>
+                                                    <td> {{settlementDetails.PayUId}} </td>
+                                                    <td> {{settlementDetails.MerchantTransactionId}} </td>
+                                                    <td> {{settlementDetails.TransactionDate | date:'dd/MM/yyyy'}} </td>
+                                                    <td> {{settlementDetails.Mode}} </td>
+                                                    <td ng-class="settlementDetails.MerchantNetAmount<0?'redText':(settlementDetails.RequestAction=='chargebackreversal'?'greenText':'')"> {{settlementDetails.RequestAction}} </td>
+                                                    @*          <td> {{settlementDetails.Amount}} </td>
+                                                        <td> {{settlementDetails.MerchantServiceTax}} </td>
+                                                        <td> {{settlementDetails.MerchantServiceFee}} </td>*@
+                                                    <td ng-class="settlementDetails.MerchantNetAmount<0?'redAmount':'normalAmount'" style="text-align:right;"> {{settlementDetails.MerchantNetAmount|number : 2}}</td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th colspan="8"></th>
+                                                    <th style="text-align:right; font-weight:bold">
+                                                        {{Total|number : 2}}
+                                                    </th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </fieldset>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

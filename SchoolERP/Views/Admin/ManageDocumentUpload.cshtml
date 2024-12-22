@@ -1,0 +1,250 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ManageDocumentUpload</title>
+</head>
+<body>
+  
+</body>
+</html>
+<style>
+    th, td {
+        white-space: nowrap;
+    }
+</style>
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Document Upload List</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Manage Student Document Upload</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group col-sm-6 float-right">
+                <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+            </div>
+            <div class="form-group col-sm-6" ng-if="CanEdit">
+                <button class="btn btn-sm btn-primary" ng-click="newDocument()"> <i class="fa fa-plus"></i> New Document Upload</button>
+                @*Display
+            <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+            Records Per Page*@
+            </div>
+
+            <div class="form-group col-sm-12 table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+
+                            <th>Sl. No.</th>
+                            <th style="cursor: pointer;" ng-click="sort('AdmissionNo')">Admission No <span class="fa" ng-show="sortKey=='AdmissionNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('FullName')">Full Name <span class="fa" ng-show="sortKey=='FullName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('AddharCard')">Addhar Card<span class="fa" ng-show="sortKey=='Addhar Card'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('MatrixCertifiacate')">Matrix Certifiacate<span class="fa" ng-show="sortKey=='MatrixCertifiacate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+
+
+                            <th style="cursor: pointer;" ng-click="sort('TenPassingCertificate')">10th Passing Certificate<span class="fa" ng-show="sortKey=='TenPassingCertificate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('TwelvePassingCertificate')">12th Passing Certificate<span class="fa" ng-show="sortKey=='TwelvePassingCertificate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('CLC')">Co-curricular Learning Certificate (CLC)<span class="fa" ng-show="sortKey=='CLC'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('MigrationCertificate')">Migration Certificate<span class="fa" ng-show="sortKey=='MigrationCertificate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+
+                            <th style="cursor: pointer;" ng-click="sort('IntermediateCertificate')">Intermediate Certificate<span class="fa" ng-show="sortKey=='IntermediateCertificate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('DocumentStatus')">Status<span class="fa" ng-show="sortKey=='DocumentStatus'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th>Edit </th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr dir-paginate="doc in DocumentList|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize" current-page="CurrentPage" ng-model="search">
+                            <td>{{$index + 1}}</td>
+                            <td>{{doc.AdmissionNo}}</td>
+                            <td>{{doc.FullName}}</td>
+
+                            <td>
+                                <a href="{{doc.AddharCard}}" download>
+                                    <img src="{{doc.AddharCard}}" style="height:50px; width:50px;" />
+                                    </a>
+                            </td>
+                            <td>
+                                <a href="{{doc.MatrixCertifiacate}}" download>
+                                    <img src="{{doc.MatrixCertifiacate}}" style="height:50px; width:50px;" />
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{doc.TenPassingCertificate}}" download>
+                                    <img src="{{doc.TenPassingCertificate}}" style="height:50px; width:50px;" />
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{doc.TwelvePassingCertificate}}" download>
+                                    <img src="{{doc.TwelvePassingCertificate}}" style="height:50px; width:50px;" />
+                                </a>
+                            </td>
+
+                            <td>
+                               
+                                    <img src="{{doc.CLC}}" style="height:50px; width:50px;" />
+                           
+                            </td>
+                            <td>
+                                <a href="{{doc.MigrationCertificate}}" download>
+                                    <img src="{{doc.MigrationCertificate}}" style="height:50px; width:50px;" />
+                                </a>
+                            </td>
+                           
+                            <td>
+                                <a href="{{doc.IntermediateCertificate}}" download>
+                                    <img src="{{doc.IntermediateCertificate}}" style="height:50px; width:50px;" />
+                                </a>
+                            </td>
+                            <td>{{DocumentStatuslist[doc.DocumentStatus].Value}}</td>
+                            <td ng-if="CanEdit"><button class="btn btn-sm btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl" ng-click="editStudentDocument(doc)"><i class="icon-pencil3"></i></button></td>
+                            <td ng-if="CanDelete"><button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#exampleModal" ng-click="deleteConfirmation(doc.DocumentID)"><i class="fa fa-trash"></i></button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-center">
+                <dir-pagination-controls boundary-links="true" template-url="~/Scripts/DirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+
+            </div>
+        </div>
+
+        <div id="modal_Student_Charge" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">@*{{DocumentUpload.DocumentUploadId > 0 ? 'Update' : 'New' }}*@ Document Upload</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <form name="formDocumentUpload"class="needs-validation" novalidate >
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label>Admission No <span class="text-danger">*</span></label>
+
+                                    <angucomplete-alt id="angu_125"
+                                                      name="invNo"
+                                                      placeholder="Enter Student Name"
+                                                      pause="100"
+                                                      selected-object="afterStudentSelected"
+                                                      local-data="Studentlist"
+                                                      search-fields="AdmissionNo"
+                                                      title-field="AdmissionNo"
+                                                      description="CrrList"
+                                                      ng-model="Doc.StudentId"
+                                                      minlength="1"
+                                                      remote-url-data-field="Admission No"
+                                                      input-class="form-control"
+                                                      match-class="highlight"
+                                                      input-changed="OrderTypeSelectionChanged"
+                                                      field-required="true"
+                                                      auto-match="true"
+                                                      focus-in="focusIn()">
+                                        required autofocus
+                                    </angucomplete-alt>
+
+                                </div>
+
+
+                                <div class="col-md-6 form-group">
+                                    <label>Addhar Card <span class="text-danger">*</span></label>
+                                    <input type="file" id="AddharCard" accept="image/*,application/pdf" name="AddharCard" ng-model="AddharCard" class="form-control" onchange="angular.element(this).scope().AddharCard(this)" ng-class="IsBookSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                    <span class="text-danger" ng-if="(formDocumentUpload.AddharCard.$dirty || IsSubmitted) && formDocumentUpload.AddharCard.$error.required">DocumentStatus  is required!</span>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>10th MarkSheet <span class="text-danger">*</span></label>
+                                    <input type="file" name="MatrixCertifiacate" placeholder="Enter Matrix Certifiacate No" accept="image/*,application/pdf" ng-model="MatrixCertifiacate" onchange="angular.element(this).scope().MatrixCertifiacate(this)" ng-class="IsBookSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                    <span class="text-danger" ng-if="(formDocumentUpload.MatrixCertifiacate.$dirty || IsSubmitted) && formDocumentUpload.MatrixCertifiacate.$error.required">DocumentStatus  is required!</span>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>10th Passing Certificate <span class="text-danger">*</span></label>
+                                    <input type="file" name="TenPassingCertificate" placeholder="Enter 10th Passing Certificate Certificate " accept="image/*,application/pdf" ng-model="TenPassingCertificate" onchange="angular.element(this).scope().TenPassingCertificate(this)" ng-class="IsBookSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                    <span class="text-danger" ng-if="(formDocumentUpload.TenPassingCertificate.$dirty || IsSubmitted) && formDocumentUpload.TenPassingCertificate.$error.required">DocumentStatus  is required!</span>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>12th MarkSheet <span class="text-danger">*</span></label>
+                                    <input type="file" name="IntermediateCertificate" placeholder="Enter Intermediate Certificate " accept="image/*,application/pdf" ng-model="IntermediateCertificate" onchange="angular.element(this).scope().IntermediateCertificate(this)" ng-class="IsBookSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                    <span class="text-danger" ng-if="(formDocumentUpload.IntermediateCertificate.$dirty || IsSubmitted) && formDocumentUpload.IntermediateCertificate.$error.required">DocumentStatus  is required!</span>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>12th Passing Certificate <span class="text-danger">*</span></label>
+                                    <input type="file" name="TwelvePassingCertificate" placeholder="Enter 12th Passing Certificate Certificate " accept="image/*,application/pdf" ng-model="TwelvePassingCertificate" onchange="angular.element(this).scope().TwelvePassingCertificate(this)" ng-class="IsBookSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                    <span class="text-danger" ng-if="(formDocumentUpload.TwelvePassingCertificate.$dirty || IsSubmitted) && formDocumentUpload.TwelvePassingCertificate.$error.required">DocumentStatus  is required!</span>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Co-curricular Learning Certificate (CLC) <span class="text-danger">*</span></label>
+                                    <input type="file" name="CLC" placeholder="Enter CLC Certificate " accept="image/*,application/pdf" ng-model="CLC" onchange="angular.element(this).scope().CLC(this)"ng-class="IsBookSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                    <span class="text-danger" ng-if="(formDocumentUpload.CLC.$dirty || IsSubmitted) && formDocumentUpload.CLC.$error.required">DocumentStatus  is required!</span>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Migration Certificate <span class="text-danger">*</span></label>
+                                    <input type="file" name="MigrationCertificate" placeholder="Enter MigrationCertificate Certificate " accept="image/*,application/pdf" ng-model="MigrationCertificate" onchange="angular.element(this).scope().MigrationCertificate(this)"ng-class="IsBookSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                    <span class="text-danger" ng-if="(formDocumentUpload.MigrationCertificate.$dirty || IsSubmitted) && formDocumentUpload.MigrationCertificate.$error.required">DocumentStatus  is required!</span>
+                                </div>
+
+                                <div class="col-md-6 form-group">
+                                    <label>Document Upload Status <span class="text-danger">*</span></label>
+                                    <select ng-model="Doc.DocumentStatus" name="DocumentStatus" ng-options="option.Key as option.Value for option in DocumentStatuslist" class="form-control" ng-class="IsBookSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                    </select>
+                                    <span class="text-danger" ng-if="(formDocumentUpload.DocumentStatus.$dirty || IsSubmitted) && formDocumentUpload.DocumentStatus.$error.required">DocumentStatus  is required!</span>
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn bg-primary" ng-click="SaveDocument()">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal_confirmation" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <h6 class="font-weight-semibold">Are you sure want to delete this record?</h6>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn bg-primary" ng-click="deleteDocument()">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

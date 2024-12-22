@@ -1,0 +1,368 @@
+﻿@{
+    Layout = null;
+}
+<style>
+    th, td {
+        white-space: nowrap;
+    }
+</style>
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Manage Teacher</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Manage Teacher</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group col-sm-6 float-right">
+                <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+            </div>
+            <div class="form-group col-sm-6">
+                <button class="btn btn-sm btn-primary" ng-if="CanEdit" ng-click="newTeacher()"> <i class="fa fa-plus"></i> New Teacher</button>
+                @*Display
+                    <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+                    Records Per Page*@
+            </div>
+            <div class="form-group col-sm-12">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover" style="margin-bottom:10px">
+                        <thead>
+                            <tr>
+                                <th>Sl. No.</th>
+                                <th ng-if="CanEdit">Edit </th>
+                                <th ng-if="CanDelete">Delete</th>
+                                <th style="cursor: pointer;" ng-click="sort('StaffCode')">Staff Code <span class="fa" ng-show="sortKey=='StaffCode'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('TeacherName')">Teacher Name <span class="fa" ng-show="sortKey=='TeacherName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('TeacherCode')">Teacher Code <span class="fa" ng-show="sortKey=='TeacherCode'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                @*<th>Subjects</th>*@
+                                @*<th style="cursor: pointer;" ng-click="sort('TotalPeriods')">Total Periods <span class="fa" ng-show="sortKey=='TotalPeriods'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>*@
+                                <th style="cursor: pointer;" ng-click="sort('DepartmentName')">Department <span class="fa" ng-show="sortKey=='DepartmentName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                @*<th>Not Taken Periods</th>*@
+                                <th style="cursor: pointer;" ng-click="sort('IsPartTimeTeacher')">Part Time Teacher <span class="fa" ng-show="sortKey=='IsPartTimeTeacher'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Arrangement')">Arrangement <span class="fa" ng-show="sortKey=='Arrangement'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('FatherName')">Father Name <span class="fa" ng-show="sortKey=='FatherName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('MobileNo')">Mobile No <span class="fa" ng-show="sortKey=='MobileNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('AlternateNo')">Alternate No <span class="fa" ng-show="sortKey=='AlternateNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Email')">Email <span class="fa" ng-show="sortKey=='Email'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Gender')">Gender <span class="fa" ng-show="sortKey=='Gender'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('CurrentAddress')">Current Address <span class="fa" ng-show="sortKey=='CurrentAddress'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('PermanentAddress')">Permanent Address <span class="fa" ng-show="sortKey=='PermanentAddress'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Qualification')">Qualification <span class="fa" ng-show="sortKey=='Qualification'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('JoinDate')">Join Date <span class="fa" ng-show="sortKey=='JoinDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('TeacherStatus')">Status <span class="fa" ng-show="sortKey=='TeacherStatus'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="Teacher in TeacherList|orderBy:sortKey:reverse|filter:search" ng-model="search">
+                                <td>{{$index + 1}}</td>
+                                <td ng-if="CanEdit"><button class="btn btn-sm btn-primary" ng-click="editTeacher(Teacher)"><i class="icon-pencil3"></i></button></td>
+                                <td ng-if="CanDelete"><button class="btn btn-sm btn-danger" ng-click="deleteConfirmation(1,Teacher.TeacherId)"><i class="fa fa-trash"></i></button></td>
+                                <td>{{Teacher.StaffCode}}</td>
+                                <td>{{Teacher.TeacherName}}</td>
+                                <td>{{Teacher.TeacherCode}}</td>
+                               @* <td><span ng-repeat="subject in Teacher.TeacherSubjectList">{{subject.SubjectName + " (" + subject.SubjectCode + ") " + " - " + subject.ClassName + ' - '+subject.SectionName+' - ' +  subject.NoOfPeriods+' - ' + subject.PracticalPeriods}} <br /></span></td>*@
+                                @*<td>{{Teacher.TotalPeriods}}</td>*@
+                                <td>{{Teacher.DepartmentName}}</td>
+                                @*<td><span ng-repeat="Period in Teacher.TeacherPeriodList">{{Period.PeriodName}} <br /></span></td>*@
+                                <td>{{Teacher.IsPartTimeTeacher == 1 ? 'Yes' : 'No'}}</td>
+                                <td>{{Teacher.Arrangement == 1 ? 'Yes' : 'No'}}</td>
+                                <td>{{Teacher.FatherName}}</td>
+                                <td>{{Teacher.MobileNo}}</td>
+                                <td>{{Teacher.AlternateNo}}</td>
+                                <td>{{Teacher.Email}}</td>
+                                <td>{{GenderList[Teacher.Gender].Value}}</td>
+                                <td>{{Teacher.CurrentAddress}}</td>
+                                <td>{{Teacher.PermanentAddress}}</td>
+                                <td>{{Teacher.Qualification}}</td>
+                                <td>{{Teacher.JoinDate | date:'dd-MM-yyyy'}}</td>
+                                <td><a ng-class="Teacher.TeacherStatus == 1 ? 'badge bg-success-400' : 'badge bg-danger'"> {{TeacherStatusList[Teacher.TeacherStatus].Value}}</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal_Student_Charge" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{Teacher.TeacherId > 0 ? 'Update' : 'New' }} Teacher</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <form name="formTeacher" novalidate>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-4 form-group">
+                                    <label class="col-sm-4 col-form-label">Department <span class="text-danger">*</span></label>
+                                    <div class="col-md-8">
+                                        <select ng-model="Teacher.DepartmentId" name="DepartmentId" ng-options="option.DepartmentId as option.DepartmentName for option in DepartmentList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                            <option value="">--Select Department--</option>
+                                        </select>
+                                        <span class="text-danger" ng-if="(formTeacher.DepartmentId.$dirty || IsSubmitted) && formTeacher.DepartmentId.$error.required">Department is required!</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label class="col-sm-4 col-form-label">Teacher Name <span class="text-danger">*</span></label>
+                                    <div class="col-md-8">
+                                        <input type="text" ng-model="Teacher.TeacherName" name="TeacherName" class="form-control" placeholder="Enter Teacher Name" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                                        <span class="text-danger" ng-if="(formTeacher.TeacherName.$dirty || IsSubmitted) && formTeacher.TeacherName.$error.required">Teacher Name is required!</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label class="col-sm-4 col-form-label">Teacher Code <span class="text-danger">*</span></label>
+                                    <div class="col-md-8">
+                                        <input type="text" ng-model="Teacher.TeacherCode" name="TeacherCode" class="form-control" placeholder="Enter Teacher Code" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                                        <span class="text-danger" ng-if="(formTeacher.TeacherCode.$dirty || IsSubmitted) && formTeacher.TeacherCode.$error.required">Teacher Code is required!</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label class="col-sm-4 col-form-label">Father Name </label>
+                                    <div class="col-md-8">
+                                        <input type="text" ng-model="Teacher.FatherName" name="FatherName" class="form-control" placeholder="Enter Father Name" />
+                                        @*<span class="text-danger" ng-if="(formTeacher.FatherName.$dirty || IsSubmitted) && formTeacher.FatherName.$error.required">Father Name is required!</span>*@
+                                    </div>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label class="col-sm-4 col-form-label">Mobile No </label>
+                                    <div class="col-md-8">
+                                        <input type="number" ng-model="Teacher.MobileNo" name="MobileNo" class="form-control" placeholder="Enter Mobile No" />
+                                        @*<span class="text-danger" ng-if="(formTeacher.MobileNo.$dirty || IsSubmitted) && formTeacher.MobileNo.$error.required">Mobile No is required!</span>*@
+                                    </div>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label class="col-sm-4 col-form-label">Alternate No</label>
+                                    <div class="col-md-8">
+                                        <input type="number" ng-model="Teacher.AlternateNo" class="form-control" placeholder="Enter Alternate No" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label class="col-sm-4 col-form-label">Email </label>
+                                    <div class="col-md-8">
+                                        <input type="email" ng-model="Teacher.Email" name="Email" class="form-control" placeholder="Enter Email" />
+                                        <span class="text-danger" ng-if="formTeacher.Email.$error.email && IsSubmitted">Invalid Email !</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label class="col-sm-4 col-form-label-sm">Current Address </label>
+                                    <div class="col-md-8">
+                                        <textarea ng-model="Teacher.CurrentAddress" class="form-control" placeholder="Enter Current Address"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label class="col-sm-4 col-form-label-sm font-weight-bold">Permanent Address </label>
+                                    <div class="col-md-8">
+                                        <textarea ng-model="Teacher.PermanentAddress" class="form-control" placeholder="Enter Permanent Address"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label class="col-sm-4 col-form-label">Gender <span class="text-danger">*</span></label>
+                                    <div class="col-md-8">
+                                        <select ng-model="Teacher.Gender" name="Gender" ng-options="option.Key as option.Value for option in GenderList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                                        <span class="text-danger" ng-if="(formTeacher.Gender.$dirty || IsSubmitted) && formTeacher.Gender.$error.required">Gender is required!</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label class="col-sm-4 col-form-label">Qualification </label>
+                                    <div class="col-md-8">
+                                        <input type="text" ng-model="Teacher.Qualification" name="Qualification" class="form-control" placeholder="Enter Qualification" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label class="col-sm-6 col-form-label" for="IsPartTimeTeacher">Part Time Teacher <input type="checkbox" id="IsPartTimeTeacher" style="margin-left:21px" ng-model="Teacher.IsPartTimeTeacher" name="IsPartTimeTeacher" /></label>
+                                    <label class="col-sm-6 col-form-label" for="Arrangement">Arrangement <input type="checkbox" style="margin-left:21px" id="Arrangement" ng-model="Teacher.Arrangement" name="Arrangement" /></label>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label class="col-sm-4 col-form-label">Join Date </label>
+                                    <div class="col-md-8">
+                                        <input type="date" ng-model="Teacher.JoinDate" name="JoinDate" class="form-control" placeholder="Enter Join Date" />
+                                        @*<span class="text-danger" ng-if="(formTeacher.JoinDate.$dirty || IsSubmitted) && formTeacher.JoinDate.$error.required">Join date is required!</span>*@
+                                    </div>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label class="col-sm-4 col-form-label">Teacher Status <span class="text-danger">*</span></label>
+                                    <div class="col-md-8">
+                                        <select ng-model="Teacher.TeacherStatus" name="TeacherStatus" ng-options="option.Key as option.Value for option in TeacherStatusList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                                        <span class="text-danger" ng-if="(formTeacher.TeacherStatus.$dirty || IsSubmitted) && formTeacher.TeacherStatus.$error.required">Status is required!</span>
+                                    </div>
+                                </div>
+                            </div>
+                            @*<fieldset class="mb-3">
+                                <legend class="text-uppercase font-size-sm font-weight-bold">Teacher Subjects</legend>
+                                <div class="row">
+                                    <div class="col-md-12 form-group">
+                                        <div class="col-md-4 form-group">
+                                            <label class="col-sm-4 col-form-label">Class <span class="text-danger">*</span></label>
+                                            <div class="col-md-8">
+                                                <select ng-model="TeacherSubject.ClassId" ng-change="changeClass()" name="ClassId" ng-options="option.ClassId as option.ClassName for option in ClassList" class="form-control"></select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 form-group">
+                                            <label class="col-sm-4 col-form-label">Section <span class="text-danger">*</span></label>
+                                            <div class="col-md-8">
+                                                <select ng-model="TeacherSubject.SectionId" ng-change="getClassSubjectList()" name="SectionId" ng-options="option.SectionId as option.SectionName for option in SectionList" class="form-control"></select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 form-group">
+                                            <label class="col-sm-4 col-form-label">Subject <span class="text-danger">*</span></label>
+                                            <div class="col-md-8">
+                                                <select ng-model="TeacherSubject.SubjectId" name="SubjectId" ng-options="option.SubjectId as option.SubjectName for option in SubjectList" class="form-control"></select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 form-group">
+                                            <div class="col-sm-12">
+                                                <label style="padding-right:20px" class="col-form-label" for="IsIncluded">Is Included <span class="text-danger">*</span></label>
+                                                <input type="checkbox" id="IsIncluded" ng-model="TeacherSubject.IsIncluded" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5 form-group">
+                                            <label class="col-sm-5 col-form-label">Theroy Periods <span class="text-danger">*</span></label>
+                                            <div class="col-md-7">
+                                                <input type="number" placeholder="Enter Theory Periods" ng-model="TeacherSubject.NoOfPeriods" name="NoOfPeriods" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5 form-group">
+                                            <label class="col-sm-5 col-form-label">Practical Periods <span class="text-danger">*</span></label>
+                                            <div class="col-md-7">
+                                                <input type="number" placeholder="Enter Practical Periods" ng-model="TeacherSubject.PracticalPeriods" name="PracticalPeriods" class="form-control" />
+                                            </div>
+                                        </div>
+
+                                        <div class="clearfix"></div>
+                                        <div class="col-md-4 form-group">
+                                            <label class="col-sm-4 col-form-label">Status <span class="text-danger">*</span></label>
+                                            <div class="col-md-8">
+                                                <select ng-model="TeacherSubject.TeacherSubjectStatus" name="TeacherSubjectStatus" ng-options="option.Key as option.Value for option in TeacherSubjectStatusList" class="form-control"></select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 form-group">
+                                            <div class="col-md-2">
+                                                <button class="btn btn-sm btn-success" ng-click="addTeacherSubject()">{{TeacherSubject.TeacherSubjectId > 0 ? 'Update' : 'Add'}}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 form-group table-responsive" ng-if="Teacher.TeacherSubjectList.length > 0">
+                                        <table class="table table-bordered table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Sl. No.</th>
+                                                    <th>Class</th>
+                                                    <th>Section</th>
+                                                    <th>Subject</th>
+                                                    <th>Theory Periods</th>
+                                                    <th>Practical Periods</th>
+                                                    <th>Is Included</th>
+                                                    <th>Status</th>
+                                                    <th>Edit</th>
+                                                    <th>Delete</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="subject in Teacher.TeacherSubjectList">
+                                                    <td>{{$index + 1}}</td>
+                                                    <td>{{subject.ClassName}}</td>
+                                                    <td>{{subject.SectionName}}</td>
+                                                    <td>{{subject.SubjectName + " (" + subject.SubjectCode + ")"}}</td>
+                                                    <td>{{subject.NoOfPeriods}}</td>
+                                                    <td>{{subject.PracticalPeriods}}</td>
+                                                    <td>{{subject.IsIncluded ? "Yes" : "No"}}</td>
+                                                    <td><a ng-class="subject.TeacherSubjectStatus == 1 ? 'badge bg-success-400' : 'badge bg-danger'"> {{TeacherSubjectStatusList[subject.TeacherSubjectStatus].Value}}</a></td>
+                                                    <td><button class="btn btn-icon btn-default" ng-click="editTeacherSubject(subject,$index)"><i class="icon-pencil3"></i></button></td>
+                                                    <td><button class="btn btn-icon btn-danger" ng-click="deleteConfirmation(2,$index,subject)"><i class="fa fa-trash"></i></button></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset class="mb-3">
+                                <legend class="text-uppercase font-size-sm font-weight-bold">Not Taken Periods</legend>
+                                <div class="row">
+                                    <div class="col-md-12 form-group">
+                                        <div class="col-md-6 form-group">
+                                            <label class="col-sm-4 col-form-label">Period <span class="text-danger">*</span></label>
+                                            <div class="col-md-8">
+                                                <select ng-model="TeacherPeriod.PeriodNo" name="PeriodNo" ng-options="option.PeriodNo as option.PeriodName for option in PeriodList" class="form-control"></select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 form-group">
+                                            <div class="col-md-6">
+                                                <button class="btn btn-sm btn-success" ng-click="addTeacherPeriod()">{{IsUpdate ? 'Update' : 'Add'}}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 form-group table-responsive" ng-if="Teacher.TeacherPeriodList.length > 0">
+                                        <table class="table table-bordered table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Sl. No.</th>
+                                                    <th>Period</th>
+                                                    <th>Delete</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="Period in Teacher.TeacherPeriodList">
+                                                    <td>{{$index + 1}}</td>
+                                                    <td>{{Period.PeriodName}}</td>
+                                                    <td><button class="btn btn-icon btn-danger" ng-click="deleteConfirmation(3,$index,Period)"><i class="fa fa-trash"></i></button></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </fieldset>*@
+                        </div>
+                        <div class="modal-footer">
+                            <div class="col-sm-12 text-centre">
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn bg-primary" ng-click="saveTeacher()">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal_confirmation" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <h6 class="font-weight-semibold">Are you sure want to delete this record?</h6>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn bg-primary" ng-click="deleteRecord()">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

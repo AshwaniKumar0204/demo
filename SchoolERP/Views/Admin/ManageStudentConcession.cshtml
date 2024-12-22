@@ -1,0 +1,149 @@
+﻿@{
+    Layout = null;
+}
+<style>
+    .my-table {
+        border: 1px solid #b7b7b7;
+    }
+
+        .my-table td {
+            line-height: initial;
+            padding-top: 0.2rem !important;
+            padding-bottom: 0.2rem !important;
+        }
+
+        .my-table th, my-sub-table th {
+            line-height: initial;
+            padding-bottom: 0.4rem !important;
+            padding-top: 0.4rem !important;
+        }
+
+    .my-sub-table td {
+        line-height: initial;
+        padding-top: 0.5rem !important;
+        padding-bottom: 0.5rem !important;
+    }
+
+    .textbox-mt {
+        margin-top: 1px;
+    }
+
+    .mb-form-group {
+        margin-bottom: 10px;
+    }
+</style>
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <a href="#" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Fee</a>
+                <span class="breadcrumb-item active">Manage Student Concession</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Manage Student Concession</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group row">
+                <label class="col-form-label col-lg-2 font-weight-bold">Admission No <span class="text-danger">*</span></label>
+                <div class="col-lg-5">
+                    <angucomplete-alt id="StudentAutoComplete"
+                                      placeholder="Enter Admission No/Student Name"
+                                      pause="100"
+                                      selected-object="afterStudentSelected"
+                                      local-data="AdmissionList"
+                                      search-fields="SearchAdmission"
+                                      title-field="SearchAdmission"
+                                      minlength="1"
+                                      input-class="form-control"
+                                      match-class="highlight"
+                                      input-changed="selectionChanged"
+                                      field-required="true"
+                                      auto-match="true"
+                                      focus-in="focusIn()">
+                    </angucomplete-alt>
+                </div>
+            </div>
+
+            <div ng-show="Admission.AdmissionId >0">
+                <div class="form-group row">
+                    <label class="col-form-label col-lg-2 col-4 font-weight-bold">Student Name :</label>
+                    <label class="col-form-label col-lg-4 col-8" ng-bind="Admission.FullName"></label>
+                    <label class="col-form-label col-lg-2 col-4 font-weight-bold">Course :</label>
+                    <label class="col-form-label col-lg-4 col-8" ng-bind="Admission.ClassName"></label>
+                    <label class="col-form-label col-lg-2 col-4 font-weight-bold">Branch :</label>
+                    <label class="col-form-label col-lg-4 col-8" ng-bind="Admission.SectionName"></label>
+                    <label class="col-form-label col-lg-2 col-4 font-weight-bold">Roll No :</label>
+                    <label class="col-form-label col-lg-4 col-8" ng-bind="Admission.RollNo"></label>
+                    <label class="col-form-label col-lg-2 col-4 font-weight-bold">House :</label>
+                    <label class="col-form-label col-lg-4 col-8" ng-bind="Admission.HouseName"></label>
+                    <label class="col-form-label col-lg-2 col-4 font-weight-bold">Session :</label>
+                    <label class="col-form-label col-lg-4 col-8" ng-bind="Admission.SessionName"></label>
+                    <label class="col-form-label col-lg-2 col-4 font-weight-bold">Student Type :</label>
+                    <label class="col-form-label col-lg-4 col-8" ng-bind="Admission.TypeName"></label>
+                    <label class="col-form-label col-lg-2 col-4 font-weight-bold">Father's Name :</label>
+                    <label class="col-form-label col-lg-4 col-8" ng-bind="Admission.FatherName"></label>
+                </div>
+
+                <fieldset class="mb-3" ng-repeat="monthFee in MonthFeeList">
+                    <legend class="text-uppercase font-size-sm font-weight-bold">{{monthFee.MonthName}}</legend>
+                    <div class="form-group row">
+                        <div class="col-lg-12 table-responsive">
+
+                            <table class="table table-bordered table-hover ">
+                                <thead>
+                                    <tr class="panel-dark-blue">
+                                        <th>#</th>
+                                        <th>Particulars</th>
+                                        <th style="white-space:nowrap">Fee Amount</th>
+                                        <th>Concession</th>
+                                        <th>Remarks</th>
+                                        <th>Line Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="feeHead in monthFee.FeeHeadDetails">
+                                        <td>{{$index +1}}</td>
+                                        <td>{{feeHead.FeeHeadTitle}}</td>
+                                        <td>{{feeHead.FeeAmount | number:2}}</td>
+                                        <td>
+                                            <input type="number" @*ng-show="monthFee.IsEnabled"*@ ng-model="feeHead.Concession" ng-change="changeConcession(feeHead)" />
+                                            @*<label ng-show="!monthFee.IsEnabled">{{feeHead.Concession | number:2}}</label>*@
+                                        </td>
+                                        <td>
+                                            <input type="text" @*ng-show="monthFee.IsEnabled"*@ placeholder="Enter Remarks" ng-model="feeHead.Comments" />
+                                            @*<label ng-show="!monthFee.IsEnabled">{{feeHead.Comments}}</label>*@
+                                        </td>
+                                        <td>{{feeHead.LineTotal | number:2}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="card-footer text-centre" ng-if="AdmissionId > 0 && CanEdit">
+            <button class="btn btn-primary" ng-click="saveStudentConcession()">Update</button>
+        </div>
+    </div>
+</div>
+

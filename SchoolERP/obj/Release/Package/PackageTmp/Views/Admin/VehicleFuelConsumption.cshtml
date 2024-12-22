@@ -1,0 +1,286 @@
+﻿@{
+    Layout = null;
+}
+<style>
+    td, th {
+        white-space: nowrap
+    }
+</style>
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Vehicle Fuel Consumption</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Vehicle Fuel Consumption</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    <label class="col-form-label col-lg-4">Select Vehicle <span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <angucomplete-alt id="BusAutoComplete"
+                                          placeholder="Enter Vehicle No"
+                                          pause="100"
+                                          selected-object="afterBusSelected"
+                                          local-data="BusList"
+                                          search-fields="BusTitle"
+                                          title-field="BusTitle"
+                                          minlength="1"
+                                          input-class="form-control"
+                                          match-class="highlight"
+                                          input-changed="selectionChanged"
+                                          field-required="true"
+                                          auto-match="true"
+                                          focus-in="focusIn()">
+                        </angucomplete-alt>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <button class="btn btn-sm btn-primary" ng-if="SelectedBus.BusId > 0 && CanEdit" ng-click="newVehicleFuelConsumption()"> <i class="fa fa-plus"></i> New </button>
+                </div>
+            </div>
+            <fieldset class="mb-3" ng-show="SelectedBus.BusId > 0">
+                <legend class="text-uppercase font-size-sm font-weight-bold">Fuel Consumption Detail</legend>
+                <div class="form-group col-sm-6 float-right">
+                    <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+                </div>
+                <div class="form-group col-sm-6">
+                    Display
+                    <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+                    Records Per Page
+                </div>
+                <div class="col-sm-12">
+                    <a class="text-link font-weight-bold" ng-click="tablesToExcel(['table_purchase_list'],['FuelConsumptionDetail'],'FuelConsumptionDetail','FuelConsumptionDetail')">Export To Excel</a>&nbsp;&nbsp;&nbsp;|
+                    <a class="text-link font-weight-bold" ng-click="printA4Landscape('div_table_purchase_list','A4','')">Export to PDF </a>
+                </div>
+                <div class="form-group col-sm-12 table-responsive" id="div_table_purchase_list">
+                    <table class="table table-bordered table-hover" id="table_purchase_list">
+                        <thead>
+                            <tr>
+                                <th ng-if="!IsExporting">Sl. No.</th>
+                                <th style="cursor: pointer;" ng-click="sort('BillDate')">Date <span class="fa" ng-show="sortKey=='BillDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('BillNo')">Bill No <span class="fa" ng-show="sortKey=='BillNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                @*<th style="cursor: pointer;" ng-click="sort('BusTitle')">Vehicle <span class="fa" ng-show="sortKey=='BusTitle'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>*@
+                                <th style="cursor: pointer;" ng-click="sort('SupplierName')">Party Name <span class="fa" ng-show="sortKey=='SupplierName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Material')">Material <span class="fa" ng-show="sortKey=='Material'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('PreviousKillometeres')">Previous KM <span class="fa" ng-show="sortKey=='PreviousKillometeres'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('CurrentKillometers')">Current KM <span class="fa" ng-show="sortKey=='CurrentKillometers'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Quantity')">Quantity <span class="fa" ng-show="sortKey=='Quantity'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('UnitName')">Unit <span class="fa" ng-show="sortKey=='UnitName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Average')">Average <span class="fa" ng-show="sortKey=='Average'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Rate')">Rate <span class="fa" ng-show="sortKey=='Rate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Amount')">Amount <span class="fa" ng-show="sortKey=='Amount'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Remarks')">Remarks <span class="fa" ng-show="sortKey=='Remarks'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="CanEdit && !IsExporting" class="not_print">Edit </th>
+                                <th ng-if="CanDelete && !IsExporting" class="not_print">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-init="$parent.TotalQuantity =$parent.TotalQuantity + vehicle.Quantity;$parent.TotalAmount=$parent.TotalAmount+vehicle.Amount" dir-paginate="vehicle in VehicleFuelConsumptionList|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize" current-page="currentPage" ng-model="search">
+                                <td ng-if="!IsExporting">{{$index + 1}}</td>
+                                <td>{{vehicle.BillDate | date:'dd-MM-yyyy'}}</td>
+                                <td>{{vehicle.BillNo}}</td>
+                                @*<td>{{vehicle.BusTitle}}</td>*@
+                                <td>{{vehicle.SupplierName}}</td>
+                                <td>{{vehicle.Material}}</td>
+                                <td>{{vehicle.PreviousKillometeres}}</td>
+                                <td>{{vehicle.CurrentKillometers}}</td>
+                                <td>{{vehicle.Quantity | number:2}}</td>
+                                <td>{{vehicle.UnitName}}</td>
+                                <td>{{vehicle.Average | number:2}}</td>
+                                <td>{{vehicle.Rate| number:2}}</td>
+                                <td>{{vehicle.Amount| number:2}}</td>
+                                <td>{{vehicle.Remarks}}</td>
+                                <td ng-if="CanEdit && !IsExporting" class="not_print"><button class="btn btn-sm btn-primary" ng-click="editVehicleFuelConsumption(vehicle)"><i class="icon-pencil3"></i></button></td>
+                                <td ng-if="CanDelete && !IsExporting" class="not_print"><button class="btn btn-sm btn-danger" ng-click="deleteConfirmation(vehicle.VehicleFuelConsumptionId)"><i class="fa fa-trash"></i></button></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>TOTAL</th>
+                                <th ng-if="!IsExporting"></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th>{{TotalQuantity | number:2}}</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th>{{TotalAmount | number:2}}</th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="clearfix">
+                    <dir-pagination-controls max-size="pageSize" boundary-links="true" template-url="/Scripts/DirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+                </div>
+            </fieldset>
+        </div>
+
+        <div id="modal_Bus_Charge" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{VehicleFuelConsumption.VehicleFuelConsumptionId > 0 ? 'Update' : 'New' }} Fuel Consumption</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <form name="formVehicleFuelConsumption" novalidate>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-sm-6 form-group">
+                                    <label class="col-form-label col-sm-4">Date <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="date" ng-model="VehicleFuelConsumption.BillDate" name="BillDate" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                                        <span class="text-danger" ng-if="(formVehicleFuelConsumption.BillDate.$dirty || IsSubmitted) && formVehicleFuelConsumption.BillDate.$error.required">Bill Date is required!</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <label class="col-form-label col-sm-4">Bill No <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" ng-model="VehicleFuelConsumption.BillNo" name="BillNo" placeholder="Enter Bill No" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                                        <span class="text-danger" ng-if="(formVehicleFuelConsumption.BillNo.$dirty || IsSubmitted) && formVehicleFuelConsumption.BillNo.$error.required">Bill No is required!</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 form-group">
+                                    <label class="col-form-label col-sm-4">Party Name <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <angucomplete-alt id="SupplierAutoComplete"
+                                                          placeholder="Enter Party Name"
+                                                          pause="100"
+                                                          selected-object="afterSupplierSelected"
+                                                          local-data="SupplierList"
+                                                          search-fields="SupplierName"
+                                                          title-field="SupplierName"
+                                                          minlength="1"
+                                                          input-class="form-control"
+                                                          match-class="highlight"
+                                                          input-changed="selectionChanged"
+                                                          field-required="true"
+                                                          auto-match="true"
+                                                          focus-in="focusIn()">
+                                        </angucomplete-alt>
+                                        @*<select ng-model="VehicleFuelConsumption.SupplierId" name="SupplierId" ng-options="option.SupplierId as option.SupplierName for option in SupplierList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                                            <span class="text-danger" ng-if="(formVehicleFuelConsumption.SupplierId.$dirty || IsSubmitted) && formVehicleFuelConsumption.SupplierId.$error.required">Fee Head is required!</span>*@
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <label class="col-form-label col-sm-4">Material <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" placeholder="Enter Material" ng-model="VehicleFuelConsumption.Material" name="Material" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                                        <span class="text-danger" ng-if="(formVehicleFuelConsumption.Material.$dirty || IsSubmitted) && formVehicleFuelConsumption.Material.$error.required">Material is required!</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <label class="col-form-label col-sm-4">Previous KM </label>
+                                    <div class="col-sm-8">
+                                        <input type="number" placeholder="Enter Previous KM" ng-model="VehicleFuelConsumption.PreviousKillometeres" name="PreviousKillometeres" class="form-control" />
+                                        @*<span class="text-danger" ng-if="(formVehicleFuelConsumption.PreviousKillometeres.$dirty || IsSubmitted) && formVehicleFuelConsumption.PreviousKillometeres.$error.required">Previous KM is required!</span>*@
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <label class="col-form-label col-sm-4">Current KM <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="number" placeholder="Enter Current KM" ng-model="VehicleFuelConsumption.CurrentKillometers" name="CurrentKillometers" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                                        <span class="text-danger" ng-if="(formVehicleFuelConsumption.CurrentKillometers.$dirty || IsSubmitted) && formVehicleFuelConsumption.CurrentKillometers.$error.required">Current KM is required!</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <label class="col-form-label col-sm-4">Quantity <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="number" placeholder="Enter Quantity" ng-model="VehicleFuelConsumption.Quantity" name="Quantity" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                                        <span class="text-danger" ng-if="(formVehicleFuelConsumption.Quantity.$dirty || IsSubmitted) && formVehicleFuelConsumption.Quantity.$error.required">Quantity is required!</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <label class="col-form-label col-sm-4">Unit <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <select ng-model="VehicleFuelConsumption.UnitId" name="UnitId" ng-options="option.UnitId as option.UnitName for option in UnitList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                            <option value="">--Select Unit--</option>
+                                        </select>
+                                        <span class="text-danger" ng-if="(formVehicleFuelConsumption.UnitId.$dirty || IsSubmitted) && formVehicleFuelConsumption.UnitId.$error.required">Unit is required!</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <label class="col-form-label col-sm-4">Rate <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="number" ng-model="VehicleFuelConsumption.Rate" name="Rate" placeholder="Enter Rate" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                                        <span class="text-danger" ng-if="(formVehicleFuelConsumption.Rate.$dirty || IsSubmitted) && formVehicleFuelConsumption.Rate.$error.required">Rate is required!</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <label class="col-form-label col-sm-4">Remarks </label>
+                                    <div class="col-sm-8">
+                                        <textarea ng-model="VehicleFuelConsumption.Remarks" placeholder="Enter Remarks" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                                @*<div class="col-sm-6 form-group">
+                                        <label class="col-form-label col-sm-4">Average <span class="text-danger">*</span></label>
+                                        <div class="col-sm-8">
+                                            <input type="number" placeholder="Average" value="{{(VehicleFuelConsumption.CurrentKillometers - VehicleFuelConsumption.PreviousKillometeres) /VehicleFuelConsumption.Quantity | number:2}}" class="form-control" disabled="disabled" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6 form-group">
+                                        <label class="col-form-label col-sm-4">Amount <span class="text-danger">*</span></label>
+                                        <div class="col-sm-8">
+                                            <input type="number" placeholder="Amount" value="{{(VehicleFuelConsumption.Quantity * VehicleFuelConsumption.Rate)|number:2}}" class="form-control" disabled="disabled" />
+                                        </div>
+                                    </div>*@
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn bg-primary" ng-click="saveVehicleFuelConsumption()">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal_confirmation" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <h6 class="font-weight-semibold">Are you sure want to delete this record?</h6>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn bg-primary" ng-click="deleteVehicleFuelConsumption()">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

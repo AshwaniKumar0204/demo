@@ -1,0 +1,123 @@
+﻿
+@{
+    Layout = null;
+}
+<style>
+    hr {
+        margin-top: 0;
+    }
+
+    tr, td, th {
+        white-space: nowrap
+    }
+</style>
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Daily Collection Report</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Daily Collection Report</h6>
+        </div>
+        <div class="card-body">
+            <form name="formDCR" novalidate>
+                <div class="form-group row">
+                    <div class="col-lg-3">
+                        <label class="col-form-label font-weight-bold ">From Date <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" ng-model="DCR.FromDate" name="FromDate" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                        <span class="text-danger" ng-if="(formDCR.FromDate.$dirty || IsSubmitted) && formDCR.FromDate.$error.required">From Date is required!</span>
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="col-form-label font-weight-bold">To Date <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" ng-model="DCR.ToDate" name="ToDate" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                        <span class="text-danger" ng-if="(formDCR.ToDate.$dirty || IsSubmitted) && formDCR.ToDate.$error.required">To Date is required!</span>
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="col-form-label font-weight-bold">Payment Mode</label>
+                        <select ng-model="DCR.PaymentMode" ng-options="option.Key as option.Value for option in PaymentModeList" class="form-control"></select>
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="col-form-label font-weight-bold">User </label>
+                        <select ng-model="DCR.LoginId" ng-options="option.LoginId as option.UserName for option in SystemLoginList" class="form-control"></select>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top:20px">
+                    <div class="card-body">
+                        <h5>Fee Heads</h5>
+                        <div class="form-group row">
+                            <div class="col-lg-2 col-md-4 col-6" ng-repeat="feeHead in FeeHeadList">
+                                <div class="form-check form-check-inline">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" ng-model="feeHead.IsSelected">
+                                        {{feeHead.FeeHeadTitle}}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="form-group col-sm-12 text-centre">
+                <button class="btn btn-primary" ng-click="getDailyCollectionReport()"><i class="fa fa-search"></i> Search</button>
+                @* <button class="btn btn-success" ng-if="DailyCollectionReport.TableItemList.length > 0" onclick="tableToExcel('tbl_daily_collection_report','daily_collection_report')"><i class="fa fa-file"></i> Export to Excel</button>*@
+                <button class="btn btn-success" ng-if="DailyCollectionReport.TableItemList.length > 0"  ng-click="tablesToExcel(['tbl_daily_collection_report'], ['daily-collection-report'], 'DailyCollectionReport','78457')" @*onclick="tablesToExcel(['tbl_daily_collection_report'], ['daily-collection-report'], 'DailyCollectionReport','78457')"*@><i class="fa fa-file"></i> Export to Excel</button>
+            </div>
+            <div ng-if="DailyCollectionReport.TableItemList.length > 0">
+                <div class="form-group col-sm-6 float-right">
+                    <input type="text" class="float-right form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+                </div>
+                <div class="form-group col-sm-6">
+                    Display
+                    <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+                    Records Per Page
+                </div>
+                <div class="form-group col-sm-12 table-responsive">
+                    <table class="table table-xm table-bordered table-hover" id="tbl_daily_collection_report">
+                        <thead>
+                            <tr>
+                                <th ng-repeat="tableHeader in DailyCollectionReport.TableHeaderList" ng-if="!tableHeader.IsHide" style="cursor: pointer;" ng-click="sort('tableHeader.Value')">{{tableHeader.Value}} <span class="fa" ng-show="sortKey=='tableHeader'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr dir-paginate="tableItem in DailyCollectionReport.TableItemList|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize" ng-hide="tableItem.IsHide" current-page="currentPage" ng-model="search">
+                                <td ng-repeat="item in tableItem.DynamicList"  ng-if="!item.IsHide">{{item.Value}}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th ng-repeat="tablefooter in DailyCollectionReport.TableFooterList" ng-if="!tablefooter.IsHide">{{tablefooter.Value}}</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="clearfix">
+                    <dir-pagination-controls max-size="pageSize" boundary-links="true" template-url="/Scripts/DirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+

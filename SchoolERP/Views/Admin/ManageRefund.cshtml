@@ -1,0 +1,168 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <a class="breadcrumb-item"> Registration Online</a>
+                <span class="breadcrumb-item active">New Refund</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">New Refund</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group row">
+                <div class="col-sm-8">
+                    <label class="col-form-label  col-lg-3">Registration No <span class="text-danger">*</span></label>
+                    <div class="col-lg-9">
+                        <angucomplete-alt id="StudentAutoComplete"
+                                          placeholder="Enter Registration No/Student Name"
+                                          pause="100"
+                                          selected-object="afterStudentSelected"
+                                          local-data="RegistrationOnlineList"
+                                          search-fields="SearchRegistration"
+                                          title-field="SearchRegistration"
+                                          minlength="1"
+                                          input-class="form-control"
+                                          match-class="highlight"
+                                          input-changed="selectionChanged"
+                                          field-required="true"
+                                          auto-match="true"
+                                          focus-in="focusIn()">
+                        </angucomplete-alt>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                </div>
+            </div>
+        </div>
+        <div ng-show="RegistrationOnline.RegistrationOnlineId > 0">
+            <form name="formRegistrationOnline" novalidate>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label class="col-form-label font-weight-bold col-lg-4">Session <span class="text-danger">*</span></label>
+                            <div class="col-sm-8">
+                                <select disabled ng-model="RegistrationOnline.AcademicSessionId" ng-change="getRegistrationFormList()" name="AcademicSessionId" ng-options="option.AcademicSessionId as option.SessionName for option in AcademicSessionList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                    <option value="">--Select Session--</option>
+                                </select>
+                                <span class="text-danger" ng-if="(formRegistrationOnline.AcademicSessionId.$dirty || IsSubmitted) && formRegistrationOnline.AcademicSessionId.$error.required">Session is required!</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label class="col-form-label font-weight-bold col-lg-4">Class <span class="text-danger">*</span></label>
+                            <div class="col-sm-8">
+                                <select disabled ng-model="RegistrationOnline.ClassNo" name="ClassNo" ng-options="option.ClassNo as option.ClassName for option in ClassListDistinct" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                    <option value="">--Select Class--</option>
+                                </select>
+                                <span class="text-danger" ng-if="(formRegistrationOnline.ClassNo.$dirty || IsSubmitted) && formRegistrationOnline.ClassNo.$error.required">Class is required!</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 form-group" ng-show="RegistrationOnline.ClassNo == 11">
+                            <label class="col-form-label font-weight-bold col-lg-4">Stream Type <span class="text-danger">*</span></label>
+                            <div class="col-sm-8">
+                                <select disabled ng-model="RegistrationOnline.ClassStreamTypeId" ng-change="getSubjectOptionList()" name="ClassStreamTypeId" ng-options="option.ClassStreamTypeId as option.ClassStreamTypeName for option in ClassStreamTypeList" class="form-control">
+                                    <option value="">--Select Stream Type--</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 form-group" ng-show="RegistrationOnline.ClassNo == 11">
+                            <label class="col-form-label font-weight-bold col-lg-4">Option 1 <span class="text-danger">*</span></label>
+                            <div class="col-sm-8">
+                                <select disabled ng-model="RegistrationOnline.SubjectOptionOne" ng-change="changeSubjectOptionOne()" name="SubjectOptionOne" ng-options="option.SubjectOptionId as option.SubjectOptionName for option in SubjectOptionOneList" class="form-control">
+                                    <option value="">--Select Subject 1--</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 form-group" ng-show="RegistrationOnline.ClassNo == 11">
+                            <label class="col-form-label font-weight-bold col-lg-4">Option 2 </label>
+                            <div class="col-sm-8">
+                                <select disabled ng-model="RegistrationOnline.SubjectOptionTwo" name="SubjectOptionTwo" ng-options="option.SubjectOptionId as option.SubjectOptionName for option in SubjectOptionOneList" class="form-control">
+                                    <option value="">--Select Subject 2--</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-header text-uppercase">Bank Detail</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label class="col-form-label font-weight-bold col-lg-4">Bank Name <span class="text-danger">*</span></label>
+                            <div class="col-sm-8">
+                                <input type="text" name="BankName" placeholder="Enter Bank Name" ng-model="Refund.BankName" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus>
+                                <span class="text-danger" ng-if="(formRegistrationOnline.BankName.$dirty || IsSubmitted) && formRegistrationOnline.BankName.$error.required">Bank Name is required!</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label class="col-form-label font-weight-bold col-lg-4">Bank Branch <span class="text-danger">*</span></label>
+                            <div class="col-sm-8">
+                                <input type="text" name="BankBranch" placeholder="Enter Bank Branch" ng-model="Refund.BankBranch" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus>
+                                <span class="text-danger" ng-if="(formRegistrationOnline.BankBranch.$dirty || IsSubmitted) && formRegistrationOnline.BankBranch.$error.required">Bank Branch is required!</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label class="col-form-label font-weight-bold col-lg-4">Account Holder Name <span class="text-danger">*</span></label>
+                            <div class="col-sm-8">
+                                <input type="text" name="AccountHolderName" placeholder="Enter Account Holder Name" ng-model="Refund.AccountHolderName" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus>
+                                <span class="text-danger" ng-if="(formRegistrationOnline.AccountHolderName.$dirty || IsSubmitted) && formRegistrationOnline.AccountHolderName.$error.required">Account Holder Name is required!</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label class="col-form-label font-weight-bold col-lg-4">Account No <span class="text-danger">*</span></label>
+                            <div class="col-sm-8">
+                                <input type="number" name="AccountNo" placeholder="Enter Account No" ng-model="Refund.AccountNo" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus>
+                                <span class="text-danger" ng-if="(formRegistrationOnline.AccountNo.$dirty || IsSubmitted) && formRegistrationOnline.AccountNo.$error.required">Account No is required!</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label class="col-form-label font-weight-bold col-lg-4">IFSC <span class="text-danger">*</span></label>
+                            <div class="col-sm-8">
+                                <input type="text" name="IFSC" placeholder="Enter IFSC" ng-model="Refund.IFSC" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus>
+                                <span class="text-danger" ng-if="(formRegistrationOnline.IFSC.$dirty || IsSubmitted) && formRegistrationOnline.IFSC.$error.required">IFSC is required!</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label class="col-form-label font-weight-bold col-lg-4">Status <span class="text-danger">*</span></label>
+                            <div class="col-sm-8">
+                                <select ng-options="option.Key as option.Value for option in RefundStatusList" class="form-control" name="RefundStatus" ng-model="Refund.RefundStatus" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                    <option value="">--Select Status--</option>
+                                </select>
+                                <span class="text-danger" ng-if="(formRegistrationOnline.RefundStatus.$dirty || IsSubmitted) && formRegistrationOnline.RefundStatus.$error.required">Status is required!</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label class="col-form-label font-weight-bold col-lg-4">Reason</label>
+                            <div class="col-sm-8">
+                                <textarea type="text" name="ApplicationReason" placeholder="Enter Reason" ng-model="Refund.ApplicationReason" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer text-centre" ng-if="RegistrationOnline.RegistrationOnlineId > 0">
+            <button class="btn btn-primary" ng-click="saveRefund()">Update</button>
+        </div>
+    </div>
+</div>
+

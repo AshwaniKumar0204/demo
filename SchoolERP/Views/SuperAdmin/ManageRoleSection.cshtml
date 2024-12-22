@@ -1,0 +1,72 @@
+﻿@{
+    Layout = null;
+}
+<style>
+    th, td {
+        white-space: nowrap
+    }
+</style>
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Manage Role Class</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Manage Role Class</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group row" style="margin-bottom:20px">
+                <div class="col-sm-6">
+                    <label class="col-form-label  col-lg-4">Select Role <span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <select class="form-control" ng-model="RoleId" ng-change="getAllRoleSectionList()" ng-options="option.RoleId as option.RoleTitle for option in RoleList"></select>
+                    </div>
+                </div>
+            </div>
+
+            <fieldset class="mb-3" ng-repeat="class in ClassList">
+                <legend class="text-uppercase font-size-sm font-weight-bold">
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" ng-change="checkAll(class)" ng-model="class.CheckAll">
+                            {{class.ClassName2}}
+                        </label>
+                    </div>
+                </legend>
+                <div class="form-group row">
+                    <div class="col-lg-4" ng-repeat="RoleSection in class.RoleSectionList">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="RoleSection.IsSelected">
+                                {{RoleSection.SectionName}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="card-footer text-centre" ng-if="ClassList.length > 0">
+            <button class="btn btn-primary" ng-click="saveRoleSection()">Submit</button>
+        </div>
+    </div>
+</div>
+

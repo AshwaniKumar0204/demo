@@ -1,0 +1,189 @@
+﻿
+@{
+    Layout = null;
+}
+<style>
+    hr {
+        margin-top: 0;
+    }
+
+    label {
+        font-weight: bold;
+    }
+</style>
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Update Registration</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Update Registration</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group row" ng-show="!IsEdit">
+                <label class="col-form-label  col-lg-2">Registration No <span class="text-danger">*</span></label>
+                <div class="col-lg-4">
+                    <angucomplete-alt id="StudentAutoComplete"
+                                      placeholder="Enter Registration No/Student Name"
+                                      pause="100"
+                                      selected-object="afterStudentSelected"
+                                      local-data="StudentRegistrationList"
+                                      search-fields="SearchField"
+                                      title-field="SearchField"
+                                      minlength="1"
+                                      input-class="form-control"
+                                      match-class="highlight"
+                                      input-changed="selectionChanged"
+                                      field-required="true"
+                                      auto-match="true"
+                                      focus-in="focusIn()">
+                    </angucomplete-alt>
+                </div>
+            </div>
+            <form novalidate name="formRegistration" ng-show="Registration.StudentRegistrationId > 0">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Full Name <span class="text-danger">*</span></label>
+                            <input type="text" name="Name" ng-model="Registration.Name" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Your Full Name" required autofocus>
+                            <span class="text-danger" ng-if="(formRegistration.Name.$dirty || IsSubmitted) && formRegistration.Name.$error.required">Full Name is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Gender <span class="text-danger">*</span></label>
+                            <select ng-model="Registration.Gender" name="Gender" ng-options="option.Key as option.Value for option in GenderList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                            <span class="text-danger" ng-if="(formRegistration.Gender.$dirty || IsSubmitted) && formRegistration.Gender.$error.required">Gender is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Date Of Birth <span class="text-danger">*</span></label>
+                            <input type="date" name="DOB" ng-model="Registration.DOB" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus>
+                            <span class="text-danger" ng-if="(formRegistration.DOB.$dirty || IsSubmitted) && formRegistration.DOB.$error.required">Date Of Birth is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Father Name <span class="text-danger">*</span></label>
+                            <input type="text" name="FatherName" ng-model="Registration.FatherName" placeholder="Enter Your Father Name" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                            <span class="text-danger" ng-if="(formRegistration.FatherName.$dirty || IsSubmitted) && formRegistration.FatherName.$error.required">Father Name is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Mother Name <span class="text-danger">*</span></label>
+                            <input type="text" name="MotherName" ng-model="Registration.MotherName" placeholder="Enter Your Mother Name" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                            <span class="text-danger" ng-if="(formRegistration.MotherName.$dirty || IsSubmitted) && formRegistration.MotherName.$error.required">Mothe rName is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Aadhaar No </label>
+                            <input type="number" name="AadharNo" ng-model="Registration.AadharNo" class="form-control required" placeholder="Enter Aadhaar No">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Mobile No <span class="text-danger">*</span></label>
+                            <input type="number" name="MobileNo" ng-model="Registration.MobileNo" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Mobile No" required autofocus>
+                            <span class="text-danger" ng-if="(formRegistration.MobileNo.$dirty || IsSubmitted) && formRegistration.MobileNo.$error.required">Mobile No is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Email </label>
+                            <input type="email" name="EmailId" ng-model="Registration.EmailId" class="form-control required" placeholder="Enter Email Id">
+                            <span class="text-danger" ng-if="formRegistration.EmailId.$error.email && IsSubmitted">Invalid Email Id</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>State <span class="text-danger">*</span></label>
+                            <select ng-model="Registration.PermanentStateId" ng-change="changePermanentState()" name="PermanentStateId" ng-options="option.StateId as option.StateName for option in StateList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                            <span class="text-danger" ng-if="(formRegistration.PermanentStateId.$dirty || IsSubmitted) && formRegistration.PermanentStateId.$error.required">State is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>City <span class="text-danger">*</span></label>
+                            <select ng-model="Registration.PermanentCityId" ng-change="sameAsPermanentAddress()" name="PermanentCityId" ng-options="option.CityId as option.CityName for option in PermanentCityList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                            <span class="text-danger" ng-if="(formRegistration.PermanentCityId.$dirty || IsSubmitted) && formRegistration.PermanentCityId.$error.required">City is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Permanent Address <span class="text-danger">*</span></label>
+                            <input type="text" ng-model="Registration.Address" placeholder="Enter Permanent Address" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                            <span class="text-danger" ng-if="(formRegistration.Address.$dirty || IsSubmitted) && formRegistration.Address.$error.required">Address is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Registration Date <span class="text-danger">*</span></label>
+                            <input type="date" name="RegistrationDate" ng-model="Registration.RegistrationDate" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus>
+                            <span class="text-danger" ng-if="(formRegistration.RegistrationDate.$dirty || IsSubmitted) && formRegistration.RegistrationDate.$error.required">Registration Date is required!</span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <fieldset class="mb-3">
+                    <legend class="text-uppercase font-size-sm font-weight-bold">Registration Detail</legend>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Student Type <span class="text-danger">*</span></label>
+                                <select ng-model="Registration.StudentTypeId" name="StudentTypeId" ng-options="option.StudentTypeId as option.TypeName for option in StudentTypeList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                                <span class="text-danger" ng-if="(formRegistration.StudentTypeId.$dirty || IsSubmitted) && formRegistration.StudentTypeId.$error.required">Student Type is required!</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Class <span class="text-danger">*</span></label>
+                                <select ng-model="Registration.ClassId" name="ClassId" ng-options="option.ClassId as option.ClassName for option in ClassList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                                <span class="text-danger" ng-if="(formRegistration.ClassId.$dirty || IsSubmitted) && formRegistration.ClassId.$error.required">Class is required!</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Session <span class="text-danger">*</span> <span></span></label>
+                                <select ng-model="Registration.AcademicSessionId" name="AcademicSessionId" ng-options="option.AcademicSessionId as option.SessionName for option in AcademicSessionList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                                <span class="text-danger" ng-if="(formRegistration.AcademicSessionId.$dirty || IsSubmitted) && formRegistration.AcademicSessionId.$error.required">Session is required!</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Registration Remarks</label>
+                                <input type="text" ng-model="Registration.Remarks" placeholder="Enter Registration Remarks" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+        <div class="card-footer text-centre" ng-show="Registration.StudentRegistrationId > 0">
+            <button class="btn btn-primary" ng-click="updateStudentRegistration()">Submit</button>
+            <a href="#!StudentRegistrationList" class="btn btn-danger">Back</a>
+        </div>
+    </div>
+</div>

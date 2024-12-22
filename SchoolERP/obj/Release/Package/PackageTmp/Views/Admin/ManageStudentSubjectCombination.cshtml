@@ -1,0 +1,184 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Manage Subject Combination</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Manage Subject Combination</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    <label class="col-form-label  col-lg-4">Admission No <span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <angucomplete-alt id="StudentAutoComplete"
+                                          placeholder="Enter Admission No/Student Name"
+                                          pause="100"
+                                          selected-object="afterStudentSelected"
+                                          local-data="AdmissionList"
+                                          search-fields="SearchAdmission"
+                                          title-field="SearchAdmission"
+                                          minlength="1"
+                                          input-class="form-control"
+                                          match-class="highlight"
+                                          input-changed="selectionChanged"
+                                          field-required="true"
+                                          auto-match="true"
+                                          focus-in="focusIn()">
+                        </angucomplete-alt>
+                    </div>
+                </div>
+            </div>
+            <div ng-if="SelectedAdmission.AdmissionId > 0">
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">Full Name :</label>
+                        <label class="col-form-label col-lg-8 col-8" ng-bind="SelectedAdmission.FullName"></label>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">Session :</label>
+                        <label class="col-form-label col-lg-8 col-8" ng-bind="SelectedAdmission.SessionName"></label>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">Class :</label>
+                        <label class="col-form-label col-lg-8 col-8" ng-bind="SelectedAdmission.ClassName"></label>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">Section :</label>
+                        <label class="col-form-label col-lg-8 col-8" ng-bind="SelectedAdmission.SectionName"></label>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">Registration No :</label>
+                        <label class="col-form-label col-lg-8 col-8" ng-bind="SelectedAdmission.AdmissionNo"></label>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">Roll No :</label>
+                        <label class="col-form-label col-lg-8 col-8" ng-bind="SelectedAdmission.RollNo"></label>
+                    </div>
+                </div>
+                <fieldset class="mb-3">
+                    <legend class="text-uppercase font-size-sm font-weight-bold">Student Charge List</legend>
+                    <div class="form-group col-sm-6">
+                    </div>
+                    <div class="form-group col-sm-6 float-right">
+                        <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+                    </div>
+                    <div class="form-group col-sm-6" ng-if="SelectedAdmission.AdmissionId > 0">
+                        <button class="btn btn-sm btn-primary" ng-click="newStudentSubjectCombination()"> <i class="fa fa-plus"></i> New Subject Combination</button>
+                        @*Display
+        <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+        Records Per Page*@
+                    </div>
+                    <div class="form-group col-sm-12 table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Sl. No.</th>
+                                    <th style="cursor: pointer;" ng-click="sort('FeeHeadTitle')">Fee Head <span class="fa" ng-show="sortKey=='FeeHeadTitle'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('SubjectCombinationName')">Subject Combination <span class="fa" ng-show="sortKey=='SubjectCombinationName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('Amount')">Amount <span class="fa" ng-show="sortKey=='Amount'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('StartDate')">Start Date <span class="fa" ng-show="sortKey=='StartDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('EndDate')">End Date <span class="fa" ng-show="sortKey=='EndDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th ng-if="CanEdit">Edit </th>
+                                    <th ng-if="CanDelete">Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="StudentSubjectCombination in StudentSubjectCombinationList|orderBy:sortKey:reverse|filter:search" ng-model="search">
+                                    <td>{{$index + 1}}</td>
+                                    <td>{{StudentSubjectCombination.FeeHeadTitle}}</td>
+                                    <td>{{StudentSubjectCombination.SubjectCombinationName}}</td>
+                                    <td>{{StudentSubjectCombination.Amount | number:2}}</td>
+                                    <td>{{StudentSubjectCombination.StartDate | date:'dd/MM/yyyy'}}</td>
+                                    <td>{{StudentSubjectCombination.EndDate | date:'dd/MM/yyyy'}}</td>
+                                    <td ng-if="CanEdit"><button class="btn btn-sm btn-primary" ng-click="editStudentSubjectCombination(StudentSubjectCombination)"><i class="icon-pencil3"></i></button></td>
+                                    <td ng-if="CanDelete"><button class="btn btn-sm btn-danger" ng-click="deleteConfirmation(StudentSubjectCombination.StudentSubjectCombinationId)"><i class="fa fa-trash"></i></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+
+        <div id="modal_Student_Charge" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{StudentSubjectCombination.StudentSubjectCombinationId > 0 ? 'Update' : 'New' }} Student Charge</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <form name="formStudentSubjectCombination" novalidate>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label>Subject Combination <span class="text-danger">*</span></label>
+                                    <select ng-model="StudentSubjectCombination.SubjectCombinationId" name="SubjectCombinationId" ng-options="option.SubjectCombinationId as option.SubjectCombinationName for option in SubSubjectCombinationList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                                    <span class="text-danger" ng-if="(formStudentSubjectCombination.SubjectCombinationId.$dirty || IsSubmitted) && formStudentSubjectCombination.SubjectCombinationId.$error.required">Subject Combination is required!</span>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label>Start Date <span class="text-danger">*</span></label>
+                                    <input type="date" name="StartDate" ng-model="StartDate" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Start Date" required autofocus>
+                                    <span class="text-danger" ng-if="(formStudentSubjectCombination.StartDate.$dirty || IsSubmitted) && formStudentSubjectCombination.StartDate.$error.required">Start Date is required!</span>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label>End Date </label>
+                                    <input type="date" name="EndDate" ng-model="EndDate" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn bg-primary" ng-click="saveStudentSubjectCombination()">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal_confirmation" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <h6 class="font-weight-semibold">Are you sure want to delete this record?</h6>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn bg-primary" ng-click="deleteStudentSubjectCombination()">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

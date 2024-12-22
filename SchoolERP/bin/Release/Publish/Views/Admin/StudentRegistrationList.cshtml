@@ -1,0 +1,144 @@
+﻿
+@{
+    Layout = null;
+}
+<style>
+    hr {
+        margin-top: 0;
+    }
+
+    tr, td, th {
+        white-space: nowrap
+    }
+</style>
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <a href="#!" class="breadcrumb-item">Registration</a>
+                <span class="breadcrumb-item active">List Registration</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">List Registration</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group row">
+                <div class="col-lg-4">
+                    <label class="col-form-label font-weight-bold col-lg-4">Course </label>
+                    <div class="col-lg-8">
+                        <select ng-model="ClassId" ng-change="getAcademicSessionList()" ng-options="option.ClassId as option.ClassName for option in ClassList" class="form-control">
+                            <option value="">--Select Course--</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <label class="col-form-label font-weight-bold col-lg-4">Session</label>
+                    <div class="col-lg-8">
+                        <select ng-model="AcademicSessionId" ng-change="getStudentRegistrationList()" ng-options="option.AcademicSessionId as option.SessionName for option in AcademicSessionList" class="form-control">
+                            <option value="">--Select Session--</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <label class="col-form-label font-weight-bold col-lg-4">Student Type</label>
+                    <div class="col-lg-8">
+                        <select ng-model="StudentTypeId" ng-change="filterList()" ng-options="option.StudentTypeId as option.TypeName for option in StudentTypeList" class="form-control">
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <fieldset class="mb-3" ng-if="StudentRegistrationList.length >0">
+                <legend class="text-uppercase font-size-sm font-weight-bold"></legend>
+                <div class="form-group col-sm-6 float-right">
+                    <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+                </div>
+                <div class="form-group col-sm-6">
+                    Display
+                    <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+                    Records Per Page
+                </div>
+                <div class="col-sm-12">
+                    <a class="text-link font-weight-bold" ng-click="tablesToExcel(['table_purchase_list'],['StudentRegistrationList'],'StudentRegistrationList','StudentRegistrationList')">Export To Excel</a>&nbsp;&nbsp;&nbsp;|
+                </div>
+                <div class="form-group col-sm-12 table-responsive" id="div_table_purchase_list">
+                    <table class="table table-bordered table-hover" id="table_purchase_list">
+                        <thead>
+                            <tr>
+                                <th>Sl. No.</th>
+                                <th ng-if="!IsExporting">Receipt</th>
+                                <th ng-if="CanEdit && !IsExporting">Edit </th>
+                                <th ng-if="!IsExporting">Admission</th>
+                                <th style="cursor: pointer;" ng-click="sort('RegistrationNo')">Registration No <span class="fa" ng-show="sortKey=='RegistrationNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Name')">Name  <span class="fa" ng-show="sortKey=='Name'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('DOB')">DOB  <span class="fa" ng-show="sortKey=='DOB'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Gender')">Gender  <span class="fa" ng-show="sortKey=='Gender'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('FatherName')">Father Name  <span class="fa" ng-show="sortKey=='FatherName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('MotherName')">Mother Name  <span class="fa" ng-show="sortKey=='MotherName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Address')">Address  <span class="fa" ng-show="sortKey=='Address'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('CityName')">City  <span class="fa" ng-show="sortKey=='CityName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('StateName')">State  <span class="fa" ng-show="sortKey=='StateName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('EmailId')">Email Id  <span class="fa" ng-show="sortKey=='EmailId'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('MobileNo')">Mobile No  <span class="fa" ng-show="sortKey=='MobileNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('ClassName')">Class  <span class="fa" ng-show="sortKey=='ClassName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('TypeName')">Student Type  <span class="fa" ng-show="sortKey=='TypeName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('SessionName')">Academic Session  <span class="fa" ng-show="sortKey=='SessionName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Remarks')">Remarks  <span class="fa" ng-show="sortKey=='Remarks'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('RegistrationDate')">Registration Date <span class="fa" ng-show="sortKey=='RegistrationDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr dir-paginate="Registration in StudentRegistrationList|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize" current-page="currentPage" ng-model="search">
+                                <td>{{(currentPage*pageSize - (pageSize-1))+ $index}}</td>
+                                <th ng-if="!IsExporting"><a href="/admin/PrintRegistrationReceipt/{{Registration.StudentRegistrationId}}" target="_blank" class="btn btn-sm btn-primary"><i class="fa fa-print"></i></a></th>
+                                <td ng-if="CanEdit && !IsExporting"><button class="btn btn-sm btn-primary" ng-click="editStudentRegistration(Registration)"><i class="icon-pencil3"></i></button></td>
+                                <td ng-if="!IsExporting">
+                                    <a href="javascript:void(0);" ng-if="Registration.RegistrationStatus != 2" ng-click="takeAdmission(Registration)"> Take Admission</a>
+                                    <a ng-if="Registration.RegistrationStatus == 2">Registred</a>
+                                </td>
+                                <td>{{Registration.RegistrationNo}}</td>
+                                <td>{{Registration.Name}}</td>
+                                <td>{{Registration.DOB | date:'dd MMM, yyyy'}}</td>
+                                <td>{{GenderList[Registration.Gender].Value}}</td>
+                                <td>{{Registration.FatherName}}</td>
+                                <td>{{Registration.MotherName}}</td>
+                                <td>{{Registration.Address}}</td>
+                                <td>{{Registration.CityName}}</td>
+                                <td>{{Registration.StateName}}</td>
+                                <td>{{Registration.EmailId}}</td>
+                                <td>{{Registration.MobileNo}}</td>
+                                <td>{{Registration.ClassName}}</td>
+                                <td>{{Registration.TypeName}}</td>
+                                <td>{{Registration.SessionName}}</td>
+                                <td>{{Registration.Remarks}}</td>
+                                <td>{{Registration.RegistrationDate | date:'dd MMM, yyyy'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="clearfix">
+                    <dir-pagination-controls max-size="pageSize" boundary-links="true" template-url="/Scripts/DirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>

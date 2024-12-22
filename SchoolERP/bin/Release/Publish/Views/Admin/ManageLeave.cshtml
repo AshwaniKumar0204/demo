@@ -1,0 +1,188 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Manage Leave</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Manage Leave</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group col-sm-2 float-right">
+                <input type="text" class="float-right input-sm form-control" ng-model="search" placeholder="Search..." />
+            </div>
+            <div class="form-group col-sm-2" ng-if="CanEdit">
+                <button class="btn btn-sm btn-primary" ng-click="newLeave()"> <i class="fa fa-plus"></i> New Leave</button>
+            </div>
+            <div class="form-group col-sm-2 float-right">
+                <select ng-model="Year" ng-change="getLeaveList()" ng-options="option as option for option in YearList" class="form-control">
+                    <option value="">--All Year--</option>
+                </select>
+            </div>
+            <div class="form-group col-sm-2 float-right">
+                <select ng-model="LeaveType" ng-change="getLeaveList()" ng-options="option.Key as option.Value for option in LeaveTypeList" class="form-control">
+                    <option value="">--All Leave Type--</option>
+                </select>
+            </div>
+
+
+            <div class="form-group col-sm-12 table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Sl. No.</th>
+                            <th style="cursor: pointer;" ng-click="sort('Year')">Year <span class="fa" ng-show="sortKey=='Year'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('LeaveType')">Leave Type <span class="fa" ng-show="sortKey=='LeaveType'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('NoOfDays')">Leave Days <span class="fa" ng-show="sortKey=='NoOfDays'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('Status')">Status <span class="fa" ng-show="sortKey=='Status'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th ng-if="CanEdit">Edit </th>
+                            <th ng-if="CanDelete">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="Leave in LeaveList|orderBy:sortKey:reverse|filter:search" ng-model="search">
+                            <td>{{$index + 1}}</td>
+                            <td>{{Leave.Year}}</td>
+                            <td>{{Leave.LeaveTypeName}}</td>
+                            <td>{{Leave.NoOfDays}}</td>
+                            <td><a ng-class="Leave.Status == 1 ? 'badge bg-success-400' : 'badge bg-danger'"> {{StatusDetail[Leave.Status]}}</a></td>
+                            <td ng-if="CanEdit"><button class="btn btn-sm btn-primary" ng-click="editLeave(Leave)"><i class="icon-pencil3"></i></button></td>
+                            <td ng-if="CanDelete"><button class="btn btn-sm btn-danger" ng-click="deleteConfirmation(Leave.LeaveId)"><i class="fa fa-trash"></i></button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="modal_Student_Charge" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{Leave.LeaveId > 0 ? 'Update' : 'New' }} Leave</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <form name="formLeave" novalidate>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-4 form-group">
+                                    <label class="col-form-label col-sm-4">Year <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <select ng-model="Leave.Year" ng-change="getStaffAvailableLeaveList()" name="Year" ng-options="option as option for option in YearList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                            <option value="">--Select Year--</option>
+                                        </select>
+                                        <span class="text-danger" ng-if="(formLeave.Year.$dirty || IsSubmitted) && formLeave.Year.$error.required">Leave Type is required!</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label class="col-form-label col-sm-4">Leave Type <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <select ng-model="Leave.LeaveType" ng-change="getStaffAvailableLeaveList()" name="LeaveType" ng-options="option.Key as option.Value for option in LeaveTypeList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                            <option value="">--Select Leave Type--</option>
+                                        </select>
+                                        <span class="text-danger" ng-if="(formLeave.LeaveType.$dirty || IsSubmitted) && formLeave.LeaveType.$error.required">Leave Type is required!</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label class="col-form-label col-sm-4">Leave Days <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="number" ng-model="Leave.NoOfDays" name="NoOfDays" ng-change="changeStaffLeave()" class="form-control" placeholder="Enter Leave Days" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                                        <span class="text-danger" ng-if="(formLeave.NoOfDays.$dirty || IsSubmitted) && formLeave.NoOfDays.$error.required">Leave Days is required!</span>
+                                    </div>
+                                </div>
+                                @*<div class="col-md-4 form-group">
+                                        <label>Status <span class="text-danger">*</span></label>
+                                        <select ng-model="Leave.Status" name="Status" ng-options="option.Key as option.Value for option in StatusList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                            <option value="">--Select Status--</option>
+                                        </select>
+                                        <span class="text-danger" ng-if="(formLeave.Status.$dirty || IsSubmitted) && formLeave.Status.$error.required">Status is required!</span>
+                                    </div>*@
+                            </div>
+                            <fieldset class="mb-3">
+                                <legend class="text-uppercase font-size-sm font-weight-bold">Staff List</legend>
+                                <div class="form-group col-sm-2 float-right">
+                                    <input type="text" class="float-right input-sm form-control" ng-model="searchStaff" placeholder="Search..." />
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label class="col-form-label" for="IsChangeStaffLeave">Auto Change Staff Leave</label>
+                                    <input type="checkbox" style="margin-left:10px" id="IsChangeStaffLeave" name="IsChangeStaffLeave" ng-model="IsChangeStaffLeave" ng-change="changeStaffLeave()" />
+                                </div>
+                                <div class="form-group col-sm-12 table-responsive">
+                                    <table class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Sl. No.</th>
+                                                <th style="cursor: pointer;" ng-click="sort('StaffCode')">Staff Code<span class="fa" ng-show="sortKey=='StaffCode'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                                <th style="cursor: pointer;" ng-click="sort('StaffName')">Staff <span class="fa" ng-show="sortKey=='StaffName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                                <th style="cursor: pointer;" ng-click="sort('DesignationName')">Designation <span class="fa" ng-show="sortKey=='DesignationName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                                <th style="cursor: pointer;" ng-click="sort('NoOfLeaves')">Leave Days <span class="fa" ng-show="sortKey=='NoOfLeaves'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="StaffLeave in StaffAvailableLeaves|filter:searchStaff" ng-model="searchStaff">
+                                                <td>{{$index + 1}}</td>
+                                                <td>{{StaffLeave.StaffCode}}</td>
+                                                <td>{{StaffLeave.StaffName}}</td>
+                                                <td>{{StaffLeave.DesignationName}}</td>
+                                                <td>
+                                                    @*{{StaffAdvancePayment.NoOfLeaves}}*@
+                                                    <input type="number" ng-model="StaffLeave.NoOfLeaves" />
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn bg-primary" ng-click="saveLeave()">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal_confirmation" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <h6 class="font-weight-semibold">Are you sure want to delete this record?</h6>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn bg-primary" ng-click="deleteLeave()">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

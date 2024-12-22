@@ -1,0 +1,74 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Section Periods List</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Section Periods List</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    <label class="col-form-label  col-lg-4">Select Session <span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <select class="form-control" ng-model="AcademicSessionId" ng-change="getSectionPeriodList()" ng-options="option.AcademicSessionId as option.SessionName for option in AcademicSessionList"></select>
+                    </div>
+                </div>
+            </div>
+
+            <fieldset class="mb-3" ng-if="AcademicSessionId > 0">
+                <legend class="text-uppercase font-size-sm font-weight-bold">Teacher Session List</legend>
+                <div class="form-group col-sm-6 float-right">
+                    <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+                </div>
+                <div class="form-group col-sm-12 table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Sl. No.</th>
+                                <th style="cursor: pointer;" ng-click="sort('ClassName')">Class <span class="fa" ng-show="sortKey=='ClassName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('SectionName')">Section <span class="fa" ng-show="sortKey=='SectionName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('NoOfPeriods')">Periods <span class="fa" ng-show="sortKey=='NoOfPeriods'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('AllocatedPeriods')">Allocated Periods <span class="fa" ng-show="sortKey=='AllocatedPeriods'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th>Available Periods</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="teacherSession in SectionPeriodList|orderBy:sortKey:reverse|filter:search" ng-model="search">
+                                <td>{{$index + 1}}</td>
+                                <td>{{teacherSession.ClassName}}</td>
+                                <td>{{teacherSession.SectionName}}</td>
+                                <td>{{teacherSession.NoOfPeriods}}</td>
+                                <td>{{teacherSession.AllocatedPeriods}}</td>
+                                <td>{{teacherSession.NoOfPeriods - teacherSession.AllocatedPeriods}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>
+

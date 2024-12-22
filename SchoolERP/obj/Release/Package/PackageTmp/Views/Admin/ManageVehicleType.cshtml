@@ -1,0 +1,125 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Manage Vehicle Type</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Manage Vehicle Type</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group col-sm-6 float-right">
+                <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+            </div>
+            <div class="form-group col-sm-6" ng-if="CanEdit">
+                <button class="btn btn-sm btn-primary" ng-click="newVehicleType()"> <i class="fa fa-plus"></i> New VehicleType</button>
+                @*Display
+                    <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+                    Records Per Page*@
+            </div>
+            <div class="form-group col-sm-12 table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Sl. No.</th>
+                            <th style="cursor: pointer;" ng-click="sort('VehicleTypeName')">Vehicle Type <span class="fa" ng-show="sortKey=='VehicleTypeName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('ServiceDuration')">Service Duration <span class="fa" ng-show="sortKey=='ServiceDuration'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('VehicleTypeStatus')">Status <span class="fa" ng-show="sortKey=='VehicleTypeStatus'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th ng-if="CanEdit">Edit </th>
+                            <th ng-if="CanDelete">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="VehicleType in VehicleTypeList|orderBy:sortKey:reverse|filter:search" ng-model="search">
+                            <td>{{$index + 1}}</td>
+                            <td>{{VehicleType.VehicleTypeName}}</td>
+                            <td>{{VehicleType.ServiceDuration}}</td>
+                            <td><a ng-class="VehicleType.VehicleTypeStatus == 1 ? 'badge bg-success-400' : 'badge bg-danger'"> {{VehicleTypeStatusList[VehicleType.VehicleTypeStatus].Value}}</a></td>
+                            <td ng-if="CanEdit"><button class="btn btn-sm btn-primary" ng-click="editVehicleType(VehicleType)"><i class="icon-pencil3"></i></button></td>
+                            <td ng-if="CanDelete"><button class="btn btn-sm btn-danger" ng-click="deleteConfirmation(VehicleType.VehicleTypeId)"><i class="fa fa-trash"></i></button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="modal_Student_Charge" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{VehicleType.VehicleTypeId > 0 ? 'Update' : 'New' }} Vehicle Type</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <form name="formVehicleType" novalidate>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label>Vehicle Type <span class="text-danger">*</span></label>
+                                    <input type="text" ng-model="VehicleType.VehicleTypeName" name="VehicleTypeName" class="form-control" placeholder="Enter VehicleType Name" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                                    <span class="text-danger" ng-if="(formVehicleType.VehicleTypeName.$dirty || IsSubmitted) && formVehicleType.VehicleTypeName.$error.required">Vehicle Type is required!</span>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label>Service Duration <span class="text-danger">*</span></label>
+                                    <input type="number" ng-model="VehicleType.ServiceDuration" name="ServiceDuration" class="form-control" placeholder="Enter Service Duration" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                                    <span class="text-danger" ng-if="(formVehicleType.ServiceDuration.$dirty || IsSubmitted) && formVehicleType.ServiceDuration.$error.required">Service Duration is required!</span>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label>Status <span class="text-danger">*</span></label>
+                                    <select ng-model="VehicleType.VehicleTypeStatus" name="VehicleTypeStatus" ng-options="option.Key as option.Value for option in VehicleTypeStatusList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                                    <span class="text-danger" ng-if="(formVehicleType.VehicleTypeStatus.$dirty || IsSubmitted) && formVehicleType.VehicleTypeStatus.$error.required">Status is required!</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn bg-primary" ng-click="saveVehicleType()">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal_confirmation" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <h6 class="font-weight-semibold">Are you sure want to delete this record?</h6>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn bg-primary" ng-click="deleteVehicleType()">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

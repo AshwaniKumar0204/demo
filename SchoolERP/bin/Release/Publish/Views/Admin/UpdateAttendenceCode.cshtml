@@ -1,0 +1,82 @@
+﻿
+@{
+    Layout = null;
+}
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <a href="#" class="breadcrumb-item">Attendance</a>
+                <span class="breadcrumb-item active">Update Attendance Code</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <fieldset class="mb-3">
+                    <legend class="text-uppercase font-size-sm font-weight-bold">Update Attendance Code</legend>
+                    <div class="form-group col-sm-6 float-right">
+                        <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+                    </div>
+                    <div class="form-group col-sm-6">
+                        Display
+                        <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+                        Records Per Page
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Sl. No.</th>
+                                        <th style="cursor: pointer;" ng-click="sort('StaffName')">Staff Name <span class="fa" ng-show="sortKey=='StaffName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                        <th style="cursor: pointer;" ng-click="sort('StaffCode')">Staff Code <span class="fa" ng-show="sortKey=='StaffCode'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                        <th style="cursor: pointer;" ng-click="sort('DepartmentName')">Department <span class="fa" ng-show="sortKey=='DepartmentName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                        <th style="cursor: pointer;" ng-click="sort('DesignationName')">Designation <span class="fa" ng-show="sortKey=='DesignationName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                        <th style="cursor: pointer;" ng-click="sort('AttendenceCode')">Attendance Code <span class="fa" ng-show="sortKey=='AttendenceCode'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr dir-paginate="Staff in StaffList|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize" current-page="currentPage" ng-model="search">
+                                        <td>{{$index + 1}}</td>
+                                        <td>{{Staff.StaffName}}</td>
+                                        <td>{{Staff.StaffCode}}</td>
+                                        <td>{{Staff.DepartmentName}}</td>
+                                        <td>{{Staff.DesignationName}}</td>
+                                        <td>
+                                            <input type="text" ng-model="Staff.AttendenceCode" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    <div class="clearfix col-sm-12">
+                        <dir-pagination-controls max-size="pageSize" boundary-links="true" template-url="/Scripts/DirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="card-footer text-centre" ng-if="StaffList.length > 0 && CanEdit">
+            <button class="btn btn-primary" ng-click="updateAttendenceCode()">Update</button>
+        </div>
+    </div>
+</div>
+

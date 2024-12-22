@@ -1,0 +1,202 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Manage School</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Manage School</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group col-sm-6 float-right">
+                <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+            </div>
+            <div class="form-group col-sm-6">
+                <button class="btn btn-sm btn-primary" ng-click="newSchool()"> <i class="fa fa-plus"></i> New School</button>
+            </div>
+            <div class="form-group col-sm-12">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Sl. No.</th>
+                                <th style="cursor: pointer;" ng-click="sort('FullName')">School Name <span class="fa" ng-show="sortKey=='FullName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('ShortName')">Short Name <span class="fa" ng-show="sortKey=='ShortName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Tagline')">Tagline <span class="fa" ng-show="sortKey=='Tagline'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('AffiliationDetails')">Affiliation Details <span class="fa" ng-show="sortKey=='AffiliationDetails'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('RegistrationNo')">Registration No <span class="fa" ng-show="sortKey=='RegistrationNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('RegisteredOffice')">Registration Office <span class="fa" ng-show="sortKey=='RegisteredOffice'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Website')">Website <span class="fa" ng-show="sortKey=='Website'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Email')">Email <span class="fa" ng-show="sortKey=='Email'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('ContactNo')">Contact No <span class="fa" ng-show="sortKey=='ContactNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('AlternateNo')">Alternate No <span class="fa" ng-show="sortKey=='AlternateNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('BankDetail')">Bank Detail <span class="fa" ng-show="sortKey=='AlternateNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('SchoolStatus')">School Status <span class="fa" ng-show="sortKey=='SchoolStatus'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th>Edit </th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="School in SchoolList|orderBy:sortKey:reverse|filter:search" ng-model="search">
+                                <td>{{$index + 1}}</td>
+                                <td style="min-width:200px">{{School.FullName}}</td>
+                                <td style="white-space:nowrap">{{School.ShortName}}</td>
+                                <td>{{School.Tagline}}</td>
+                                <td>{{School.AffiliationDetails}}</td>
+                                <td>{{School.RegistrationNo}}</td>
+                                <td>{{School.RegisteredOffice}}</td>
+                                <td>{{School.Website}}</td>
+                                <td>{{School.Email}}</td>
+                                <td style="white-space:nowrap">{{School.ContactNo}}</td>
+                                <td>{{School.AlternateNo}}</td>
+                                <td style="min-width:160px">{{School.BankDetail}}</td>
+                                <td><a ng-class="School.SchoolStatus == 1 ? 'badge bg-success-400' : 'badge bg-danger'"> {{SchoolStatusList[School.SchoolStatus].Value}}</a></td>
+                                <td><button class="btn btn-sm btn-primary" ng-click="editSchool(School)"><i class="icon-pencil3"></i></button></td>
+                                <td><button class="btn btn-sm btn-danger" ng-click="deleteConfirmation(School.SchoolId)"><i class="fa fa-trash"></i></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal_Student_Charge" class="modal fade" tabindex="-1">
+        <div class="modal-dialog" ng-class="School.SchoolId > 0 ? 'modal-full' : 'modal-lg'">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{School.SchoolId > 0 ? 'Update' : 'New' }} School</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <form name="formSchool" novalidate>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div ng-class="School.SchoolId > 0 ? 'col-sm-8' : 'col-sm-12'">
+                                <div class="col-md-6 form-group">
+                                    <label>Full Name <span class="text-danger">*</span></label>
+                                    <input type="text" name="FullName" ng-model="School.FullName" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Full Name" required autofocus>
+                                    <span class="text-danger" ng-if="(formSchool.FullName.$dirty || IsSubmitted) && formSchool.FullName.$error.required">Full Name is required!</span>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Short Name <span class="text-danger">*</span></label>
+                                    <input type="text" name="ShortName" ng-model="School.ShortName" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Short Name" required autofocus>
+                                    <span class="text-danger" ng-if="(formSchool.ShortName.$dirty || IsSubmitted) && formSchool.ShortName.$error.required">Short Name is required!</span>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Tagline </label>
+                                    <input type="text" name="Tagline" ng-model="School.Tagline" class="form-control required" placeholder="Enter Tagline">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Affiliation Details </label>
+                                    <input type="text" name="AffiliationDetails" ng-model="School.AffiliationDetails" class="form-control required" placeholder="Enter Affiliation Details">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Registration No <span class="text-danger">*</span></label>
+                                    <input type="text" name="RegistrationNo" ng-model="School.RegistrationNo" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Registration No" required autofocus>
+                                    <span class="text-danger" ng-if="(formSchool.RegistrationNo.$dirty || IsSubmitted) && formSchool.RegistrationNo.$error.required">Registration No is required!</span>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Registered Office <span class="text-danger">*</span></label>
+                                    <textarea name="RegisteredOffice" ng-model="School.RegisteredOffice" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Registered Office" required autofocus></textarea>
+                                    <span class="text-danger" ng-if="(formSchool.RegisteredOffice.$dirty || IsSubmitted) && formSchool.RegisteredOffice.$error.required">Registered Office is required!</span>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="col-md-6 form-group">
+                                    <label>Website </label>
+                                    <input type="text" ng-model="School.Website" class="form-control required" placeholder="Enter Website">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Email </label>
+                                    <input type="text" ng-model="School.Email" class="form-control required" placeholder="Enter Email">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Contact No </label>
+                                    <input type="text" ng-model="School.ContactNo" class="form-control required" placeholder="Enter Contact No">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Alternate No </label>
+                                    <input type="text" ng-model="School.AlternateNo" class="form-control required" placeholder="Enter Alternate No">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Bank Detail </label>
+                                    <input type="text" ng-model="School.BankDetail" class="form-control required" placeholder="Enter Bank Detail">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Logo </label>
+                                    <input type="file" class="form-control required" accept=".png,.jpeg,.jpg" id="school_logo" onchange="angular.element(this).scope().setLogo(this)">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Status <span class="text-danger">*</span></label>
+                                    <select ng-model="School.SchoolStatus" name="SchoolStatus" ng-options="option.Key as option.Value for option in SchoolStatusList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                                    <span class="text-danger" ng-if="(formSchool.SchoolStatus.$dirty || IsSubmitted) && formSchool.SchoolStatus.$error.required">Status is required!</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-4" ng-if="School.SchoolId > 0">
+                                <div class="card">
+                                    <div class="card-img-actions">
+                                        <div class="row text-centre" style="padding:20px 30px">
+                                            <img class="card-img-top img-fluid" src="{{LogoUrl}}" alt="">
+                                        </div>
+                                    </div>
+                                    <div class="card-body text-centre">
+                                        <h5 class="card-title font-weight-semibold">School Logo</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer text-centre">
+                        <div class="col-sm-12">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn bg-primary" ng-click="saveSchool()">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal_confirmation" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmation</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <h6 class="font-weight-semibold">Are you sure want to delete this record?</h6>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn bg-primary" ng-click="deleteSchool()">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

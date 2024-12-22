@@ -1,0 +1,96 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    @*<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">*@
+    <title>Print A4 Portrait</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
+    <link href="~/Content/admin/css/icons/icomoon/styles.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/admin/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/admin/assets/css/bootstrap_limitless.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/admin/assets/css/layout.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/admin/assets/css/components.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/admin/assets/css/colors.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/Custome.css" rel="stylesheet" />
+    <style>
+        .not_print{
+            display:none !important;
+        }
+        body {
+            background: rgb(204,204,204);
+        }
+
+        page {
+            background: white;
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 0.5cm;
+            box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+        }
+        /*th, td,table {
+            border-color: #282222 !important;
+        }*/
+
+            page[size="A4"] {
+                width: 21cm;
+                /*height: 29.7cm;*/
+            }
+
+                page[size="A4"][layout="landscape"] {
+                    width: 29.7cm;
+                    /*height: 21cm;*/
+                }
+
+            page[size="A3"] {
+                width: 29.7cm;
+                /*height: 42cm;*/
+            }
+
+                page[size="A3"][layout="landscape"] {
+                    width: 42cm;
+                    /*height: 29.7cm;*/
+                }
+
+            page[size="A5"] {
+                width: 14.8cm;
+                /*height: 21cm;*/
+            }
+
+                page[size="A5"][layout="landscape"] {
+                    width: 21cm;
+                    /*height: 14.8cm;*/
+                }
+        .small-font {
+            font-size: 10px !important;
+        }
+
+        @@media print {
+            
+            body, page {
+                margin: 0;
+                box-shadow: 0;
+            }
+            th, td, table {
+                border-color: #282222 !important;
+            }
+        }
+    </style>
+</head>
+<body ng-controller="PrintController" ng-cloak>
+    @*<div class="page" id="printPage"></div>*@
+    <page size="A4" id="printPage">
+    </page>
+
+    <script src="~/Scripts/Angular/angular.js"></script>
+    <script src="~/Angular/Site/SiteModule.js"></script>
+    <script src="~/Angular/Site/Controller/PrintController.js"></script>
+</body>
+</html>
+

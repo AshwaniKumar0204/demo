@@ -1,0 +1,154 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Manage Vehicle Running Record</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Manage Vehicle Running Record</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    <label class="col-form-label col-lg-4">Select Vehicle <span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <angucomplete-alt id="BusAutoComplete"
+                                          placeholder="Enter Vehicle No"
+                                          pause="100"
+                                          selected-object="afterBusSelected"
+                                          local-data="BusList"
+                                          search-fields="BusTitle"
+                                          title-field="BusTitle"
+                                          minlength="1"
+                                          input-class="form-control"
+                                          match-class="highlight"
+                                          input-changed="selectionChanged"
+                                          field-required="true"
+                                          auto-match="true"
+                                          focus-in="focusIn()">
+                        </angucomplete-alt>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <button class="btn btn-sm btn-primary" ng-if="SelectedBus.BusId > 0 && CanEdit" ng-click="newVehicleRunningRecord()"> <i class="fa fa-plus"></i> New </button>
+                </div>
+            </div>
+            <fieldset class="mb-3" ng-show="VehicleRunningRecordList.length > 0">
+                <legend class="text-uppercase font-size-sm font-weight-bold">Fuel Consumption Detail</legend>
+                <div class="form-group col-sm-6 float-right">
+                    <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+                </div>
+                <div class="form-group col-sm-6">
+                    Display
+                    <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+                    Records Per Page
+                </div>
+                <div class="col-sm-12">
+                    <a class="text-link font-weight-bold" ng-click="tablesToExcel(['table_purchase_list'],['VehicleRunningRecord'],'VehicleRunningRecord','VehicleRunningRecord')">Export To Excel</a>&nbsp;&nbsp;&nbsp;|
+                    <a class="text-link font-weight-bold" ng-click="printA4Landscape('div_table_purchase_list','A4','')">Export to PDF </a>
+                </div>
+                <div class="form-group col-sm-12 table-responsive" id="div_table_purchase_list">
+                    <table class="table table-bordered table-hover" id="table_purchase_list">
+                        <thead>
+                            <tr>
+                                <th ng-if="!IsExporting">Sl. No.</th>
+                                <th style="cursor: pointer;" ng-click="sort('EntryDate')">Date <span class="fa" ng-show="sortKey=='EntryDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                @*<th style="cursor: pointer;" ng-click="sort('BusTitle')">Bus No <span class="fa" ng-show="sortKey=='BusTitle'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>*@
+                                <th style="cursor: pointer;" ng-click="sort('MeterReading')">Meter Reading <span class="fa" ng-show="sortKey=='MeterReading'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="CanEdit">Edit </th>
+                                <th ng-if="CanDelete">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr dir-paginate="VehicleRunningRecord in VehicleRunningRecordList|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize" current-page="currentPage" ng-model="search">
+                                <td ng-if="!IsExporting">{{$index + 1}}</td>
+                                <td>{{VehicleRunningRecord.EntryDate|date:'dd-MM-yyyy HH:mm a'}}</td>
+                                @*<td>{{VehicleRunningRecord.BusTitle}}</td>*@
+                                <td>{{VehicleRunningRecord.MeterReading}}</td>
+                                <td ng-if="CanEdit && !IsExporting"><button class="btn btn-sm btn-primary" ng-click="editVehicleRunningRecord(VehicleRunningRecord)"><i class="icon-pencil3"></i></button></td>
+                                <td ng-if="CanDelete && !IsExporting"><button class="btn btn-sm btn-danger" ng-click="deleteConfirmation(VehicleRunningRecord.VehicleRunningRecordId)"><i class="fa fa-trash"></i></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="clearfix">
+                    <dir-pagination-controls max-size="pageSize" boundary-links="true" template-url="/Scripts/DirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+                </div>
+            </fieldset>
+        </div>
+
+        <div id="modal_Student_Charge" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{VehicleRunningRecord.VehicleRunningRecordId > 0 ? 'Update' : 'New' }} Vehicle Running Record</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <form name="formVehicleRunningRecord" novalidate>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label>Date <span class="text-danger">*</span></label>
+                                    <input type="date" ng-model="VehicleRunningRecord.EntryDate" name="EntryDate" class="form-control" placeholder="Enter Date" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                                    <span class="text-danger" ng-if="(formVehicleRunningRecord.EntryDate.$dirty || IsSubmitted) && formVehicleRunningRecord.EntryDate.$error.required">Date is required!</span>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label>Meter Reading <span class="text-danger">*</span></label>
+                                    <input type="number" ng-model="VehicleRunningRecord.MeterReading" name="MeterReading" class="form-control" placeholder="Enter Meter Reading" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                                    <span class="text-danger" ng-if="(formVehicleRunningRecord.MeterReading.$dirty || IsSubmitted) && formVehicleRunningRecord.MeterReading.$error.required">Meter Reading is required!</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn bg-primary" ng-click="saveVehicleRunningRecord()">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal_confirmation" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <h6 class="font-weight-semibold">Are you sure want to delete this record?</h6>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn bg-primary" ng-click="deleteVehicleRunningRecord()">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

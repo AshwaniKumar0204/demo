@@ -1,0 +1,162 @@
+﻿
+@{
+    Layout = null;
+}
+<style>
+    hr {
+        margin-top: 0;
+    }
+
+    tr, td, th {
+        white-space: nowrap
+    }
+</style>
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <a href="#!" class="breadcrumb-item">Certificate</a>
+                <span class="breadcrumb-item active">List Transfer Certificate</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">List Transfer Certificate</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group row">
+                <div class="col-lg-4">
+                    <label class="col-form-label font-weight-bold col-lg-4">Session</label>
+                    <div class="col-lg-8">
+                        <select ng-model="AcademicSessionId" ng-change="getTransferCertificateList()" ng-options="option.AcademicSessionId as option.SessionName for option in AcademicSessionList" class="form-control"></select>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="col-form-label font-weight-bold col-lg-4">Class </label>
+                    <div class="col-lg-8">
+                        <select ng-model="ClassId" ng-change="changeClass()" ng-options="option.ClassId as option.ClassName for option in ClassList" class="form-control"></select>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="col-form-label font-weight-bold col-lg-4">Section</label>
+                    <div class="col-lg-8">
+                        <select ng-model="SectionId" ng-change="filterList()" ng-options="option.SectionId as option.SectionName for option in SectionList" class="form-control"></select>
+                    </div>
+                </div>
+            </div>
+            <fieldset class="mb-3" ng-if="TransferCertificateList.length >0">
+                <legend class="text-uppercase font-size-sm font-weight-bold"></legend>
+                <div class="form-group col-sm-6 float-right">
+                    <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+                </div>
+                <div class="form-group col-sm-6">
+                    Display
+                    <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+                    Records Per Page &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+                    <a href="/admin/PrintAllTransferCertificate?AcademicSessionId={{AcademicSessionId}}&ClassId={{ClassId}}&SectionId={{SectionId}}" target="_blank">Print All</a>
+                </div>
+                <div class="form-group col-sm-12 table-responsive">
+                    <table class="table table-bordered table-hover datatable-highlight" id="tbl_admission_list">
+                        <thead>
+                            <tr>
+                                <th>Sl. No.</th>
+                                <th>Print</th>
+                                <th ng-if="CanEdit">Edit </th>
+                                <th style="cursor: pointer;" ng-click="sort('StudentName')">Student Name <span class="fa" ng-show="sortKey=='StudentName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('AdmissionNo')">Admission No <span class="fa" ng-show="sortKey=='AdmissionNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('TransferCertificateNo')">Certificate No <span class="fa" ng-show="sortKey=='TransferCertificateNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('FatherName')">Father Name <span class="fa" ng-show="sortKey=='FatherName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('MotherName')">Mother Name <span class="fa" ng-show="sortKey=='MotherName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Nationality')">Nationality <span class="fa" ng-show="sortKey=='Nationality'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('WhetherSCOrST')">Category <span class="fa" ng-show="sortKey=='WhetherSCOrST'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('DateOfBirth')">Date Of Birth <span class="fa" ng-show="sortKey=='DateOfBirth'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('ClassName')">Class Name <span class="fa" ng-show="sortKey=='ClassName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('ExamPassedClass')">Annual Exam Repo. <span class="fa" ng-show="sortKey=='ExamPassedClass'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('WhetherFailedTwice')">Failed Once or Twice <span class="fa" ng-show="sortKey=='WhetherFailedTwice'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('SubjectStudied1')">Subject 1 <span class="fa" ng-show="sortKey=='SubjectStudied1'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('SubjectStudied2')">Subject 2 <span class="fa" ng-show="sortKey=='SubjectStudied2'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('SubjectStudied3')">Subject 3  <span class="fa" ng-show="sortKey=='SubjectStudied3'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('SubjectStudied4')">Subject 4 <span class="fa" ng-show="sortKey=='SubjectStudied4'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('SubjectStudied5')">Subject 5 <span class="fa" ng-show="sortKey=='SubjectStudied5'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('SubjectStudied6')">Subject 6 <span class="fa" ng-show="sortKey=='SubjectStudied6'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('WhetherQualifiedForPromotion')">Qualified For Promotion <span class="fa" ng-show="sortKey=='WhetherQualifiedForPromotion'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('QualifiedForClass')">Promoted to <span class="fa" ng-show="sortKey=='QualifiedForClass'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('MonthUptoPaid')">Paid Upto Month <span class="fa" ng-show="sortKey=='MonthUptoPaid'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('AnyFeeConcessionAvailed')">Any FeeConcession Availed <span class="fa" ng-show="sortKey=='AnyFeeConcessionAvailed'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('TotalWorkingDays')">Total Working Days <span class="fa" ng-show="sortKey=='TotalWorkingDays'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('TotalPresentDays')">Total Present Days <span class="fa" ng-show="sortKey=='TotalPresentDays'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('WhetherNCCCadet')">NCC Cadet (yes/no) <span class="fa" ng-show="sortKey=='WhetherNCCCadet'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('ExtraCurricularActivities')">Extra Curricular Activities <span class="fa" ng-show="sortKey=='ExtraCurricularActivities'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('GeneralConduct')">General Conduct <span class="fa" ng-show="sortKey=='GeneralConduct'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('DateOfApplicationOfCertiticate')">Date Of Application Of Certiticate <span class="fa" ng-show="sortKey=='DateOfApplicationOfCertiticate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('DateOfIssue')">Date Of Issue <span class="fa" ng-show="sortKey=='DateOfIssue'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('ReasonForLeaving')">Reason For Leaving <span class="fa" ng-show="sortKey=='ReasonForLeaving'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Remarks')">Remarks <span class="fa" ng-show="sortKey=='Remarks'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr dir-paginate="admission in TransferCertificateList|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize" current-page="currentPage" ng-model="search">
+                                <td>{{(currentPage*pageSize - (pageSize-1))+ $index}}</td>
+                                <td>
+                                    <a href="/admin/PrintTransferCertificate/{{admission.TransferCertificateId}}" target="_blank" class="btn btn-sm btn-success"><i class="fa fa-print"></i></a>
+                                </td>
+                                <td ng-if="CanEdit"><a href="#!IssueTransferCertificate/{{admission.TransferCertificateId}}" class="btn btn-sm btn-primary"><i class="icon-pencil3"></i></a></td>
+                                <td>{{admission.StudentName}}</td>
+                                <td>{{admission.AdmissionNo}}</td>
+                                <td>{{admission.TransferCertificateNo}}</td>
+                                <td>{{admission.FatherName}}</td>
+                                <td>{{admission.MotherName}}</td>
+                                <td>{{NationalityList[admission.Nationality].Value}}</td>
+                                <td>{{CategoryList[admission.WhetherSCOrST].Value}}</td>
+                                <td>{{admission.DateOfBirth | date:'dd-MM-yyyy'}}</td>
+                                <td>{{admission.ClassName}}</td>
+                                <td>{{admission.ExamPassedClass}}</td>
+                                <td>{{WhetherFailedTwiceList[admission.WhetherFailedTwice].Value}}</td>
+                                <td>{{admission.SubjectStudied1}}</td>
+                                <td>{{admission.SubjectStudied2}}</td>
+                                <td>{{admission.SubjectStudied3}}</td>
+                                <td>{{admission.SubjectStudied4}}</td>
+                                <td>{{admission.SubjectStudied5}}</td>
+                                <td>{{admission.SubjectStudied6}}</td>
+                                <td>{{WhetherQualifiedForPromotionList[admission.WhetherQualifiedForPromotion].Value}}</td>
+                                <td>{{admission.QualifiedForClass}}</td>
+                                <td>{{admission.MonthUptoPaid}}</td>
+                                <td>{{AnyFeeConcessionAvailedList[admission.AnyFeeConcessionAvailed].Value}}</td>
+                                <td>{{admission.TotalWorkingDays}}</td>
+                                <td>{{admission.TotalPresentDays}}</td>
+                                <td>{{WhetherNCCCadetList[admission.WhetherNCCCadet].Value}}</td>
+                                <td>{{admission.ExtraCurricularActivities}}</td>
+                                <td>{{admission.GeneralConduct}}</td>
+                                <td>{{admission.DateOfApplicationOfCertiticate | date:'dd-MM-yyyy'}}</td>
+                                <td>{{admission.DateOfIssue | date:'dd-MM-yyyy'}}</td>
+                                <td>{{admission.ReasonForLeaving}}</td>
+                                <td>{{admission.Remarks}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="clearfix">
+                    <dir-pagination-controls max-size="pageSize" boundary-links="true" template-url="/Scripts/DirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+                </div>
+            </fieldset>
+
+        </div>
+    </div>
+</div>
+

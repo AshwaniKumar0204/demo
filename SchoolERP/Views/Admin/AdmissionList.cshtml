@@ -1,0 +1,213 @@
+﻿
+@{
+    Layout = null;
+}
+<style>
+    hr {
+        margin-top: 0;
+    }
+
+    tr, td, th {
+        white-space: nowrap
+    }
+</style>
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Student</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">List Student</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group row">
+
+                <div class="col-lg-3">
+                    <label class="col-form-label font-weight-bold col-lg-4">Course </label>
+                    <div class="col-lg-8">
+                        <select ng-model="ClassId" ng-change="changeClass()" ng-options="option.ClassId as option.ClassName for option in ClassList" class="form-control"></select>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <label class="col-form-label font-weight-bold col-lg-4">Branch</label>
+                    <div class="col-lg-8">
+                        <select ng-model="SectionId" ng-options="option.SectionId as option.SectionName for option in SectionList" class="form-control"></select>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="col-form-label font-weight-bold col-lg-4">Session </label>
+                    <div class="col-lg-8">
+                        <select ng-model="AcademicSessionId" ng-options="option.AcademicSessionId as option.SessionName for option in AcademicSessionList" class="form-control">
+                            <option value="">--All Session--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <button class="btn btn-sm btn-success" ng-click="getAdmissionList()"><i class="fa fa-search"></i> Search</button>
+                </div>
+            </div>
+            <fieldset class="mb-3" ng-if="AdmissionList.length >0">
+                <legend class="text-uppercase font-size-sm font-weight-bold"></legend>
+                <div class="form-group col-sm-6 float-right">
+                    <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+                </div>
+                <div class="form-group col-sm-6">
+                    Display
+                    <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+                    Records Per Page &nbsp;&nbsp;|&nbsp;&nbsp;
+                    <a class="text-link font-weight-bold" ng-click="exportToExcel()">Export To Excel</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                    <a class="text-link font-weight-bold" href="/admin/PrintAdmissionList?AcademicSessionId={{AcademicSessionId}}&ClassId={{ClassId}}&SectionId={{SectionId}}" target="_blank">Print</a>
+                </div>
+                <div class="form-group col-sm-12 table-responsive">
+                    <table class="table table-bordered table-hover datatable-highlight" id="tbl_admission_list">
+                        <thead>
+                            <tr>
+                                <th>Sl. No.</th>
+                                <th ng-if="CanEdit && !IsExporting">Edit </th>
+                                @*<th>Photo</th>*@
+                                <th style="cursor: pointer;" ng-click="sort('Student.AdmissionNo')">Admission No <span class="fa" ng-show="sortKey=='Student.AdmissionNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Student.FullName')">Full Name <span class="fa" ng-show="sortKey=='Student.FullName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('SessionName')">Session <span class="fa" ng-show="sortKey=='SessionName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('ClassName')">Course <span class="fa" ng-show="sortKey=='ClassName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('SectionName')">Branch <span class="fa" ng-show="sortKey=='SectionName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('RollNo')">Roll <span class="fa" ng-show="sortKey=='RollNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Student.DateOfBirth')">Date Of Birth <span class="fa" ng-show="sortKey=='Student.DateOfBirth'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Student.Gender')">Gender <span class="fa" ng-show="sortKey=='Student.Gender'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Student.FatherName')">Father Name <span class="fa" ng-show="sortKey=='Student.FatherName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Student.FatherOccupation')">Father Occupation <span class="fa" ng-show="sortKey=='Student.FatherOccupation'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Student.FatherAadhaarNo')">Father Aadhaar No <span class="fa" ng-show="sortKey=='Student.FatherOccupation'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Student.Category')">Category <span class="fa" ng-show="sortKey=='Student.Category'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Student.BloodGroup')">Blood Group <span class="fa" ng-show="sortKey=='Student.BloodGroup'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Student.HouseName')">House <span class="fa" ng-show="sortKey=='Student.HouseName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Student.CorrespondenceAddressLine1')">Correspondence Address Line 1 <span class="fa" ng-show="sortKey=='Student.CorrespondenceAddressLine1'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Student.CorrespondenceAddressLine2')">Correspondence Address Line 2 <span class="fa" ng-show="sortKey=='Student.CorrespondenceAddressLine2'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Student.CorrespondenceCityName')">City <span class="fa" ng-show="sortKey=='Student.CorrespondenceCityName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Student.CorrespondenceStateName')">State <span class="fa" ng-show="sortKey=='Student.CorrespondenceStateName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Student.CorrespondecePinCode')">Correspondence Pin Code <span class="fa" ng-show="sortKey=='Student.CorrespondecePinCode'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Student.PermanentAddressLine1')">Permanent Address Line 1 <span class="fa" ng-show="sortKey=='Student.PermanentAddressLine1'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Student.PermanentAddressLine2')">Permanent Address Line 2 <span class="fa" ng-show="sortKey=='Student.PermanentAddressLine2'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Student.PermanentCityName')">City <span class="fa" ng-show="sortKey=='Student.PermanentCityName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Student.PermanentStateName')">State <span class="fa" ng-show="sortKey=='Student.PermanentStateName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Student.PermanentPinCode')">Permanent Pin Code <span class="fa" ng-show="sortKey=='Student.PermanentPinCode'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Student.MobileNo')">Mobile No <span class="fa" ng-show="sortKey=='Student.MobileNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Student.AlternateNo')">Alternate No <span class="fa" ng-show="sortKey=='Student.AlternateNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Student.Email')">Email <span class="fa" ng-show="sortKey=='Student.Email'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Student.AadhaarNo')">Aadhaar No <span class="fa" ng-show="sortKey=='Student.AadhaarNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Student.FamilyAnnualIncome')">Family Annual Income <span class="fa" ng-show="sortKey=='Student.FamilyAnnualIncome'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('AdmissionDate')">Admission Date <span class="fa" ng-show="sortKey=='AdmissionDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                               @* <th style="cursor: pointer;" ng-click="sort('Student.PreviousSchoolName')">Previous School Name <span class="fa" ng-show="sortKey=='Student.PreviousSchoolName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Student.PreviousBoardName')">Previous Board Name <span class="fa" ng-show="sortKey=='Student.PreviousBoardName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Student.LastClassAttend')">Last Class Attend <span class="fa" ng-show="sortKey=='Student.LastClassAttend'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Student.MediumOfInstruction')">Medium Of Instruction <span class="fa" ng-show="sortKey=='Student.MediumOfInstruction'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Student.PreviousSchoolTCNo')">Previous School TC No <span class="fa" ng-show="sortKey=='Student.PreviousSchoolTCNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Student.PreviousSchoolTCIssueDate')">TC Issue Date <span class="fa" ng-show="sortKey=='Student.PreviousSchoolTCIssueDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Student.Height')">Height <span class="fa" ng-show="sortKey=='Student.Height'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Student.Weight')">Weight <span class="fa" ng-show="sortKey=='Student.Weight'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>*@
+                                <th style="cursor: pointer;" ng-click="sort('Student.JoiningDate')">Join Date <span class="fa" ng-show="sortKey=='Student.JoiningDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('StaffWard')">Staff Ward <span class="fa" ng-show="sortKey=='StaffWard'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Student.Remarks')">Remarks <span class="fa" ng-show="sortKey=='Student.Remarks'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr dir-paginate="admission in AdmissionList|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize" current-page="currentPage" ng-model="search">
+                                <td>{{(currentPage*pageSize - (pageSize-1))+ $index}}</td>
+                                <td ng-if="CanEdit && !IsExporting"><button class="btn btn-sm btn-primary" ng-click="editStudentDetail(admission.AdmissionId)"><i class="icon-pencil3"></i></button></td>
+                                @*<td>
+            <a href="javascript:void(0);" ng-click="viewStudentPhoto(admission.Student.PhotoUrl == null ? '/Content/Images/user.png' : admission.Student.PhotoUrl)">
+                <img src="{{admission.Student.PhotoUrl == null ? '/Content/Images/user.png' : admission.Student.PhotoUrl}}" width="40" height="40" />
+            </a>
+        </td>*@
+                                <td>{{admission.Student.AdmissionNo}}</td>
+                                <td>{{admission.Student.FullName}}</td>
+                                <td>{{admission.SessionName}}</td>
+                                <td>{{admission.ClassName}}</td>
+                                <td>{{admission.SectionName}}</td>
+                                <td>{{admission.RollNo}}</td>
+                                <td>{{admission.Student.DateOfBirth | date:'dd MMM, yyyy'}}</td>
+                                <td>{{GenderList[admission.Student.Gender].Value}}</td>
+                                <td>{{admission.Student.FatherName}}</td>
+                                <td>{{admission.Student.FatherOccupation}}</td>
+                                <td>{{admission.Student.FatherAadhaarNo}}</td>
+                                <td>{{CategoryList[admission.Student.Category].Value}}</td>
+                                <td>
+                                    <span ng-if="admission.Student.BloodGroup != 0">{{BloodGroupList[admission.Student.BloodGroup].Value}}</span>
+                                    <span ng-if="admission.Student.BloodGroup == 0">N/A</span>
+                                </td>
+                                <td>{{admission.Student.HouseName}}</td>
+                                <td>{{admission.Student.CorrespondenceAddressLine1}}</td>
+                                <td>{{admission.Student.CorrespondenceAddressLine2}}</td>
+                                <td>{{admission.Student.CorrespondenceCityName}}</td>
+                                <td>{{admission.Student.CorrespondenceStateName}}</td>
+                                <td>{{admission.Student.CorrespondecePinCode}}</td>
+                                <td>{{admission.Student.PermanentAddressLine1}}</td>
+                                <td>{{admission.Student.PermanentAddressLine2}}</td>
+                                <td>{{admission.Student.PermanentCityName}}</td>
+                                <td>{{admission.Student.PermanentStateName}}</td>
+                                <td>{{admission.Student.PermanentPinCode}}</td>
+                                <td>{{admission.Student.MobileNo}}</td>
+                                <td>{{admission.Student.AlternateNo}}</td>
+                                <td>{{admission.Student.Email}}</td>
+                                <td>{{admission.Student.AadhaarNo}}</td>
+                                <td>{{admission.Student.FamilyAnnualIncome | number:2}}</td>
+                                <td>{{admission.AdmissionDate | date:'dd MMM, yyyy'}}</td>
+                            @*    <td>{{admission.Student.PreviousSchoolName}}</td>
+                                <td>{{admission.Student.PreviousBoardName}}</td>
+                                <td>{{admission.Student.LastClassAttend}}</td>
+                                <td>{{admission.Student.MediumOfInstruction}}</td>
+                                <td>{{admission.Student.PreviousSchoolTCNo}}</td>
+                                <td>{{admission.Student.PreviousSchoolTCIssueDate | date:'dd MMM, yyyy'}}</td>
+                                <td>{{admission.Student.Height | number:2}}</td>
+                                <td>{{admission.Student.Weight | number:2}}</td>*@
+                                <td>{{admission.Student.JoiningDate | date:'dd-MM-yyyy'}}</td>
+                                <td>{{admission.StaffWard}}</td>
+                                <td>{{admission.Student.Remarks}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="clearfix">
+                    <dir-pagination-controls max-size="pageSize" boundary-links="true" template-url="/Scripts/DirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+                </div>
+            </fieldset>
+
+        </div>
+    </div>
+</div>
+
+<div id="modal_photo" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Student Photo</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <img src="{{PhotoUrl}}" width="360" class="img-responsive" />
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

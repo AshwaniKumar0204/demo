@@ -1,0 +1,243 @@
+﻿
+@{
+    Layout = null;
+    var school = School.LoadData.GetSchoolList(1).FirstOrDefault();
+}
+
+<!DOCTYPE html>
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@school.ShortName || Admin Panel</title>
+    <!-- Global stylesheets -->
+    <link rel="icon" href="~/diops-removebg-preview.png">
+  
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
+    <link href="~/Content/Plugins/summernote/summernote.css" rel="stylesheet" />
+    <link href="~/Content/admin/css/icons/icomoon/styles.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/admin/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/admin/assets/css/bootstrap_limitless.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/admin/assets/css/layout.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/admin/assets/css/components.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/admin/assets/css/colors.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/Custome.css" rel="stylesheet" />
+    <link href="~/Content/Plugins/Toastr/toastr.css" rel="stylesheet" />
+    <link href="~/Content/admin/css/icons/fontawesome/styles.min.css" rel="stylesheet" />
+    <!-- /global stylesheets -->
+    <!-- Core JS files -->
+    <script src="~/Content/admin/js/main/jquery.min.js"></script>
+    <script src="~/Content/admin/js/main/bootstrap.bundle.min.js"></script>
+    <script src="~/Content/admin/js/plugins/loaders/blockui.min.js"></script>
+    <!-- /core JS files -->
+    <!-- Theme JS files -->
+    <script src="~/Content/admin/assets/js/app.js"></script>
+    <script src="~/Content/admin/js/plugins/visualization/d3/d3.min.js"></script>
+    <script src="~/Content/admin/js/plugins/visualization/d3/d3_tooltip.js"></script>
+    <script src="~/Content/admin/js/plugins/forms/styling/switchery.min.js"></script>
+    <script src="~/Content/admin/js/plugins/ui/moment/moment.min.js"></script>
+    <script src="~/Content/admin/js/plugins/pickers/daterangepicker.js"></script>
+    <script src="~/Content/admin/js/plugins/ui/perfect_scrollbar.min.js"></script>
+    <script src="~/Content/admin/js/demo_pages/dashboard.js"></script>
+    <script src="~/Content/admin/js/demo_pages/layout_fixed_sidebar_custom.js"></script>
+    <script src="~/Content/admin/js/demo_charts/pages/dashboard/light/streamgraph.js"></script>
+    <script src="~/Content/admin/js/demo_charts/pages/dashboard/light/sparklines.js"></script>
+    <script src="~/Content/admin/js/demo_charts/pages/dashboard/light/lines.js"></script>
+    <script src="~/Content/admin/js/demo_charts/pages/dashboard/light/areas.js"></script>
+    <script src="~/Content/admin/js/demo_charts/pages/dashboard/light/donuts.js"></script>
+    <script src="~/Content/admin/js/demo_charts/pages/dashboard/light/bars.js"></script>
+    <script src="~/Content/admin/js/demo_charts/pages/dashboard/light/progress.js"></script>
+    <script src="~/Content/admin/js/demo_charts/pages/dashboard/light/heatmaps.js"></script>
+    <script src="~/Content/admin/js/demo_charts/pages/dashboard/light/pies.js"></script>
+    <script src="~/Content/admin/js/demo_charts/pages/dashboard/light/bullets.js"></script>
+    <script src="~/Content/Plugins/Toastr/toastr.min.js"></script>
+    <script>
+        function groupBy(objectArray, property) {
+            return objectArray.reduce((acc, obj) => {
+                const key = obj[property];
+                if (!acc[key]) {
+                    acc[key] = [];
+                }
+                // Add object to list for given key's value
+                acc[key].push(obj);
+                return acc;
+            }, {});
+        }
+
+    </script>
+    <!-- /theme JS files -->
+</head>
+<body ng-controller="AdminController" ng-cloak class="navbar-top">
+    <!-- Main navbar -->
+    <div class="navbar navbar-expand-md navbar-dark fixed-top">
+        <div class="navbar-brand">
+             <a href="@school.Website" target="_blank" class="d-inline-block">
+                @*<img src="@school.LogoUrl" alt="">*@
+            </a>
+        </div>
+        <div class="d-md-none">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-mobile"><i class="icon-tree5"></i></button>
+            <button class="navbar-toggler sidebar-mobile-main-toggle" type="button"><i class="icon-paragraph-justify3"></i></button>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-mobile">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a href="#" class="navbar-nav-link sidebar-control sidebar-main-toggle d-none d-md-block">
+                        <i class="icon-paragraph-justify3"></i>
+                    </a>
+                </li>
+            </ul>
+            <span class="badge bg-success ml-md-3 mr-md-auto">Online</span>
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown dropdown-user">
+                    <a style="cursor:pointer" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
+
+                        <img src="@school.LogoUrl" class="rounded-circle mr-2" height="34" alt="" />
+                        @*<img src="~/Content/admin/images/demo/users/face11.jpg" class="rounded-circle mr-2" height="34" alt="">*@
+                        <span ng-bind="UserDetail.UserName"></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        @*<a href="#" class="dropdown-item"><i class="icon-user-plus"></i> My profile</a>
+                            <a href="#" class="dropdown-item"><i class="icon-coins"></i> My balance</a>
+                            <a href="#" class="dropdown-item"><i class="icon-comment-discussion"></i> Messages <span class="badge badge-pill bg-blue ml-auto">58</span></a>
+                            <div class="dropdown-divider"></div>*@
+                        <a href="#!ChangePassword" class="dropdown-item"><i class="icon-cog5"></i> Change Password</a>
+                        <a href="#" class="dropdown-item" ng-click="logoutSystemLogin()"><i class="icon-switch2"></i> Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- /main navbar -->
+    <!-- Page content -->
+    <div class="page-content">
+
+        <!-- Main sidebar -->
+        <div class="sidebar sidebar-dark sidebar-main sidebar-fixed sidebar-expand-md">
+
+            <!-- Sidebar mobile toggler -->
+            <div class="sidebar-mobile-toggler text-center">
+                <a href="#" class="sidebar-mobile-main-toggle">
+                    <i class="icon-arrow-left8"></i>
+                </a>
+                Navigation
+                <a href="#" class="sidebar-mobile-expand">
+                    <i class="icon-screen-full"></i>
+                    <i class="icon-screen-normal"></i>
+                </a>
+            </div>
+            <!-- /sidebar mobile toggler -->
+            <!-- Sidebar content -->
+            <div class="sidebar-content">
+
+                <!-- User menu -->
+                <div class="sidebar-user">
+                    <div class="card-body">
+                        <div class="media">
+                            <div class="mr-3">
+                                <a style="cursor:pointer">
+                                   
+                                  <img src="@school.LogoUrl"width="38"* height="38" class="rounded-circle" alt="" />
+                                    @*<img src="~/Content/admin/images/demo/users/face11.jpg" width="38" height="38" class="rounded-circle" alt="">*@
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <div class="media-title font-weight-semibold" @*ng-bind="UserDetail.Employee.EmployeeName"*@>@school.ShortName</div>
+                                <div class="font-size-xs opacity-50" @*ng-bind="UserDetail.Employee.EmployeeCode"*@>
+                                    <i class="icon-pin font-size-sm"></i> &nbsp;@school.Location
+                                </div>
+                            </div>
+                            @*<div class="ml-3 align-self-center">
+                                <a href="#" class="text-white"><i class="icon-cog3"></i></a>
+                            </div>*@
+                        </div>
+                    </div>
+                </div>
+                <!-- /user menu -->
+                <!-- Main navigation -->
+                <div class="card card-sidebar-mobile">
+                    <ul class="nav nav-sidebar" data-nav-type="accordion">
+                        <!-- Main -->
+                        <li class="nav-item-header"><div class="text-uppercase font-size-xs line-height-xs">Main</div> <i class="icon-menu" title="Main"></i></li>
+                        <li class="nav-item">
+                            <a href="#!Index" class="nav-link"><i class="icon-home4"></i><span>Dashboard</span></a>
+                        </li>
+                        <li ng-class="menuOne.ActionName == null ? 'nav-item nav-item-submenu' : 'nav-item'" ng-repeat="menuOne in MenuList" id="{{'m1' + menuOne.MenuId}}">
+                            <a href="{{menuOne.ActionName ? ('#!' + menuOne.ActionName): 'javascript:void(0);'}}" ng-click="clickM1('m1' + menuOne.MenuId, 'm2' + menuOne.MenuId,menuOne.ActionName,menuOne.MenuId)" class="nav-link"><i ng-class="menuOne.IconClass == null ?'':menuOne.IconClass"></i> <span>{{menuOne.MenuTitle}}</span></a>
+
+                            <ul class="nav nav-group-sub" data-submenu-title="{{menuOne.MenuTitle}}" id="{{'m2' + menuOne.MenuId}}">
+                                <li ng-class="menuTwo.ActionName == null ? 'nav-item nav-item-submenu' : 'nav-item'" id="{{'m3' + menuTwo.MenuId}}" ng-repeat="menuTwo in menuOne.MenuList">
+                                    <a href="{{menuTwo.ActionName ? ('#!' + menuTwo.ActionName): 'javascript:void(0);'}}" ng-click="clickM1('m3' + menuTwo.MenuId, 'm4' + menuTwo.MenuId,menuTwo.ActionName,menuTwo.MenuId)" class="nav-link"><i ng-class="menuTwo.IconClass == null ?'':menuTwo.IconClass"></i> <span>{{menuTwo.MenuTitle}}</span></a>
+
+                                    <ul class="nav nav-group-sub" data-submenu-title="{{menuTwo.MenuTitle}}" id="{{'m4' + menuTwo.MenuId}}">
+                                        <li class="nav-item" ng-repeat="menuThree in menuTwo.MenuList">
+                                            <a href="#!{{menuThree.ActionName}}" class="nav-link"><i ng-class="menuThree.IconClass == null ?'':menuThree.IconClass"></i> {{menuThree.MenuTitle}}</a>
+                                        </li>
+                                    </ul>
+
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="content-wrapper">
+
+            <div ng-view style="margin-bottom:25px!important"></div>
+
+            <!-- Footer -->
+            <div class="navbar navbar-expand-lg navbar-light" style="position:fixed;bottom:0;width:100%">
+                <div class="text-center d-lg-none w-100">
+                    <button type="button" class="navbar-toggler dropdown-toggle" data-toggle="collapse" data-target="#navbar-footer">
+                        <i class="icon-unfold mr-2"></i>
+                        Footer
+                    </button>
+                </div>
+                <div class="navbar-collapse collapse" id="navbar-footer">
+                  @*  <span class="navbar-text">
+                        &copy; @DateTime.Now.Year <a href="@school.Website" target="_blank">@(school.FullName + ", " + school.Location)</a> All right reserved. Design and Developed by <a href="https://wipenex.in/" target="_blank"> Wipenex IT Private Limited</a>
+                    </span>*@
+                    @*<ul class="navbar-nav ml-lg-auto">
+                            <li class="nav-item"><a href="#" class="navbar-nav-link" target="_blank"><i class="icon-lifebuoy mr-2"></i> Support</a></li>
+                            <li class="nav-item"><a href="#" class="navbar-nav-link" target="_blank"><i class="icon-file-text2 mr-2"></i> Docs</a></li>
+                            <li class="nav-item"><a href="#" class="navbar-nav-link font-weight-semibold"><span class="text-pink-400"><i class="icon-cart2 mr-2"></i> Purchase</span></a></li>
+                        </ul>*@
+                </div>
+            </div>
+            <!-- /footer -->
+        </div>
+    </div>
+
+
+    <script src="~/Angular/Shared/tableToExcel.js"></script>
+    <script src="~/Angular/Shared/exportToExcel.js"></script>
+    @*<script src="~/Angular/Shared/xlxs/xlsx.full.min.js"></script>*@
+
+    <!--Angular-->
+    <script src="~/Scripts/Angular/angular.js"></script>
+
+    <!--Routing-->
+    <script src="~/Scripts/AngularRoute/angular-route.js"></script>
+    <script src="~/Scripts/AngularRoute/angular-route.min.js"></script>
+
+    <!--Multiselect-->
+    <script src="~/Scripts/MultiSelect/multiselect.js"></script>
+    <link href="~/Scripts/MultiSelect/multi-select.css" rel="stylesheet" />
+
+    <!--Dir Pagination-->
+    <script src="~/Scripts/DirPagination/dirPagination.js"></script>
+
+    <!--AnguComplete-->
+    <script src="~/Scripts/AnguComplete/angucomplete-alt.min.js"></script>
+    <link href="~/Scripts/AnguComplete/angucomplete-alt.css" rel="stylesheet" />
+
+    <!--Summer Note-->
+    <script src="~/Content/Plugins/summernote/js/summernote.js"></script>
+    <script src="~/Content/Plugins/summernote/angular-summernote.js"></script>
+    @Scripts.Render("~/Angular/Admin/main2.js")
+</body>
+</html>
+

@@ -1,0 +1,171 @@
+﻿
+@{
+    Layout = null;
+}
+<style>
+    hr {
+        margin-top: 0;
+    }
+
+    tr, td, th {
+        white-space: nowrap
+    }
+</style>
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="index-2.html" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Dashboard</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Class Promotion</h6>
+        </div>
+        <div class="card-body">
+            <form name="formClassPromotion" novalidate>
+                <div class="form-group row">
+                    <label class="col-form-label font-weight-bold col-lg-2">Previous Class </label>
+                    <div class="col-lg-4">
+                        <select ng-model="PreviousClassId" ng-disabled="IsVerify" name="PreviousClassId" ng-change="changePreviousClass()" ng-options="option.ClassId as option.ClassName for option in ClassList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                        <span class="text-danger" ng-if="(formClassPromotion.PreviousClassId.$dirty || IsSubmitted) && formClassPromotion.PreviousClassId.$error.required">Previous Class is required!</span>
+                    </div>
+                    <label class="col-form-label font-weight-bold col-lg-2">Previous Section</label>
+                    <div class="col-lg-4">
+                        <select ng-model="PreviousSectionId" ng-disabled="IsVerify" name="PreviousSectionId" ng-options="option.SectionId as option.SectionName for option in PreviousSectionList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                        <span class="text-danger" ng-if="(formClassPromotion.PreviousSectionId.$dirty || IsSubmitted) && formClassPromotion.PreviousSectionId.$error.required">Previous Section is required!</span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-form-label font-weight-bold col-lg-2">New Class </label>
+                    <div class="col-lg-4">
+                        <select ng-model="NewClassId" ng-disabled="IsVerify" name="NewClassId" ng-change="changeNewClass()" ng-options="option.ClassId as option.ClassName for option in ClassList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                        <span class="text-danger" ng-if="(formClassPromotion.NewClassId.$dirty || IsSubmitted) && formClassPromotion.NewClassId.$error.required">New Class is required!</span>
+                    </div>
+                    <label class="col-form-label font-weight-bold col-lg-2">New Section</label>
+                    <div class="col-lg-4">
+                        <select ng-model="NewSectionId" ng-disabled="IsVerify" name="NewSectionId" ng-options="option.SectionId as option.SectionName for option in NewSectionList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                        <span class="text-danger" ng-if="(formClassPromotion.NewSectionId.$dirty || IsSubmitted) && formClassPromotion.NewSectionId.$error.required">New Section is required!</span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-form-label font-weight-bold col-lg-2">From Session</label>
+                    <div class="col-lg-4">
+                        <select ng-model="FromAcademicSessionId" ng-disabled="IsVerify" name="FromAcademicSessionId" ng-change="changeFromSession()" ng-options="option.AcademicSessionId as option.SessionName for option in AcademicSessionList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                        <span class="text-danger" ng-if="(formClassPromotion.FromAcademicSessionId.$dirty || IsSubmitted) && formClassPromotion.FromAcademicSessionId.$error.required">From Session is required!</span>
+                    </div>
+                    <label class="col-form-label font-weight-bold col-lg-2">To Session</label>
+                    <div class="col-lg-4">
+                        <select ng-model="ToAcademicSessionId" ng-disabled="IsVerify" name="ToAcademicSessionId" ng-options="option.AcademicSessionId as option.SessionName for option in ToAcademicSessionList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                        <span class="text-danger" ng-if="(formClassPromotion.ToAcademicSessionId.$dirty || IsSubmitted) && formClassPromotion.ToAcademicSessionId.$error.required">To Session is required!</span>
+                    </div>
+                </div>
+            </form>
+            <div ng-if="!IsVerify">
+                <hr />
+                <div class="row text-centre">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <button class="btn btn-primary" ng-click="getStudentPromatableList()">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <fieldset class="mb-3" ng-if="AdmissionList.length > 0">
+                <legend class="text-uppercase font-size-sm font-weight-bold">Student List</legend>
+
+                <div class="form-group col-sm-6 float-right">
+                    <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+                </div>
+                <div class="form-group col-sm-6">
+                    Display
+                    <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+                    Records Per Page
+                </div>
+                <div class="form-group col-sm-12 table-responsive">
+                    <table class="table table-xs table-bordered table-hover" ng-if="!IsVerify">
+                        <thead>
+                            <tr class="bg-blue">
+                                <th>Sl. No.</th>
+                                <th style="cursor: pointer;" ng-click="sort('AdmissionNo')">Admission No <span class="fa" ng-show="sortKey=='AdmissionNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('FullName')">Full Name <span class="fa" ng-show="sortKey=='FullName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('RollNo')">Roll <span class="fa" ng-show="sortKey=='RollNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('NewSectionId')">New Section <span class="fa" ng-show="sortKey=='NewSectionId'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('NewRollNo')">New Roll No <span class="fa" ng-show="sortKey=='NewRollNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('IsSelected')">Allow <span class="fa" ng-show="sortKey=='IsSelected'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr dir-paginate="admission in AdmissionList|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize" current-page="currentPage" ng-model="search">
+                                <td>{{(currentPage*pageSize - (pageSize-1))+ $index}}</td>
+                                <td>{{admission.AdmissionNo}}</td>
+                                <td>{{admission.FullName}}</td>
+                                <td>{{admission.RollNo}}</td>
+                                <td>
+                                    <select ng-model="admission.NewSectionId" ng-options="option.SectionId as option.SectionName for option in NewSectionListWithoutIndex" class="form-control"></select>
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control" style="width:100px" ng-model="admission.NewRollNo" />
+                                </td>
+                                <td>
+                                    <input type="checkbox" ng-model="admission.IsSelected" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-xs table-bordered table-hover" ng-if="IsVerify">
+                        <thead>
+                            <tr class="bg-blue">
+                                <th>Sl. No.</th>
+                                <th style="cursor: pointer;" ng-click="sort('AdmissionNo')">Admission No <span class="fa" ng-show="sortKey=='AdmissionNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('FullName')">Full Name <span class="fa" ng-show="sortKey=='FullName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('RollNo')">Roll <span class="fa" ng-show="sortKey=='RollNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('NewClassName')">New Class <span class="fa" ng-show="sortKey=='NewClassName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('NewSectionName')">New Section <span class="fa" ng-show="sortKey=='NewSectionName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('NewRollNo')">New Roll No <span class="fa" ng-show="sortKey=='NewRollNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('ArrearDues')">Total Dues <span class="fa" ng-show="sortKey=='ArrearDues'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('PromotionStatus')">Status <span class="fa" ng-show="sortKey=='PromotionStatus'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr dir-paginate="admission in StudentPromotionList|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize" current-page="currentPage" ng-model="search" ng-class="admission.PromotionStatus == 2 ?'table-danger':''">
+                                <td>{{(currentPage*pageSize - (pageSize-1))+ $index}}</td>
+                                <td>{{admission.AdmissionNo}}</td>
+                                <td>{{admission.FullName}}</td>
+                                <td>{{admission.RollNo}}</td>
+                                <td>{{admission.NewClassName}}</td>
+                                <td>{{admission.NewSectionName}}</td>
+                                <td>{{admission.NewRollNo}}</td>
+                                <td>{{admission.ArrearDues | number:2}}</td>
+                                <td>{{PromotionStatusList[admission.PromotionStatus]}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="clearfix">
+                    <dir-pagination-controls max-size="pageSize" boundary-links="true" template-url="/Scripts/DirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+                </div>
+            </fieldset>
+        </div>
+        <div class="card-footer text-centre" ng-if="AdmissionList.length > 0">
+            <button class="btn btn-primary" ng-if="!IsVerify" ng-click="verifyStudentPromotionList()">Submit</button>
+            <button class="btn btn-primary" ng-if="IsVerify && CanEdit" ng-click="SaveClassPromotion()">Confirm</button>
+        </div>
+    </div>
+</div>

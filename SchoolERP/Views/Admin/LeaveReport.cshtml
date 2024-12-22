@@ -1,0 +1,156 @@
+﻿@{
+    Layout = null;
+}
+<style>
+    th, td {
+        white-space: nowrap;
+    }
+</style>
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Leave Report</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-body">
+            <fieldset class="mb-3" style="margin-bottom: 0 !important;">
+                <legend class="text-uppercase font-size-sm font-weight-bold">Leave Report</legend>
+                <div class="row">
+                    <div class="form-group col-sm-3">
+                        <label class="col-form-label col-sm-4">Year</label>
+                        <div class="col-sm-8">
+                            <input type="number" class="form-control" placeholder="All Year" ng-model="Year" />
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-3">
+                        <label class="col-form-label col-sm-4">Month</label>
+                        <div class="col-sm-8">
+                            <select ng-model="MonthNo" ng-change="getStaffPaymentList()" ng-options="option.Key as option.Value for option in MonthList" class="form-control">
+                                <option value="">--All Month--</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label class="col-form-label col-sm-3">Staff</label>
+                        <div class="col-sm-9">
+                            <angucomplete-alt id="SearchStaffAnguComplete"
+                                              placeholder="Enter Staff Name/Code"
+                                              pause="100"
+                                              selected-object="afterStaffSelectedSearch"
+                                              local-data="StaffList"
+                                              search-fields="StaffName,StaffCode"
+                                              title-field="StaffName,StaffCode"
+                                              description="DesignationName"
+                                              minlength="2"
+                                              input-class="form-control"
+                                              input-placeholder="All Staff"
+                                              match-class="highlight"
+                                              input-changed="selectionChanged"
+                                              field-required="true"
+                                              auto-match="true"
+                                              focus-in="focusIn()">
+                            </angucomplete-alt>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 form-group">
+                        <button class="btn btn-sm btn-success" ng-click="getStaffPaymentList()"> <i class="fa fa-search"></i> Search</button>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="mb-3" style="margin-bottom: 0 !important;" ng-show="StaffPaymentList.length > 0">
+                <legend class="text-uppercase font-size-sm font-weight-bold">Leave Detail</legend>
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        Display
+                        <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+                    </div>
+                    <div class="form-group col-sm-6 float-right">
+                        <input type="text" class="float-right input-sm form-control" style="width:200px" ng-model="search" placeholder="Search..." />
+                    </div>
+                    <div class="col-sm-12">
+                        <a class="text-link font-weight-bold" ng-click="tablesToExcel(['table_staff_leave_list'],['Leave_Report'],'Leave_Report','Leave_Report')">Export To Excel</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                        <a class="text-link font-weight-bold" ng-click="printReport(3)">Print All</a>
+                    </div>
+                    <div class="form-group col-sm-12 table-responsive" id="div_SalaryList">
+                        <table class="table table-bordered table-hover" id="table_staff_leave_list">
+                            <thead>
+                                <tr>
+                                    <th>Sl. No.</th>
+                                    <th style="cursor: pointer;" ng-click="sort('Year')">Year <span class="fa" ng-show="sortKey=='Year'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('MonthName')">Month <span class="fa" ng-show="sortKey=='MonthName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('StaffName')">Staff Name<span class="fa" ng-show="sortKey=='StaffName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('StaffCode')">Staff Code<span class="fa" ng-show="sortKey=='StaffCode'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('DesignationName')">Designation <span class="fa" ng-show="sortKey=='DesignationName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('LWPAvailed')">LWP Availed <span class="fa" ng-show="sortKey=='LWPAvailed'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('CLAvailed')">CL Availed <span class="fa" ng-show="sortKey=='CLAvailed'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('ELAvailed')">EL Availed <span class="fa" ng-show="sortKey=='ELAvailed'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('MLAvailed')">ML Availed <span class="fa" ng-show="sortKey=='MLAvailed'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('HPLAvailed')">HPL Availed <span class="fa" ng-show="sortKey=='HPLAvailed'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th>Total Leave</th>
+                                    <th style="cursor: pointer;" ng-click="sort('Remarks')">Remarks <span class="fa" ng-show="sortKey=='Remarks'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr dir-paginate="StaffPayment in StaffPaymentList|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize" current-page="currentPage" ng-model="search">
+                                    <td>{{(currentPage*pageSize - (pageSize-1))+ $index}}</td>
+                                    <td>{{StaffPayment.Year}}</td>
+                                    <td>{{StaffPayment.MonthName}}</td>
+                                    <td>{{StaffPayment.StaffName}}</td>
+                                    <td>{{StaffPayment.StaffCode}}</td>
+                                    <td>{{StaffPayment.DesignationName}}</td>
+                                    <td>{{StaffPayment.LWPAvailed}}</td>
+                                    <td>{{StaffPayment.CLAvailed}}</td>
+                                    <td>{{StaffPayment.ELAvailed}}</td>
+                                    <td>{{StaffPayment.MLAvailed}}</td>
+                                    <td>{{StaffPayment.HPLAvailed}}</td>
+                                    <td>{{StaffPayment.HPLAvailed + StaffPayment.CLAvailed + StaffPayment.ELAvailed + StaffPayment.MLAvailed + StaffPayment.LWPAvailed }}</td>
+                                    <td>{{StaffPayment.Remarks}}</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th>Total</th>
+                                    <th>{{LWPAvailed}}</th>
+                                    <th>{{CLAvailed}}</th>
+                                    <th>{{ELAvailed}}</th>
+                                    <th>{{MLAvailed}}</th>
+                                    <th>{{HPLAvailed}}</th>
+                                    <th>{{HPLAvailed +LWPAvailed +  CLAvailed+MLAvailed+ELAvailed}}</th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="clearfix col-sm-12">
+                        <dir-pagination-controls max-size="pageSize" boundary-links="true" template-url="/Scripts/DirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+    </div>
+</div>
+

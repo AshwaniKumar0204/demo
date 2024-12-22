@@ -1,0 +1,141 @@
+﻿
+@{
+    Layout = null;
+}
+<style>
+    hr {
+        margin-top: 0;
+    }
+
+    .table td, .table th {
+        padding:5px;
+        vertical-align: top;
+        border-top: 1px solid #ddd;
+    }
+    .card-header {
+        padding: 5px 5px;
+        margin-bottom: 0;
+        background-color: rgba(0,0,0,.02);
+        border-bottom: 1px solid rgba(0,0,0,.125);
+    }
+    .card-header:not([class*=bg-]):not([class*=alpha-]) {
+    background-color: transparent;
+     padding-top: 2px; 
+     padding-bottom: 2px; 
+    border-bottom-width: 0;
+}
+</style>
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!Index" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Transport Fee </span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+
+    <div class="card">
+        <div class="card-header header-elements-inline" style="padding-top:10px;">
+            <h5>
+                <div class="col-sm-6">
+                    Transport Fee Period
+                </div>
+                <div class="col-sm-6">
+                    <select name="TransportFeePeriod" ng-change="getFeeList();" ng-model="TransportFeePeriod" class="form-control" ng-options="b as b.CombileName for b in periods" value="{{TransportFeePeriodId}}">
+                        <option value="">Select Transport Fee Period</option>
+                    </select>
+                </div>
+            </h5>
+        </div>
+
+    </div>
+    <div class="card" ng-repeat="li in list">
+        <div class="card-header header-elements-inline">
+            <h5 class="card-title">
+                {{li.TransportGroupTitle}}
+            </h5>
+        </div>
+        <div class="table-responsive">
+            <table class="table">
+                <thead style="background-color:#26a69a;color:#ffffff">
+                    <tr>
+                        <th>Fee Head</th>
+                        <th>Amount</th>
+                        <th>Remarks</th>
+                        <th>Is Active</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-bottom-danger" ng-repeat="fe in li.FeeList">
+                        <td>{{fe.FeeHeadTitle}}</td>
+                        <td>
+                            <input type="text" ng-model="fe.Amount" />
+                        </td>
+                        <td>
+                            <input type="text" ng-model="fe.Remarks" />
+                        </td>
+                        <td>
+                            <input type="checkbox" ng-model="fe.TransportFeeStatus" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <div class="col-sm-12" style="text-align:center;" ng-if="CanEdit">
+        <button type="button" ng-click="SaveTransportFee();" class="btn btn-primary">Submit</button>
+    </div>
+    @*<div class="card" ng-repeat="li in list">
+            <div class="card-header header-elements-inline">
+                <h5 class="card-title"> {{li.TransportGroupTitle}}</h5>
+            </div>
+
+            <div class="card-body">
+                <div class="card card-table table-responsive shadow-0 mb-0">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Fee Head</th>
+                                <th>Amount</th>
+                                <th>Remarks</th>
+                                <th>Is Active</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-bottom-danger" ng-repeat="fe in li.FeeList">
+                                <td>{{fe.FeeHeadTitle}}</td>
+                                <td>
+                                    <input type="text" class="form-control" ng-model="fe.Amount" />
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" ng-model="fe.Remarks" />
+                                </td>
+                                <td>
+                                    <input type="checkbox" class="form-control" ng-model="fe.TransportFeeStatus" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>*@
+</div>
+
+
+

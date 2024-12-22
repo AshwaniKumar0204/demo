@@ -1,0 +1,248 @@
+﻿@{
+    /**/
+
+    Layout = null;
+}
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Manage Class Subject</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Manage Class Subject</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group row">
+                <div class="col-sm-4">
+                    <label class="col-form-label  col-lg-4">Session <span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <select class="form-control" ng-model="AcademicSessionId" ng-change="getClassSubjectList()" ng-options="option.AcademicSessionId as option.SessionName for option in AcademicSessionList">
+                            <option value="">--Select Session--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <label class="col-form-label  col-lg-4">Class <span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <select class="form-control" ng-model="ClassId" ng-change="changeClass()" ng-options="option.ClassId as option.ClassName for option in ClassList"></select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <label class="col-form-label  col-lg-4">Section <span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <select class="form-control" ng-model="SectionId" ng-change="getClassSubjectList()" ng-options="option.SectionId as option.SectionName for option in SectionList"></select>
+                    </div>
+                </div>
+                <div class="col-sm-2" ng-if="SectionId > 0 && AcademicSessionId > 0">
+                    <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal_confirmation_copy">Copy To Other Sections</button>
+                </div>
+            </div>
+
+            <fieldset class="mb-3" ng-if="SectionId > 0">
+                <legend class="text-uppercase font-size-sm font-weight-bold">
+                    Class Subject List
+                    <span style="float:right;font-weight:bold">Total Periods: {{TotalPracticalPeriods +TotalTheoryPeriods}}</span>
+                </legend>
+                <div class="form-group col-sm-6 float-right">
+                    <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+
+                </div>
+                <div class="form-group col-sm-6">
+                    <button class="btn btn-sm btn-primary" ng-click="newClassSubject()" ng-if="CanEdit"> <i class="fa fa-plus"></i> New Subject</button>
+                    @*Display
+                        <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+                        Records Per Page*@
+                </div>
+                <div class="form-group col-sm-12 table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Sl. No.</th>
+                                <th style="cursor: pointer;" ng-click="sort('SubjectName')">Subject <span class="fa" ng-show="sortKey=='SubjectName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                               @* <th style="cursor: pointer;" ng-click="sort('ParentClassSubjectName')">Parent Subject <span class="fa" ng-show="sortKey=='ParentClassSubjectName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>*@
+                                @*<th style="cursor: pointer;" ng-click="sort('Subje                                                                                                                                                                                  ctType')">Subject Type <span class="fa" ng-show="sortKey=='SubjectType'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>*@
+                                <th style="cursor: pointer;" ng-click="sort('IsIncluded')">Is Included <span class="fa" ng-show="sortKey=='IsIncluded'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('PracticalPeriods')">Practical Periods <span class="fa" ng-show="x`xxxxxxxx`````````````````````xsortKey=='PracticalPeriods'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('TheoryPeriods')">Theory Periods <span class="fa" ng-show="sortKey=='TheoryPeriods'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('TheoryPeriods')">Total <span class="fa" ng-show="sortKey=='TheoryPeriods'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('ClassSubjectStatus')">Status <span class="fa" ng-show="sortKey=='ClassSubjectStatus'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                @*<th>Position</th>*@
+                                <th ng-if="CanEdit">Edit </th>
+                                <th ng-if="CanDelete">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="ClassSubject in ClassSubjectList|orderBy:sortKey:reverse|filter:search" ng-model="search">
+                                <td>{{$index + 1}}</td>
+                                <td>{{ClassSubject.SubjectName + " (" + ClassSubject.SubjectCode + ")"}}</td>
+                                @*<td>{{ClassSubject.ParentSubjectName ? (ClassSubject.ParentSubjectName + " (" + ClassSubject.ParentSubjectCode + ")") : ''}}</td>*@
+                                @*<td>{{SubjectTypeList[ClassSubject.SubjectType].Value}}</td>*@
+                                <td>{{ClassSubject.IsIncluded}}</td>
+                                <td>{{ClassSubject.PracticalPeriods}}</td>
+                                <td>{{ClassSubject.TheoryPeriods}}</td>
+                                <td>{{ClassSubject.TheoryPeriods + ClassSubject.PracticalPeriods}}</td>
+                                <td><a ng-class="ClassSubject.ClassSubjectStatus == 1 ? 'badge bg-success-400' : 'badge bg-danger'"> {{ClassSubjectStatusList[ClassSubject.ClassSubjectStatus].Value}}</a></td>
+                                @*<td>
+                                        <button class="btn btn-icon btn-success" ng-click="changePositionUp(ClassSubject.ClassSubjectId)" ng-if="$index != 0"><i class="fa fa-arrow-up"></i></button>
+                                        <button class="btn btn-icon btn-success" ng-click="changePositionDown(ClassSubject.ClassSubjectId)" ng-if="$index+1!=ClassSubjectList.length"><i class="fa fa-arrow-down"></i></button>
+                                    </td>*@
+                                <td ng-if="CanEdit"><button class="btn btn-sm btn-primary" ng-click="editClassSubject(ClassSubject)"><i class="icon-pencil3"></i></button></td>
+                                <td ng-if="CanDelete"><button class="btn btn-sm btn-danger" ng-click="deleteConfirmation(ClassSubject.ClassSubjectId)"><i class="fa fa-trash"></i></button></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="3">Total</th>
+                                <th>{{TotalPracticalPeriods}}</th>
+                                <th>{{TotalTheoryPeriods}}</th>
+                                <th >{{TotalPracticalPeriods + TotalTheoryPeriods}}</th>
+                                <th colspan="3"></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </fieldset>
+        </div>
+
+        <div id="modal_Student_Charge" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ClassSubject.ClassSubjectId > 0 ? 'Update' : 'New' }} Class Subject</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <form name="formClassSubject" novalidate>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label>Subject <span class="text-danger">*</span></label>
+                                    <select ng-model="ClassSubject.SubjectId" name="SubjectId" ng-options="option.SubjectId as option.SubjectName for option in SubjectList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                                    <span class="text-danger" ng-if="(formClassSubject.SubjectId.$dirty || IsSubmitted) && formClassSubject.SubjectId.$error.required">Subject is required!</span>
+                                </div>
+
+                                @*<div class="col-md-12 form-group">
+                                        <label>Subject Type <span class="text-danger">*</span></label>
+                                        <select ng-model="ClassSubject.SubjectType" name="SubjectType" ng-options="option.Key as option.Value for option in SubjectTypeList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                                        <span class="text-danger" ng-if="(formClassSubject.SubjectType.$dirty || IsSubmitted) && formClassSubject.SubjectType.$error.required">Subject Type is required!</span>
+                                    </div>*@
+
+                                @*<div class="col-md-12 form-group">
+                                    <label>Parent Subject </label>
+                                    <select ng-model="ClassSubject.ParentClassSubjectId" name="ParentClassSubjectId" ng-options="option.ClassSubjectId as option.SearchSubject for option in ParentClassSubjectList" class="form-control">
+                                        <option value="">--Select Parent Subject--</option>
+                                    </select>
+                                </div>*@
+                                <div class="col-md-12 form-group">
+                                    <label>Practical Periods <span class="text-danger">*</span></label>
+                                    <input type="number" ng-model="ClassSubject.PracticalPeriods" name="PracticalPeriods" placeholder="Enter No of periods" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                                    <span class="text-danger" ng-if="(formClassSubject.PracticalPeriods.$dirty || IsSubmitted) && formClassSubject.PracticalPeriods.$error.required">Practical Periods is required!</span>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label>Theory Periods <span class="text-danger">*</span></label>
+                                    <input type="number" ng-model="ClassSubject.TheoryPeriods" name="TheoryPeriods" placeholder="Enter No of periods" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                                    <span class="text-danger" ng-if="(formClassSubject.TheoryPeriods.$dirty || IsSubmitted) && formClassSubject.TheoryPeriods.$error.required">Theory Periods is required!</span>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label style="padding-right:20px" for="IsIncluded">Is Included <span class="text-danger">*</span></label>
+                                    <input type="checkbox" id="IsIncluded" ng-model="ClassSubject.IsIncluded" name="NoOfPeriods">
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label>Status <span class="text-danger">*</span></label>
+                                    <select ng-model="ClassSubject.ClassSubjectStatus" name="ClassSubjectStatus" ng-options="option.Key as option.Value for option in ClassSubjectStatusList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                                    <span class="text-danger" ng-if="(formClassSubject.ClassSubjectStatus.$dirty || IsSubmitted) && formClassSubject.ClassSubjectStatus.$error.required">Status is required!</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn bg-primary" ng-click="openEditConfirmation()">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal_confirmation" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <h6 class="font-weight-semibold">Are you sure want to delete this record?</h6>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn bg-primary" ng-click="deleteClassSubject()">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal_confirmation_edit" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <h6 class="font-weight-semibold">Are you want to change in other sections?</h6>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link" ng-click="saveClassSubject(false)">No</button>
+                        <button type="button" class="btn bg-primary" ng-click="saveClassSubject(true)">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal_confirmation_copy" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <h6 class="font-weight-semibold">Are you want to copy to other sections?</h6>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">No</button>
+                        <button type="button" class="btn bg-primary" ng-click="copyClassSubjects()">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+

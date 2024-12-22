@@ -1,0 +1,221 @@
+﻿@{
+    Layout = null;
+}
+<style>
+    th, td {
+        white-space: nowrap
+    }
+</style>
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Manage Employee</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Manage Employee</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group col-sm-2">
+                <select class="form-control" ng-model="SchoolId" ng-change="changeSchool()" ng-options="option.SchoolId as option.ShortName for option in SchoolList"></select>
+            </div>
+            <div class="form-group col-sm-2">
+                <select class="form-control" ng-model="EmployeeTypeId" ng-change="filterList()" ng-options="option.EmployeeTypeId as option.TypeName for option in EmployeeTypeList"></select>
+            </div>
+            <div class="form-group col-sm-2">
+                <input type="text" class="input-sm form-control" ng-model="search" placeholder="Search..." />
+            </div>
+            <div class="form-group col-sm-2">
+                Display
+                <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+            </div>
+            <div class="form-group col-sm-2">
+                <button class="btn btn-sm btn-primary float-right" ng-click="newEmployee()"> <i class="fa fa-plus"></i> New Employee</button>
+            </div>
+            <div class="col-sm-12">
+                <a class="text-link font-weight-bold" ng-click="tablesToExcel(['table_purchase_list'],['Purchase List'],'PurchaseList','PurchaseList')">Export To Excel</a>&nbsp;&nbsp;&nbsp;|
+            </div>
+            <div class="form-group col-sm-12">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover" id="table_purchase_list">
+                        <thead>
+                            <tr>
+                                <th>Sl. No.</th>
+                                <th style="cursor: pointer;" ng-click="sort('EmployeeName')">Employee Name <span class="fa" ng-show="sortKey=='EmployeeName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('TypeName')">Employee Type <span class="fa" ng-show="sortKey=='TypeName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('StaffCode')">Staff Code<span class="fa" ng-show="sortKey=='StaffCode'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('DesignationName')">Designation <span class="fa" ng-show="sortKey=='DesignationName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Gender')">Gender <span class="fa" ng-show="sortKey=='Gender'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('DateOfBirth')">DOB <span class="fa" ng-show="sortKey=='DateOfBirth'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('EmailId')">Email <span class="fa" ng-show="sortKey=='EmailId'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('MobileNo')">Mobile No <span class="fa" ng-show="sortKey=='MobileNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('AlternateNo')">Alternate No <span class="fa" ng-show="sortKey=='AlternateNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('JoinDate')">Join Date <span class="fa" ng-show="sortKey=='JoinDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('EmployeeStatus')">Employee Status <span class="fa" ng-show="sortKey=='EmployeeStatus'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="!IsExporting">Edit </th>
+                                <th ng-if="!IsExporting">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr dir-paginate="Employee in filterEmployeeList|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize" current-page="currentPage" ng-model="search">
+                                <td ng-if="!IsExporting">{{(currentPage*pageSize - (pageSize-1))+ $index}}</td>
+                                <td>{{Employee.EmployeeName}}</td>
+                                <td>{{Employee.TypeName}}</td>
+                                <td>{{Employee.StaffCode == null ? 'N/A':(Employee.StaffCode)}}</td>
+                                <td>{{Employee.StaffCode == DesignationName ? 'N/A':(Employee.DesignationName)}}</td>
+                                <td>{{GenderList[Employee.Gender].Value}}</td>
+                                <td style="white-space:nowrap">{{Employee.DateOfBirth | date:'dd-MM-yyyy'}}</td>
+                                <td>{{Employee.EmailId}}</td>
+                                <td>{{Employee.MobileNo}}</td>
+                                <td>{{Employee.AlternateNo}}</td>
+                                <td style="white-space:nowrap">{{Employee.JoinDate | date:'dd-MM-yyyy'}}</td>
+                                <td><a ng-class="Employee.EmployeeStatus == 1 ? 'badge bg-success-400' : 'badge bg-danger'"> {{EmployeeStatusList[Employee.EmployeeStatus].Value}}</a></td>
+                                <td ng-if="!IsExporting"><button class="btn btn-sm btn-primary" ng-click="editEmployee(Employee)"><i class="icon-pencil3"></i></button></td>
+                                <td ng-if="!IsExporting"><button class="btn btn-sm btn-danger" ng-click="deleteConfirmation(Employee.EmployeeId)"><i class="fa fa-trash"></i></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="clearfix">
+                    <dir-pagination-controls max-size="pageSize" boundary-links="true" template-url="/Scripts/DirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal_Student_Charge" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{Employee.EmployeeId > 0 ? 'Update' : 'New' }} Employee</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <form name="formEmployee" novalidate>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label>Select Staff</label>
+                                <angucomplete-alt id="StaffAutoComplete"
+                                                  placeholder="Enter Staff Name/Code"
+                                                  pause="100"
+                                                  selected-object="afterStaffSelected"
+                                                  local-data="StaffList"
+                                                  search-fields="SearchStaff"
+                                                  title-field="SearchStaff"
+                                                  @*description="ItemTypeName"*@
+                                                  minlength="2"
+                                                  input-class="form-control"
+                                                  match-class="highlight"
+                                                  input-changed="selectionChanged"
+                                                  field-required="true"
+                                                  auto-match="true"
+                                                  focus-in="focusIn()">
+                                </angucomplete-alt>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Select School <span class="text-danger">*</span></label>
+                                <select ng-model="Employee.SchoolId" name="SchoolId" ng-change="changeSchool2()" ng-options="option.SchoolId as option.ShortName for option in SchoolList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                                <span class="text-danger" ng-if="(formEmployee.SchoolId.$dirty || IsSubmitted) && formEmployee.SchoolId.$error.required">School is required!</span>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Employee Type <span class="text-danger">*</span></label>
+                                <select ng-model="Employee.EmployeeTypeId" name="EmployeeTypeId" ng-options="option.EmployeeTypeId as option.TypeName for option in EmployeeTypeList2" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                                <span class="text-danger" ng-if="(formEmployee.EmployeeTypeId.$dirty || IsSubmitted) && formEmployee.EmployeeTypeId.$error.required">Employee Type is required!</span>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Employee Name <span class="text-danger">*</span></label>
+                                <input type="text" name="EmployeeName" ng-model="Employee.EmployeeName" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Employee Name" required autofocus>
+                                <span class="text-danger" ng-if="(formEmployee.EmployeeName.$dirty || IsSubmitted) && formEmployee.EmployeeName.$error.required">Employee Name is required!</span>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Date Of Birth </label>
+                                <input type="date" name="DateOfBirth" ng-model="Employee.DateOfBirth" class="form-control required">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Gender <span class="text-danger">*</span></label>
+                                <select ng-model="Employee.Gender" name="Gender" ng-options="option.Key as option.Value for option in GenderList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                                <span class="text-danger" ng-if="(formEmployee.Gender.$dirty || IsSubmitted) && formEmployee.Gender.$error.required">Gender is required!</span>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Address</label>
+                                <textarea name="Address" ng-model="Employee.Address" class="form-control required" placeholder="Enter Address"></textarea>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Mobile No <span class="text-danger">*</span></label>
+                                <input type="text" name="MobileNo" ng-model="Employee.MobileNo" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Mobile No" required autofocus>
+                                <span class="text-danger" ng-if="(formEmployee.MobileNo.$dirty || IsSubmitted) && formEmployee.MobileNo.$error.required">Mobile No is required!</span>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Alternate No </label>
+                                <input type="text" name="AlternateNo" ng-model="Employee.AlternateNo" class="form-control required" placeholder="Enter Alternate No">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>EmailId <span class="text-danger">*</span></label>
+                                <input type="email" name="EmailId" ng-model="Employee.EmailId" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Email" required autofocus>
+                                <span class="text-danger" ng-if="(formEmployee.EmailId.$dirty || IsSubmitted) && formEmployee.EmailId.$error.required">Email is required!</span>
+                                <span class="text-danger" ng-if="(formEmployee.EmailId.$error.email && IsSubmitted)">Invalid Email Id</span>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Join Date <span class="text-danger">*</span></label>
+                                <input type="date" name="JoinDate" ng-model="Employee.JoinDate" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Mobile No" required autofocus>
+                                <span class="text-danger" ng-if="(formEmployee.JoinDate.$dirty || IsSubmitted) && formEmployee.JoinDate.$error.required">Join Date is required!</span>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Status <span class="text-danger">*</span></label>
+                                <select ng-model="Employee.EmployeeStatus" name="EmployeeStatus" ng-options="option.Key as option.Value for option in EmployeeStatusList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                                <span class="text-danger" ng-if="(formEmployee.EmployeeStatus.$dirty || IsSubmitted) && formEmployee.EmployeeStatus.$error.required">Status is required!</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer text-centre">
+                        <div class="col-sm-12">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn bg-primary" ng-click="saveEmployee()">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal_confirmation" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmation</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <h6 class="font-weight-semibold">Are you sure want to delete this record?</h6>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn bg-primary" ng-click="deleteEmployee()">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

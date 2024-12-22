@@ -1,0 +1,76 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Print Barcode</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Print Barcode</h6>
+        </div>
+        <div class="card-body">
+            <form name="formBook" novalidate>
+                <div class="row">
+                    <div class="col-lg-4 form-group">
+                        <label class="col-form-label font-weight-bold col-lg-5">Course <span class="text-danger">*</span></label>
+                        <div class="col-lg-7">
+                            <select ng-model="ClassNo" name="ClassNo" ng-options="option.ClassNo as option.ClassName for option in ClassList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                <option value="">--Course--</option>
+                            </select>
+                            <span class="text-danger" ng-if="(formBook.ClassNo.$dirty || IsSubmitted) && formBook.ClassNo.$error.required">Course is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 form-group">
+                        <label class="col-form-label font-weight-bold col-lg-6">From Accession No </label>
+                        <div class="col-lg-6">
+                            <input type="number" ng-model="FromAccessionNo" name="FromAccessionNo" placeholder="Enter From Accession No" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                            <span class="text-danger" ng-if="(formBook.FromAccessionNo.$dirty || IsSubmitted) && formBook.FromAccessionNo.$error.required">From Accession No is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 form-group">
+                        <label class="col-form-label font-weight-bold col-lg-6">To Accession No </label>
+                        <div class="col-lg-6">
+                            <input type="number" ng-model="ToAccessionNo" name="ToAccessionNo" placeholder="Enter To Accession No" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                            <span class="text-danger" ng-if="(formBook.ToAccessionNo.$dirty || IsSubmitted) && formBook.ToAccessionNo.$error.required">To Accession No is required!</span>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 form-group">
+                        <label class="col-form-label font-weight-bold col-lg-5">Quantity </label>
+                        <div class="col-lg-7">
+                            <input type="number" ng-model="Quantity" name="Quantity" placeholder="Enter Quantity" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                            <span class="text-danger" ng-if="(formBook.Quantity.$dirty || IsSubmitted) && formBook.Quantity.$error.required">To Accession No is required!</span>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 form-group">
+                        <button class="btn btn-sm btn-primary" ng-click="printBarcode(3)">Print</button>
+                        @*<button class="btn btn-sm btn-success" ng-click="printBarcode(2)">Print 2</button>*@
+                    </div>
+                </div>
+            </form>
+        </div>
+      
+    </div>
+</div>
+

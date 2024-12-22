@@ -1,0 +1,410 @@
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\SchoolERP.dll.config
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\SchoolERP.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\SchoolERP.pdb
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\csc.exe
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\csc.exe.config
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\csc.rsp
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\csi.exe
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\csi.exe.config
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\csi.rsp
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\Microsoft.CodeAnalysis.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\Microsoft.CSharp.Core.targets
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\Microsoft.Managed.Core.targets
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\Microsoft.VisualBasic.Core.targets
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\System.AppContext.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\System.Collections.Immutable.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\System.Console.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\System.Diagnostics.FileVersionInfo.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\System.Diagnostics.StackTrace.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\System.IO.Compression.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\System.IO.FileSystem.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\System.IO.FileSystem.Primitives.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\System.IO.Pipes.AccessControl.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\System.IO.Pipes.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\System.Reflection.Metadata.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\System.Security.AccessControl.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\System.Security.Claims.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\System.Security.Cryptography.Algorithms.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\System.Security.Cryptography.Encoding.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\System.Security.Cryptography.Primitives.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\System.Security.Cryptography.X509Certificates.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\System.Security.Principal.Windows.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\System.Text.Encoding.CodePages.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\System.ValueTuple.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\System.Xml.ReaderWriter.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\System.Xml.XmlDocument.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\System.Xml.XPath.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\System.Xml.XPath.XDocument.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\vbc.exe
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\vbc.exe.config
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\vbc.rsp
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\VBCSCompiler.exe
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\roslyn\VBCSCompiler.exe.config
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\Antlr3.Runtime.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\CrystalDecisions.CrystalReports.Design.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\CrystalDecisions.CrystalReports.Engine.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\CrystalDecisions.Shared.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\Microsoft.Web.Infrastructure.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\Newtonsoft.Json.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\School.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\System.Net.Http.Formatting.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\System.Web.Helpers.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\System.Web.Http.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\System.Web.Http.WebHost.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\System.Web.Mvc.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\System.Web.Optimization.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\System.Web.Razor.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\System.Web.WebPages.Deployment.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\System.Web.WebPages.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\System.Web.WebPages.Razor.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\WebGrease.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\CrystalDecisions.ReportSource.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\CrystalDecisions.Web.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\CrystalDecisions.ReportAppServer.DataDefModel.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\CrystalDecisions.ReportAppServer.ClientDoc.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\CrystalDecisions.ReportAppServer.ReportDefModel.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\CrystalDecisions.ReportAppServer.Controllers.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\CrystalDecisions.ReportAppServer.CommLayer.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\CrystalDecisions.ReportAppServer.DataSetConversion.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\CrystalDecisions.ReportAppServer.Prompting.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\CrystalDecisions.ReportAppServer.XmlSerialize.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\CrystalDecisions.ReportAppServer.CubeDefModel.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\CrystalDecisions.ReportAppServer.ObjectFactory.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\CrystalDecisions.ReportAppServer.CommonObjectModel.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\CrystalDecisions.ReportAppServer.CommonControls.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\stdole.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\School.pdb
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\School.dll.config
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\Newtonsoft.Json.xml
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\System.Net.Http.Formatting.xml
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\System.Web.Helpers.xml
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\System.Web.Http.xml
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\System.Web.Http.WebHost.xml
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\System.Web.Mvc.xml
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\System.Web.Optimization.xml
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\System.Web.Razor.xml
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\System.Web.WebPages.xml
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\System.Web.WebPages.Deployment.xml
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\System.Web.WebPages.Razor.xml
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\Antlr3.Runtime.pdb
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+D:\Projects\AngularJS\SchoolERP\SchoolERP\obj\Release\SchoolERP.csprojAssemblyReference.cache
+D:\Projects\AngularJS\SchoolERP\SchoolERP\obj\Release\SchoolERP.csproj.CoreCompileInputs.cache
+D:\Projects\AngularJS\SchoolERP\SchoolERP\obj\Release\SchoolERP.csproj.CopyComplete
+D:\Projects\AngularJS\SchoolERP\SchoolERP\obj\Release\SchoolERP.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\obj\Release\SchoolERP.pdb
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\EPPlus.dll
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\EPPlus.pdb
+D:\Projects\AngularJS\SchoolERP\SchoolERP\bin\EPPlus.xml
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\SchoolERP.dll.config
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\SchoolERP.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\SchoolERP.pdb
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\csc.exe
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\csc.exe.config
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\csc.rsp
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\csi.exe
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\csi.exe.config
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\csi.rsp
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\Microsoft.CodeAnalysis.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\Microsoft.CSharp.Core.targets
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\Microsoft.Managed.Core.targets
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\Microsoft.VisualBasic.Core.targets
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\System.AppContext.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\System.Collections.Immutable.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\System.Console.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\System.Diagnostics.FileVersionInfo.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\System.Diagnostics.StackTrace.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\System.IO.Compression.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\System.IO.FileSystem.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\System.IO.FileSystem.Primitives.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\System.IO.Pipes.AccessControl.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\System.IO.Pipes.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\System.Reflection.Metadata.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\System.Security.AccessControl.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\System.Security.Claims.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\System.Security.Cryptography.Algorithms.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\System.Security.Cryptography.Encoding.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\System.Security.Cryptography.Primitives.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\System.Security.Cryptography.X509Certificates.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\System.Security.Principal.Windows.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\System.Text.Encoding.CodePages.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\System.ValueTuple.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\System.Xml.ReaderWriter.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\System.Xml.XmlDocument.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\System.Xml.XPath.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\System.Xml.XPath.XDocument.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\vbc.exe
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\vbc.exe.config
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\vbc.rsp
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\VBCSCompiler.exe
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\roslyn\VBCSCompiler.exe.config
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\Antlr3.Runtime.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\CrystalDecisions.CrystalReports.Design.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\CrystalDecisions.CrystalReports.Engine.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\CrystalDecisions.Shared.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\Microsoft.Web.Infrastructure.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\Newtonsoft.Json.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\School.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\System.Net.Http.Formatting.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\System.Web.Helpers.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\System.Web.Http.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\System.Web.Http.WebHost.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\System.Web.Mvc.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\System.Web.Optimization.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\System.Web.Razor.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\System.Web.WebPages.Deployment.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\System.Web.WebPages.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\System.Web.WebPages.Razor.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\WebGrease.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\Zen.Barcode.Core.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\CrystalDecisions.ReportSource.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\CrystalDecisions.Web.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\CrystalDecisions.ReportAppServer.DataDefModel.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\CrystalDecisions.ReportAppServer.ClientDoc.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\CrystalDecisions.ReportAppServer.ReportDefModel.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\CrystalDecisions.ReportAppServer.Controllers.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\CrystalDecisions.ReportAppServer.CommLayer.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\CrystalDecisions.ReportAppServer.DataSetConversion.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\CrystalDecisions.ReportAppServer.Prompting.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\CrystalDecisions.ReportAppServer.XmlSerialize.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\CrystalDecisions.ReportAppServer.CubeDefModel.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\CrystalDecisions.ReportAppServer.ObjectFactory.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\CrystalDecisions.ReportAppServer.CommonObjectModel.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\CrystalDecisions.ReportAppServer.CommonControls.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\stdole.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\School.pdb
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\School.dll.config
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\Newtonsoft.Json.xml
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\System.Net.Http.Formatting.xml
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\System.Web.Helpers.xml
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\System.Web.Http.xml
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\System.Web.Http.WebHost.xml
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\System.Web.Mvc.xml
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\System.Web.Optimization.xml
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\System.Web.Razor.xml
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\System.Web.WebPages.xml
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\System.Web.WebPages.Deployment.xml
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\System.Web.WebPages.Razor.xml
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\Antlr3.Runtime.pdb
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\obj\Release\SchoolERP.csprojAssemblyReference.cache
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\obj\Release\SchoolERP.csproj.CoreCompileInputs.cache
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\obj\Release\SchoolERP.csproj.CopyComplete
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\obj\Release\SchoolERP.dll
+D:\Projects new\AngularJS\CollegeERP\SchoolERP\obj\Release\SchoolERP.pdb
+D:\Projects2023\CollegeERPError\SchoolERP\bin\SchoolERP.dll.config
+D:\Projects2023\CollegeERPError\SchoolERP\bin\SchoolERP.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\SchoolERP.pdb
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\csc.exe
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\csc.exe.config
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\csc.rsp
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\csi.exe
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\csi.exe.config
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\csi.rsp
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\Microsoft.CodeAnalysis.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\Microsoft.CSharp.Core.targets
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\Microsoft.Managed.Core.targets
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\Microsoft.VisualBasic.Core.targets
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\System.AppContext.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\System.Collections.Immutable.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\System.Console.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\System.Diagnostics.FileVersionInfo.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\System.Diagnostics.StackTrace.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\System.IO.Compression.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\System.IO.FileSystem.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\System.IO.FileSystem.Primitives.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\System.IO.Pipes.AccessControl.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\System.IO.Pipes.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\System.Reflection.Metadata.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\System.Security.AccessControl.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\System.Security.Claims.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\System.Security.Cryptography.Algorithms.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\System.Security.Cryptography.Encoding.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\System.Security.Cryptography.Primitives.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\System.Security.Cryptography.X509Certificates.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\System.Security.Principal.Windows.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\System.Text.Encoding.CodePages.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\System.ValueTuple.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\System.Xml.ReaderWriter.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\System.Xml.XmlDocument.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\System.Xml.XPath.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\System.Xml.XPath.XDocument.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\vbc.exe
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\vbc.exe.config
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\vbc.rsp
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\VBCSCompiler.exe
+D:\Projects2023\CollegeERPError\SchoolERP\bin\roslyn\VBCSCompiler.exe.config
+D:\Projects2023\CollegeERPError\SchoolERP\bin\Antlr3.Runtime.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\CrystalDecisions.CrystalReports.Engine.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\CrystalDecisions.Shared.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\Microsoft.Web.Infrastructure.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\Newtonsoft.Json.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\School.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\System.Net.Http.Formatting.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\System.Web.Helpers.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\System.Web.Http.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\System.Web.Http.WebHost.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\System.Web.Mvc.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\System.Web.Optimization.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\System.Web.Razor.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\System.Web.WebPages.Deployment.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\System.Web.WebPages.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\System.Web.WebPages.Razor.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\WebGrease.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\CrystalDecisions.ReportAppServer.DataDefModel.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\CrystalDecisions.ReportAppServer.ClientDoc.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\CrystalDecisions.ReportAppServer.ReportDefModel.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\CrystalDecisions.ReportAppServer.Controllers.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\CrystalDecisions.ReportAppServer.CommLayer.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\CrystalDecisions.ReportAppServer.DataSetConversion.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\CrystalDecisions.ReportAppServer.Prompting.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\CrystalDecisions.ReportAppServer.XmlSerialize.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\CrystalDecisions.ReportAppServer.CubeDefModel.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\CrystalDecisions.ReportAppServer.ObjectFactory.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\CrystalDecisions.ReportAppServer.CommonObjectModel.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\CrystalDecisions.ReportAppServer.CommonControls.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\stdole.dll
+D:\Projects2023\CollegeERPError\SchoolERP\bin\School.pdb
+D:\Projects2023\CollegeERPError\SchoolERP\bin\School.dll.config
+D:\Projects2023\CollegeERPError\SchoolERP\bin\Newtonsoft.Json.xml
+D:\Projects2023\CollegeERPError\SchoolERP\bin\System.Net.Http.Formatting.xml
+D:\Projects2023\CollegeERPError\SchoolERP\bin\System.Web.Helpers.xml
+D:\Projects2023\CollegeERPError\SchoolERP\bin\System.Web.Http.xml
+D:\Projects2023\CollegeERPError\SchoolERP\bin\System.Web.Http.WebHost.xml
+D:\Projects2023\CollegeERPError\SchoolERP\bin\System.Web.Mvc.xml
+D:\Projects2023\CollegeERPError\SchoolERP\bin\System.Web.Optimization.xml
+D:\Projects2023\CollegeERPError\SchoolERP\bin\System.Web.Razor.xml
+D:\Projects2023\CollegeERPError\SchoolERP\bin\System.Web.WebPages.xml
+D:\Projects2023\CollegeERPError\SchoolERP\bin\System.Web.WebPages.Deployment.xml
+D:\Projects2023\CollegeERPError\SchoolERP\bin\System.Web.WebPages.Razor.xml
+D:\Projects2023\CollegeERPError\SchoolERP\bin\Antlr3.Runtime.pdb
+D:\Projects2023\CollegeERPError\SchoolERP\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+D:\Projects2023\CollegeERPError\SchoolERP\obj\Release\SchoolERP.csprojAssemblyReference.cache
+D:\Projects2023\CollegeERPError\SchoolERP\obj\Release\SchoolERP.csproj.CoreCompileInputs.cache
+D:\Projects2023\CollegeERPError\SchoolERP\obj\Release\SchoolERP.csproj.CopyComplete
+D:\Projects2023\CollegeERPError\SchoolERP\obj\Release\SchoolERP.dll
+D:\Projects2023\CollegeERPError\SchoolERP\obj\Release\SchoolERP.pdb
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\SchoolERP.dll.config
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\SchoolERP.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\SchoolERP.pdb
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\csc.exe
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\csc.exe.config
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\csc.rsp
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\csi.exe
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\csi.exe.config
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\csi.rsp
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\Microsoft.CodeAnalysis.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\Microsoft.CSharp.Core.targets
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\Microsoft.Managed.Core.targets
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\Microsoft.VisualBasic.Core.targets
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\System.AppContext.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\System.Collections.Immutable.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\System.Console.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\System.Diagnostics.FileVersionInfo.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\System.Diagnostics.StackTrace.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\System.IO.Compression.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\System.IO.FileSystem.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\System.IO.FileSystem.Primitives.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\System.IO.Pipes.AccessControl.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\System.IO.Pipes.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\System.Reflection.Metadata.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\System.Security.AccessControl.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\System.Security.Claims.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\System.Security.Cryptography.Algorithms.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\System.Security.Cryptography.Encoding.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\System.Security.Cryptography.Primitives.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\System.Security.Cryptography.X509Certificates.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\System.Security.Principal.Windows.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\System.Text.Encoding.CodePages.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\System.ValueTuple.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\System.Xml.ReaderWriter.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\System.Xml.XmlDocument.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\System.Xml.XPath.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\System.Xml.XPath.XDocument.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\vbc.exe
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\vbc.exe.config
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\vbc.rsp
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\VBCSCompiler.exe
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\roslyn\VBCSCompiler.exe.config
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\Antlr3.Runtime.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\CrystalDecisions.CrystalReports.Engine.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\CrystalDecisions.Shared.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\Microsoft.Web.Infrastructure.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\Newtonsoft.Json.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\School.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\System.Net.Http.Formatting.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\System.Web.Helpers.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\System.Web.Http.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\System.Web.Http.WebHost.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\System.Web.Mvc.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\System.Web.Optimization.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\System.Web.Razor.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\System.Web.WebPages.Deployment.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\System.Web.WebPages.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\System.Web.WebPages.Razor.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\WebGrease.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\CrystalDecisions.ReportAppServer.DataDefModel.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\CrystalDecisions.ReportAppServer.ClientDoc.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\CrystalDecisions.ReportAppServer.ReportDefModel.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\CrystalDecisions.ReportAppServer.Controllers.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\CrystalDecisions.ReportAppServer.CommLayer.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\CrystalDecisions.ReportAppServer.DataSetConversion.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\CrystalDecisions.ReportAppServer.Prompting.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\CrystalDecisions.ReportAppServer.XmlSerialize.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\CrystalDecisions.ReportAppServer.CubeDefModel.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\CrystalDecisions.ReportAppServer.ObjectFactory.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\CrystalDecisions.ReportAppServer.CommonObjectModel.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\CrystalDecisions.ReportAppServer.CommonControls.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\stdole.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\School.pdb
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\School.dll.config
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\Newtonsoft.Json.xml
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\System.Net.Http.Formatting.xml
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\System.Web.Helpers.xml
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\System.Web.Http.xml
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\System.Web.Http.WebHost.xml
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\System.Web.Mvc.xml
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\System.Web.Optimization.xml
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\System.Web.Razor.xml
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\System.Web.WebPages.xml
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\System.Web.WebPages.Deployment.xml
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\System.Web.WebPages.Razor.xml
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\Antlr3.Runtime.pdb
+D:\wipenex\CollegeERP (2)\SchoolERP\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+D:\wipenex\CollegeERP (2)\SchoolERP\obj\Release\SchoolERP.csproj.AssemblyReference.cache
+D:\wipenex\CollegeERP (2)\SchoolERP\obj\Release\SchoolERP.csproj.CoreCompileInputs.cache
+D:\wipenex\CollegeERP (2)\SchoolERP\obj\Release\SchoolERP.csproj.Up2Date
+D:\wipenex\CollegeERP (2)\SchoolERP\obj\Release\SchoolERP.dll
+D:\wipenex\CollegeERP (2)\SchoolERP\obj\Release\SchoolERP.pdb

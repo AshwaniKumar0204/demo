@@ -1,0 +1,171 @@
+﻿@{
+    /**/
+
+    Layout = null;
+}
+<style>
+    td, th {
+        white-space: nowrap
+    }
+</style>
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Attendence Detail</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Attendence Detail
+            </h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-4 form-group">
+                    <label class="col-form-label col-lg-4">From Date </label>
+                    <div class="col-lg-8">
+                        <input type="date" ng-model="FromDate" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-sm-4 form-group">
+                    <label class="col-form-label col-lg-4">To Date </label>
+                    <div class="col-lg-8">
+                        <input type="date" ng-model="ToDate" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-sm-4 form-group">
+                    <label class="col-form-label col-lg-4">Select Staff </label>
+                    <div class="col-lg-8">
+                        <angucomplete-alt id="StaffAutoComplete"
+                                          placeholder="Enter Staff Name/Attendence Code"
+                                          pause="100"
+                                          selected-object="afterStaffSelected"
+                                          local-data="StaffList"
+                                          search-fields="SearchAttendenceStaff"
+                                          title-field="SearchAttendenceStaff"
+                                          minlength="1"
+                                          input-class="form-control"
+                                          match-class="highlight"
+                                          input-changed="selectionChanged"
+                                          field-required="true"
+                                          auto-match="true"
+                                          focus-in="focusIn()">
+                        </angucomplete-alt>
+                    </div>
+                </div>
+                <div class="col-sm-4 form-group">
+                    <label class="col-form-label col-lg-4">Group </label>
+                    <div class="col-lg-8">
+                        <select ng-model="StaffGroupId" class="form-control" ng-options="option.StaffGroupId as option.GroupName for option in StaffGroupList">
+                            <option value="">--All Group--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4 form-group">
+                    <label class="col-form-label col-lg-4">Shift </label>
+                    <div class="col-lg-8">
+                        <select ng-model="ShiftId" class="form-control" ng-options="option.ShiftId as option.ShiftName for option in ShiftList">
+                            <option value="">--All Shift--</option>
+                        </select>
+                    </div>
+                </div>
+                @*<div class="col-sm-4 form-group">
+                    <label class="col-form-label col-lg-4">Select Report </label>
+                    <div class="col-lg-8">
+                        <select ng-model="ReportNo" class="form-control">
+                            <option value="">--Select Report--</option>
+                            <option value="1">Shiftwise</option>
+                            <option value="2">Groupwise</option>
+                            <option value="3">Staffwise</option>
+                        </select>
+                    </div>
+                </div>*@
+                <div class="col-sm-12 form-group text-centre">
+                    <button class="btn btn-sm btn-success" ng-click="getAttendenceList()"><i class="fa fa-search"></i> Search</button>
+                    @*<button class="btn btn-sm btn-primary" ng-click="printReport(ReportNo)">Print</button>*@
+                </div>
+            </div>
+            <fieldset class="mb-3" ng-show="AttendenceList.length > 0">
+                <legend class="text-uppercase font-size-sm font-weight-bold">Attendence Detail</legend>
+                <div class="form-group col-sm-6 float-right">
+                    <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+                </div>
+                <div class="form-group col-sm-6">
+                    Display
+                    <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+                    Records Per Page
+                </div>
+                <div class="col-sm-12">
+                    <a class="text-link font-weight-bold" ng-click="tablesToExcel(['table_purchase_list'],['Attendence_list'],'Attendence_list','Attendence_list')">Export To Excel</a>&nbsp;&nbsp;&nbsp;|
+                    @*<a ng-click="printReport(1)" class="text-link font-weight-bold">Print Report Shiftwise</a>&nbsp;&nbsp;&nbsp;|
+                    <a ng-click="printReport(2)" class="text-link font-weight-bold">Print Report Groupwise</a>&nbsp;&nbsp;&nbsp;|
+                    <a ng-click="printReport(3)" class="text-link font-weight-bold">Print Report Staffwise</a>&nbsp;&nbsp;&nbsp;|*@
+                </div>
+                <div class="form-group col-sm-12 table-responsive" id="div_table_purchase_list">
+                    <table class="table table-bordered table-hover" id="table_purchase_list">
+                        <thead>
+                            <tr>
+                                <th>Sl. No.</th>
+                                <th style="cursor: pointer;" ng-click="sort('EntryDateTime')">Date <span class="fa" ng-show="sortKey=='EntryDateTime'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('GroupName')">Group <span class="fa" ng-show="sortKey=='GroupName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('AttendenceCode')">Attendence Code <span class="fa" ng-show="sortKey=='AttendenceCode'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('FullName')">Name <span class="fa" ng-show="sortKey=='FullName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('DesignationName')">Designation <span class="fa" ng-show="sortKey=='DesignationName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('MobileNo')">Mobile No <span class="fa" ng-show="sortKey=='MobileNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Shift.ShiftName')">Shift <span class="fa" ng-show="sortKey=='Shift.ShiftName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Shift.InTime')">In Time(Shift) <span class="fa" ng-show="sortKey=='Shift.InTime'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('InTime')">In Time <span class="fa" ng-show="sortKey=='InTime'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('InGapeTime')">Delay In <span class="fa" ng-show="sortKey=='InGapeTime'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                @*<th style="cursor: pointer;" ng-click="sort('OverInTime')">Over In Time <span class="fa" ng-show="sortKey=='OverInTime'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>*@
+                                <th style="cursor: pointer;" ng-click="sort('Shift.OutTime')">Out Time (Shift) <span class="fa" ng-show="sortKey=='Shift.OutTime'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('OutTime')">Out Time <span class="fa" ng-show="sortKey=='OutTime'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('OutGapeTime')">Before Out<span class="fa" ng-show="sortKey=='OutGapeTime'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                @*<th style="cursor: pointer;" ng-click="sort('OverOutTime')">Over Out Time<span class="fa" ng-show="sortKey=='OverOutTime'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>*@
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-init="$parent.TotalQuantity =$parent.TotalQuantity + vehicle.Quantity;$parent.TotalAmount=$parent.TotalAmount+vehicle.Amount" dir-paginate="vehicle in AttendenceList|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize" current-page="currentPage" ng-model="search">
+                                <td>{{(currentPage*pageSize - (pageSize-1))+ $index}}</td>
+                                <td>{{vehicle.EntryDateTime | date:'dd-MM-yyyy'}}</td>
+                                <td>{{vehicle.GroupName}}</td>
+                                <td>{{vehicle.AttendenceCode}}</td>
+                                <td>{{vehicle.FullName}}</td>
+                                <td>{{vehicle.DesignationName}}</td>
+                                <td>{{vehicle.MobileNo}}</td>
+                                <td>{{vehicle.Shift.ShiftName}}</td>
+                                <td>{{vehicle.Shift.InTime}}</td>
+                                <td>{{vehicle.InTime}}</td>
+                                <td ng-class="vehicle.InGapeTime > vehicle.Shift.GapeTime ?'text-danger':''">{{vehicle.InGapeTime}}</td>
+                                @*<td>{{vehicle.OverInTime}}</td>*@
+                                <td>{{vehicle.Shift.OutTime}}</td>
+                                <td>{{vehicle.OutTime}}</td>
+                                <td ng-class="vehicle.OutGapeTime > vehicle.Shift.GapeTime ?'text-danger':''">{{vehicle.OutGapeTime}}</td>
+                                @*<td>{{vehicle.OverOutTime}}</td>*@
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="clearfix">
+                    <dir-pagination-controls max-size="pageSize" boundary-links="true" template-url="/Scripts/DirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,192 @@
+﻿@{
+    Layout = null;
+}
+<style>
+    th,tr{
+        white-space:nowrap;
+    }
+</style>
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Manage Supplier</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Manage Supplier</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group col-sm-6">
+                <button class="btn btn-sm btn-primary" ng-if="CanEdit" ng-click="newSupplier()"> <i class="fa fa-plus"></i> New Supplier</button>
+            </div>
+            <div class="form-group col-sm-6 float-right">
+                <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+            </div>
+            <div class="form-group col-sm-12 table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Sl. No.</th>
+                            <th ng-if="CanEdit">Edit </th>
+                            <th ng-if="CanDelete">Delete</th>   
+                            <th style="cursor: pointer;" ng-click="sort('SupplierName')">Supplier <span class="fa" ng-show="sortKey=='SupplierName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('Email')">Email <span class="fa" ng-show="sortKey=='Email'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('MobileNo')">Mobile No <span class="fa" ng-show="sortKey=='MobileNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('Fax')">Fax No <span class="fa" ng-show="sortKey=='Fax'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('GSTNo')">GST No <span class="fa" ng-show="sortKey=='GSTNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('StateName')">State <span class="fa" ng-show="sortKey=='StateName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('Address')">Address <span class="fa" ng-show="sortKey=='Address'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('SupplierType')">Supplier Type<span class="fa" ng-show="sortKey=='SupplierType'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('SupplierStatus')">Status<span class="fa" ng-show="sortKey=='SupplierStatus'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="Supplier in SupplierList|orderBy:sortKey:reverse|filter:search" ng-model="search">
+                            <td>{{$index + 1}}</td>
+                            <td ng-if="CanEdit"><button class="btn btn-sm btn-primary" ng-click="editSupplier(Supplier)"><i class="icon-pencil3"></i></button></td>
+                            <td ng-if="CanDelete"><button class="btn btn-sm btn-danger" ng-click="deleteConfirmation(Supplier.SupplierId)"><i class="fa fa-trash"></i></button></td>
+                            <td>{{Supplier.SupplierName}}</td>
+                            <td>{{Supplier.Email}}</td>
+                            <td>{{Supplier.MobileNo}}</td>
+                            <td>{{Supplier.Fax}}</td>
+                            <td>{{Supplier.GSTNo}}</td>
+                            <td>{{Supplier.StateName}}</td>
+                            <td>{{Supplier.Address}}</td>
+                            <td>{{Supplier.SupplierTypeName}}</td>
+                            <td><a ng-class="Supplier.SupplierStatus == 1 ? 'badge bg-success-400' : 'badge bg-danger'"> {{SupplierStatusList[Supplier.SupplierStatus].Value}}</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="modal_Student_Charge" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{Supplier.SupplierId > 0 ? 'Update' : 'New' }} Supplier</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <form name="formSupplier" novalidate>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label class="col-form-label font-weight-bold col-lg-4">Supplier Name <span class="text-danger">*</span></label>
+                                    <div class="col-lg-8">
+                                        <input type="text" name="SupplierName" placeholder="Enter Supplier Name" ng-model="Supplier.SupplierName" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus>
+                                        <span class="text-danger" ng-if="(formSupplier.SupplierName.$dirty || IsSubmitted) && formSupplier.SupplierName.$error.required">Supplier Name is required!</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label class="col-form-label font-weight-bold col-lg-4">Mobile No <span class="text-danger">*</span></label>
+                                    <div class="col-lg-8">
+                                        <input type="number" name="MobileNo" placeholder="Enter Mobile No" ng-model="Supplier.MobileNo" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus>
+                                        <span class="text-danger" ng-if="(formSupplier.MobileNo.$dirty || IsSubmitted) && formSupplier.MobileNo.$error.required">Mobile No is required!</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label class="col-form-label font-weight-bold col-lg-4">Email</label>
+                                    <div class="col-lg-8">
+                                        <input type="email" name="Email" placeholder="Enter Email" ng-model="Supplier.Email" class="form-control">
+                                        <span class="text-danger" ng-if="formSupplier.$error.email">Invalid Email</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label class="col-form-label font-weight-bold col-lg-4">Fax No</label>
+                                    <div class="col-lg-8">
+                                        <input type="text" name="Fax" placeholder="Enter Fax No" ng-model="Supplier.Fax" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label class="col-form-label font-weight-bold col-lg-4">GST No</label>
+                                    <div class="col-lg-8">
+                                        <input type="text" name="GSTNo" placeholder="Enter GST No" ng-model="Supplier.GSTNo" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 form-group">
+                                    <label class="col-form-label font-weight-bold col-lg-4"> Select State <span class="text-danger">*</span></label>
+                                    <div class="col-lg-8">
+                                        <select ng-model="Supplier.StateId" name="StateId" ng-options="option.StateId as option.StateName for option in StateList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                            <option value="">--Select State--</option>
+                                        </select>
+                                        <span class="text-danger" ng-if="(formSupplier.StateId.$dirty || IsSubmitted) && formSupplier.StateId.$error.required">State is required!</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label class="col-form-label font-weight-bold col-lg-4">Address  <span class="text-danger">*</span></label>
+                                    <div class="col-lg-8">
+                                        <textarea name="Address" placeholder="Enter Address" ng-model="Supplier.Address" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></textarea>
+                                        <span class="text-danger" ng-if="(formSupplier.Address.$dirty || IsSubmitted) && formSupplier.Address.$error.required">Mobile No is required!</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 form-group">
+                                    <label class="col-form-label font-weight-bold col-lg-4"> Supplier Type <span class="text-danger">*</span></label>
+                                    <div class="col-lg-8">
+                                        <select ng-model="Supplier.SupplierType" name="SupplierType" ng-options="option.Key as option.Value for option in SupplierTypeList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                            <option value="">--Select Supplier Type--</option>
+                                        </select>
+                                        <span class="text-danger" ng-if="(formSupplier.SupplierType.$dirty || IsSubmitted) && formSupplier.SupplierType.$error.required">Type is required!</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label class="col-form-label font-weight-bold col-lg-4"> Status <span class="text-danger">*</span></label>
+                                    <div class="col-lg-8">
+                                        <select ng-model="Supplier.SupplierStatus" name="SupplierStatus" ng-options="option.Key as option.Value for option in SupplierStatusList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                                        <span class="text-danger" ng-if="(formSupplier.SupplierStatus.$dirty || IsSubmitted) && formSupplier.SupplierStatus.$error.required">Status is required!</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn bg-primary" ng-click="SaveSupplier()">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal_confirmation" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <h6 class="font-weight-semibold">Are you sure want to delete this record?</h6>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn bg-primary" ng-click="deleteSupplier()">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

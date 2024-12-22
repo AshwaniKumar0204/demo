@@ -1,0 +1,133 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <a href="#" class="breadcrumb-item"> Fee</a>
+                <span class="breadcrumb-item active">Delete Receipt</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-body">
+            <fieldset class="mb-3">
+                <legend class="text-uppercase font-size-sm font-weight-bold">Delete Receipt</legend>
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="form-group row">
+                                    <label class="col-form-label col-lg-4 font-weight-bold">Receipt No </label>
+                                    <div class="col-lg-6">
+                                        <div class="row">
+                                            <input type="text" placeholder="Enter Receipt No" name="ReceiptNo" class="form-control" ng-model="ReceiptNo" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <button class="btn btn-icon btn-success" ng-click="getFeeCollectionForDelete()"><i class="fa fa-search"></i></button>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-form-label col-lg-4 font-weight-bold">Payment Date : </label>
+                                    <label class="col-lg-8 form-control">{{FeeCollection.PaymentDate | date:'dd-MMM-yyyy HH:mm a'}} </label>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-form-label col-lg-4 font-weight-bold">Payment Mode : </label>
+                                    <label class="col-lg-8 form-control">{{PaymentModes[FeeCollection.PaymentMode]}} </label>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-form-label col-lg-4 font-weight-bold">Cheque No : </label>
+                                    <label class="col-lg-8 form-control">{{FeeCollection.ChequeNo}} </label>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-form-label col-lg-4 font-weight-bold">Cheque Date : </label>
+                                    <label class="col-lg-8 form-control">{{FeeCollection.ChequeDate | date:'dd-MMM-yyyy'}} </label>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-form-label col-lg-4 font-weight-bold">Cheque Bank : </label>
+                                    <label class="col-lg-8 form-control">{{FeeCollection.ChequeBank}} </label>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-form-label col-lg-4 font-weight-bold">Paid Amount : </label>
+                                    <label class="col-lg-8 form-control">{{FeeCollection.PaidAmount | number:2}} </label>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-form-label col-lg-4 font-weight-bold">Payment Taken By : </label>
+                                    <label class="col-lg-8 form-control">{{FeeCollection.CreatedByName}} </label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <fieldset class="mb-3">
+                                    <legend class="text-uppercase font-size-sm font-weight-bold"> Fee Details</legend>
+                                    <div class="form-group table-responsive">
+                                        <table class="table my-table table-bordered table-hover">
+                                            <thead>
+                                                <tr class="panel-dark-purpul">
+                                                    <th>Fee Head</th>
+                                                    <th>Amount</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="feeHead in FeeCollection.FeeCollectionDetailList">
+                                                    <th>{{feeHead.FeeHeadTitle + " [" + FeeTypeList[feeHead.FeeType] + "]"}}</th>
+                                                    <th>{{feeHead.Total | number:2}}</th>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="card-footer text-centre" ng-show="FeeCollection.FeeCollectionId > 0">
+                                <button class="btn btn-danger" ng-click="deleteConfirmation()">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+    </div>
+
+    <div id="modal_confirmation" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmation</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <h6 class="font-weight-semibold">Are you sure want to delete this record?</h6>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn bg-primary" ng-click="deleteFeeCollection()">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,106 @@
+﻿
+@{
+    Layout = null;
+}
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <a href="#" class="breadcrumb-item">Student</a>
+                <span class="breadcrumb-item active">Update Roll No</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Update Roll No</h6>
+        </div>
+        <div class="card-body">
+            <form name="formAdmin" novalidate>
+                <div class="form-group row">
+                    <div class="col-lg-4">
+                        <label class="col-form-label  col-lg-4">Course<span class="text-danger">*</span></label>
+                        <div class="col-lg-8">
+                            <select ng-model="ClassId" ng-change="changeClass()||getAcademicSessionList()" ng-options="option.ClassId as option.ClassName for option in ClassList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                <option value="">--Select Course--</option>
+                            </select>
+                            <span class="text-danger" ng-if="(formAdmin.ClassId.$dirty || IsSubmitted) && formAdmin.ClassId.$error.required">Course is required!</span>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <label class="col-form-label  col-lg-4">Session <span class="text-danger">*</span></label>
+                        <div class="col-lg-8">
+                            <select ng-model="AcademicSessionId" ng-change="getAdmissionList()" ng-options="option.AcademicSessionId as option.SessionName for option in AcademicSessionList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                <option value="">--Select Session--</option>
+                            </select>
+                            <span class="text-danger" ng-if="(formAdmin.AcademicSessionId.$dirty || IsSubmitted) && formAdmin.AcademicSessionId.$error.required">Session is required!</span>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <label class="col-form-label col-lg-4">Branch <span class="text-danger">*</span></label>
+                        <div class="col-lg-8">
+                            <select ng-model="SectionId" ng-change="getAdmissionList()" ng-options="option.SectionId as option.SectionName for option in SectionList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                <option value="">--Select Branch--</option>
+                            </select>
+                            <span class="text-danger" ng-if="(formAdmin.SectionId.$dirty || IsSubmitted) && formAdmin.SectionId.$error.required">Branch is required!</span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <fieldset class="mb-3" ng-if="AdmissionList.length > 0">
+                <legend class="text-uppercase font-size-sm font-weight-bold">Student List</legend>
+                <div class="form-group col-sm-12 float-right">
+                    <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+                </div>
+                <div class="form-group row">
+                    <div class="col-lg-12 table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr class="panel-dark-blue">
+                                    <th>Sl. No.</th>
+                                    <th style="cursor: pointer;" ng-click="sort('AdmissionNo')">Admission No <span class="fa" ng-show="sortKey=='AdmissionNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('FullName')">Student Name <span class="fa" ng-show="sortKey=='FullName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('RollNo')">Roll No <span class="fa" ng-show="sortKey=='RollNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('NewRollNo')">New Roll No <span class="fa" ng-show="sortKey=='NewRollNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="admission in AdmissionList|orderBy:sortKey:reverse|filter:search" ng-model="search">
+                                    <td>{{$index + 1}}</td>
+                                    <td>{{admission.AdmissionNo}}</td>
+                                    <td>{{admission.FullName}}</td>
+                                    <td>{{admission.RollNo}}</td>
+                                    <td>
+                                        <input type="number" class="form-control" ng-model="admission.NewRollNo" name="{{admission.AdmissionId}}" required autofocus />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="card-footer text-centre" ng-if="AdmissionList.length > 0 && CanEdit">
+            <button class="btn btn-primary" ng-click="updateStudentRollNo()">Update</button>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,92 @@
+﻿
+@{
+    Layout = null;
+}
+<style>
+    hr {
+        margin-top: 0;
+    }
+</style>
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!Index" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Hostel</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="col-md-4" ng-show="CanEdit">
+        <div class="card">
+            <div class="card-header header-elements-inline">
+                <h6 class="card-title">Save Hostel</h6>
+            </div>
+            <div class="card-body">
+                <form novalidate name="formHostel">
+                    <div class="form-group">
+                        <label>Hostel Name<span class="text-danger">*</span></label>
+                        <input type="text" name="HostelTitle" placeholder="Hostel Name" ng-model="HostelTitle" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus>
+                        <span class="text-danger" ng-if="(formHostel.HostelTitle.$dirty || IsSubmitted) && formHostel.HostelTitle.$error.required">Hostel Name is required!</span>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer d-flex justify-content-between align-items-center">
+                <button ng-click="SaveHostel();" type="submit" class="btn bg-blue">Submit <i class="icon-paperplane ml-2"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-white header-elements-inline">
+                <h6 class="card-title">List Hostel</h6>
+            </div>
+            <div class="card-body">
+                <div class="form-group col-sm-6 float-right">
+                    <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+                </div>
+                <div class="form-group col-sm-6">
+                    Display
+                    <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+                    Records Per Page
+                </div>
+                <div class="form-group col-sm-12 table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Sl. No.</th>
+                                <th ng-if="CanEdit">Action </th>
+                                <th style="cursor: pointer;" ng-click="sort('HostelTitle')">Hostel Name <span class="fa" ng-show="sortKey=='HostelTitle'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr dir-paginate="grp in Hostels|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize" current-page="currentPage" ng-model="search">
+                                <td>{{(currentPage*pageSize - (pageSize-1))+ $index}}</td>
+                                <td ng-if="CanEdit"><button class="btn btn-sm btn-primary" formnovalidate ng-click="editHostel(grp)"><i class="icon-pencil3"></i></button></td>
+                                <td>{{grp.HostelTitle}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div> <div class="clearfix">
+                    <dir-pagination-controls max-size="pageSize" boundary-links="true" template-url="/Scripts/DirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+

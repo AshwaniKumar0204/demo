@@ -1,0 +1,140 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Manage Semester</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Manage Semester</h6>
+        </div>
+        <div class="card-body">
+            <div class="col-lg-6">
+                <label class="col-form-label font-weight-bold col-lg-4">Course </label>
+                <div class="col-lg-8">
+                    <select ng-model="ClassId" ng-change="getSemesterList()" ng-options="option.ClassId as option.ClassName for option in ClassList" class="form-control">
+                        <option value="">--Select Course--</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <button class="btn btn-sm btn-primary" ng-if="CanEdit && ClassId != null" ng-click="newSemester()"> <i class="fa fa-plus"></i> New Semester</button>
+            </div>
+            <div class="clearfix"></div>
+            <fieldset class="mb-3" ng-show="SemesterList.length > 0">
+                <legend class="text-uppercase font-size-sm font-weight-bold">Semester List</legend>
+                <div class="form-group col-sm-6 float-right">
+                    <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+                </div>
+                <div class="form-group col-sm-12 table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Sl. No.</th>
+                                @*<th style="cursor: pointer;" ng-click="sort('ClassName')">Course Name <span class="fa" ng-show="sortKey=='ClassName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>*@
+                                <th style="cursor: pointer;" ng-click="sort('SemesterName')">Semester Name <span class="fa" ng-show="sortKey=='SemesterName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('SemesterNo')">Semester No <span class="fa" ng-show="sortKey=='SemesterNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Status')">Status<span class="fa" ng-show="sortKey=='Status'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="CanEdit">Edit </th>
+                                <th ng-if="CanDelete">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="Semester in SemesterList|orderBy:sortKey:reverse|filter:search" ng-model="search">
+                                <td>{{$index + 1}}</td>
+                                @*<td>{{Semester.ClassName}}</td>*@
+                                <td>{{Semester.SemesterName}}</td>
+                                <td>{{Semester.SemesterNo}}</td>
+                                <td>{{StatusList[Semester.Status].Value}}</td>
+                                <td ng-if="CanEdit"><button class="btn btn-sm btn-primary" ng-click="editSemester(Semester)"><i class="icon-pencil3"></i></button></td>
+                                <td ng-if="CanDelete"><button class="btn btn-sm btn-danger" ng-click="deleteConfirmation(Semester.SemesterId)"><i class="fa fa-trash"></i></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </fieldset>
+        </div>
+
+        <div id="modal_Student_Charge" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{Semester.SemesterId > 0 ? 'Update' : 'New' }} Semester</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <form name="formSemester" novalidate>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label>Semester Name <span class="text-danger">*</span></label>
+                                    <input type="text" name="SemesterName" placeholder="Enter Semester Name" ng-model="Semester.SemesterName" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus>
+                                    <span class="text-danger" ng-if="(formSemester.SemesterName.$dirty || IsSubmitted) && formSemester.SemesterName.$error.required">Semester Name is required!</span>
+                                </div>
+
+                                <div class="col-md-12 form-group">
+                                    <label>Semester No <span class="text-danger">*</span></label>
+                                    <input type="text" name="SemesterNo" placeholder="Enter Semester No" ng-model="Semester.SemesterNo" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus>
+                                    <span class="text-danger" ng-if="(formSemester.SemesterNo.$dirty || IsSubmitted) && formSemester.SemesterNo.$error.required">Semester No is required!</span>
+                                </div>
+
+                                <div class="col-md-12 form-group">
+                                    <label>Status <span class="text-danger">*</span></label>
+                                    <select ng-model="Semester.Status" name="Status" ng-options="option.Key as option.Value for option in StatusList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                        <option value="">--Select Status--</option>
+                                    </select>
+                                    <span class="text-danger" ng-if="(formSemester.Status.$dirty || IsSubmitted) && formSemester.Status.$error.required">Semester Status is required!</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn bg-primary" ng-click="SaveSemester()">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal_confirmation" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <h6 class="font-weight-semibold">Are you sure want to delete this record?</h6>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn bg-primary" ng-click="deleteSemester()">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

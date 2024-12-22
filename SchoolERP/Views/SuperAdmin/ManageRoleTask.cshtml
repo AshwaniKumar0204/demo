@@ -1,0 +1,91 @@
+﻿@{
+    Layout = null;
+}
+<style>
+    th, td {
+        white-space: nowrap
+    }
+</style>
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Manage Role Task</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Manage Role Task</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group row" style="margin-bottom:20px">
+                <div class="col-sm-6">
+                    <label class="col-form-label  col-lg-4">Select Role <span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <select class="form-control" ng-model="RoleId" ng-change="getAllRoleTaskList()" ng-options="option.RoleId as option.RoleTitle for option in RoleList"></select>
+                    </div>
+                </div>
+                <div class="col-sm-6" ng-show="TaskGroupList.length > 0">
+                    <input type="text" class="form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+                </div>
+            </div>
+
+            <fieldset class="mb-3" ng-repeat="taskGroup in TaskGroupList|filter:search" ng-model="search">
+                <legend class="text-uppercase font-size-sm font-weight-bold">
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" ng-change="checkAll(taskGroup)" ng-model="taskGroup.CheckAll">
+                            {{taskGroup.GroupName}}
+                        </label>
+                    </div>
+                </legend>
+                <div class="form-group row">
+                    <div class="col-lg-6 col-md-6 col-6" ng-repeat="roleTask in taskGroup.RoleTaskList">
+                        <div class="col-sm-7">
+                            <div class="form-check form-check-inline">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" ng-model="roleTask.IsSelected">
+                                    {{roleTask.MenuTitle}}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-check form-check-inline" ng-if="roleTask.IsSelected">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" ng-model="roleTask.CanEdit"> Edit
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-sm-2" ng-if="roleTask.IsSelected">
+                            <div class="form-check form-check-inline">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" ng-model="roleTask.CanDelete"> Delete
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="card-footer text-centre" ng-if="TaskGroupList.length > 0">
+            <button class="btn btn-primary" ng-click="saveRoleTask()">Submit</button>
+        </div>
+    </div>
+</div>
+

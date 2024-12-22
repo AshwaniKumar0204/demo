@@ -1,0 +1,197 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Manage Parent</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Manage Parent</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group col-sm-4 float-right">
+                <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+            </div>
+            <div class="form-group col-sm-4" ng-if="CanEdit">
+                <button class="btn btn-sm btn-primary" ng-click="newParent()"> <i class="fa fa-plus"></i> New Parent</button>
+            </div>
+            <div class="form-group col-sm-4" ng-if="CanEdit">
+                Display
+                <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+                Records Per Page
+            </div>
+            <div class="form-group col-sm-12 table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Sl. No.</th>
+                            <th style="cursor: pointer;" ng-click="sort('ParentCode')">Parent Code <span class="fa" ng-show="sortKey=='ParentCode'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('FatherMobileNo')">Father Mobile No <span class="fa" ng-show="sortKey=='FatherMobileNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('MotherMobileNo')">Mother Mobile No <span class="fa" ng-show="sortKey=='MotherMobileNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('ParentStatus')">Status <span class="fa" ng-show="sortKey=='ParentStatus'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th ng-if="CanEdit">Edit </th>
+                            <th ng-if="CanDelete">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr dir-paginate="Parent in ParentList|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize" current-page="currentPage" ng-model="search">
+                            <td>{{$index + 1}}</td>
+                            <td>{{Parent.ParentCode}}</td>
+                            <td>{{Parent.FatherMobileNo}}</td>
+                            <td>{{Parent.MotherMobileNo}}</td>
+                            <td><a ng-class="Parent.ParentStatus == 1 ? 'badge bg-success-400' : 'badge bg-danger'"> {{ParentStatusList[Parent.ParentStatus].Value}}</a></td>
+                            <td ng-if="CanEdit"><button class="btn btn-sm btn-primary" ng-click="editParent(Parent)"><i class="icon-pencil3"></i></button></td>
+                            <td ng-if="CanDelete"><button class="btn btn-sm btn-danger" ng-click="deleteConfirmation(Parent.ParentId)"><i class="fa fa-trash"></i></button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="clearfix">
+                <dir-pagination-controls max-size="pageSize" boundary-links="true" template-url="/Scripts/DirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+            </div>
+        </div>
+
+        <div id="modal_Student_Charge" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{Parent.ParentId > 0 ? 'Update' : 'New' }} Parent</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <form name="formParent" novalidate>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label class="col-form-label font-weight-bold col-lg-4">Father Mobile No <span class="text-danger">*</span></label>
+                                    <div class="col-lg-8">
+                                        <input type="number" ng-model="Parent.FatherMobileNo" name="FatherMobileNo" class="form-control" placeholder="Enter Father Mobile No" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                                        <span class="text-danger" ng-if="(formParent.FatherMobileNo.$dirty || IsSubmitted) && formParent.FatherMobileNo.$error.required">Father Mobile No is required!</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label class="col-form-label font-weight-bold col-lg-4">Mother Mobile No <span class="text-danger">*</span></label>
+                                    <div class="col-lg-8">
+                                        <input type="number" ng-model="Parent.MotherMobileNo" name="MotherMobileNo" class="form-control" placeholder="Enter Mother Mobile No" />
+                                       @*<span class="text-danger" ng-if="(formParent.MotherMobileNo.$dirty || IsSubmitted) && formParent.MotherMobileNo.$error.required">Mother Mobile No is required!</span>*@
+                                    </div>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label class="col-form-label font-weight-bold col-lg-4">Login Password <span class="text-danger">*</span></label>
+                                    <div class="col-lg-8">
+                                        <input type="text" ng-model="Parent.LoginPassword" name="LoginPassword" class="form-control" placeholder="Enter Login Password" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                                        <span class="text-danger" ng-if="(formParent.LoginPassword.$dirty || IsSubmitted) && formParent.LoginPassword.$error.required">Login Password is required!</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label class="col-form-label font-weight-bold col-lg-4">Status <span class="text-danger">*</span></label>
+                                    <div class="col-lg-8">
+                                        <select ng-model="Parent.ParentStatus" name="ParentStatus" ng-options="option.Key as option.Value for option in ParentStatusList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                                        <span class="text-danger" ng-if="(formParent.ParentStatus.$dirty || IsSubmitted) && formParent.ParentStatus.$error.required">Status is required!</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <fieldset class="mb-3">
+                                <legend class="text-uppercase font-size-sm font-weight-bold">Student List</legend>
+                                <div class="row">
+                                    <div class="col-md-12 form-group">
+                                        <div class="col-md-6 form-group">
+                                            <label class="col-sm-4 col-form-label">Select Student <span class="text-danger">*</span></label>
+                                            <div class="col-md-8">
+                                                <angucomplete-alt id="StudentAnguComplete"
+                                                                  placeholder="Enter Admission No/Name"
+                                                                  pause="100"
+                                                                  selected-object="afterStudentSelected"
+                                                                  local-data="StudentList"
+                                                                  search-fields="SearchStudent"
+                                                                  title-field="SearchStudent"
+                                                                  minlength="2"
+                                                                  input-class="form-control"
+                                                                  match-class="highlight"
+                                                                  input-changed="selectionChanged"
+                                                                  field-required="true"
+                                                                  auto-match="true"
+                                                                  focus-in="focusIn()">
+                                                </angucomplete-alt>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 form-group">
+                                            <div class="col-md-6">
+                                                <button class="btn btn-sm btn-success" ng-click="addStudent()">Add</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 form-group table-responsive" ng-if="Parent.StudentList.length > 0">
+                                        <table class="table table-bordered table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Sl. No.</th>
+                                                    <th>Admission No</th>
+                                                    <th>Student Name</th>
+                                                    <th>Delete</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="student in Parent.StudentList">
+                                                    <td>{{$index + 1}}</td>
+                                                    <td>{{student.AdmissionNo}}</td>
+                                                    <td>{{student.FullName}}</td>
+                                                    <td><button class="btn btn-icon btn-danger" ng-click="deleteStudent($index)"><i class="fa fa-trash"></i></button></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="modal-footer text-centre">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn bg-primary" ng-click="saveParent()">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal_confirmation" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <h6 class="font-weight-semibold">Are you sure want to delete this record?</h6>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn bg-primary" ng-click="deleteParent()">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,223 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Book Issue</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Book Issue</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    <label class="col-form-label  col-lg-4">Admission No <span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <angucomplete-alt id="StudentAutoComplete"
+                                          placeholder="Enter Admission No/Student Name"
+                                          pause="100"
+                                          selected-object="afterStudentSelected"
+                                          local-data="StudentList"
+                                          search-fields="SearchStudent"
+                                          title-field="SearchStudent"
+                                          minlength="2"
+                                          input-class="form-control"
+                                          match-class="highlight"
+                                          input-changed="inputChangeStudent"
+                                          field-required="true"
+                                          auto-match="true"
+                                          focus-in="focusIn()">
+                        </angucomplete-alt>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <label class="col-form-label  col-lg-4">Staff Code <span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <angucomplete-alt id="StaffAutoComplete"
+                                          placeholder="Enter Staff Code/Staff Name"
+                                          pause="100"
+                                          selected-object="afterStaffSelected"
+                                          local-data="StaffList"
+                                          search-fields="SearchStaff"
+                                          title-field="SearchStaff"
+                                          minlength="2"
+                                          input-class="form-control"
+                                          match-class="highlight"
+                                          input-changed="inputChangeStaff"
+                                          field-required="true"
+                                          auto-match="true"
+                                          focus-in="focusIn()">
+                        </angucomplete-alt>
+                    </div>
+                </div>
+            </div>
+            <fieldset class="mb-3" ng-if="selectedStudent.StudentId >0 || selectedStaff.StaffId > 0">
+                <legend class="text-uppercase font-size-sm font-weight-bold">Issued Book List</legend>
+                <div class="form-group col-sm-6 float-right">
+                    <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+                </div>
+                <div class="form-group col-sm-6" ng-if="CanEdit">
+                    <button class="btn btn-sm btn-success" ng-click="newBookIssue()"> <i class="fa fa-plus"></i> New Book Issue</button>
+                    @*Display
+                        <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+                        Records Per Page*@
+                </div>
+                <div class="form-group col-sm-12 table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Sl. No.</th>
+                                <th style="cursor: pointer;" ng-click="sort('AccessionNo')">Accession No <span class="fa" ng-show="sortKey=='AccessionNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Book')">Book <span class="fa" ng-show="sortKey=='Book'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('DateOfIssue')">Date Of Issue <span class="fa" ng-show="sortKey=='DateOfIssue'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('DueDate')">Due Date <span class="fa" ng-show="sortKey=='DueDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('IssueRemarks')">Remarks <span class="fa" ng-show="sortKey=='IssueRemarks'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('ReturnDate')">Return Date <span class="fa" ng-show="sortKey=='ReturnDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('FineAmount')">Fine Amount <span class="fa" ng-show="sortKey=='FineAmount'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('BookIssueTypeName')">Type <span class="fa" ng-show="sortKey=='BookIssueTypeName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('ReturnDate')">Status <span class="fa" ng-show="sortKey=='ReturnDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                @*<th ng-if="CanEdit">Edit </th>*@
+                                <th ng-if="CanDelete">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="BookIssue in BookIssueList|orderBy:sortKey:reverse|filter:search" ng-model="search">
+                                <td>{{$index + 1}}</td>
+                                <td>{{BookIssue.AccessionNo}}</td>
+                                <td>{{BookIssue.Book}}</td>
+                                <td>{{BookIssue.DateOfIssue | date:'dd/MM/yyyy'}}</td>
+                                <td>{{BookIssue.DueDate | date:'dd/MM/yyyy'}}</td>
+                                <td>{{BookIssue.IssueRemarks}}</td>
+                                <td>{{BookIssue.ReturnDate | date:'dd/MM/yyyy'}}</td>
+                                <td>{{BookIssue.FineAmount | number:2}}</td>
+                                <td>{{BookIssue.BookIssueTypeName}}</td>
+                                <td><a ng-class="BookIssue.ReturnDate !=null ? 'badge bg-success-400' : 'badge bg-danger'"> {{BookIssue.ReturnDate !=null ? 'Returned' : 'Not Return'}}</a></td>
+                                @*<td ng-if="CanEdit"><button class="btn btn-sm btn-primary" ng-click="editBookIssue(BookIssue)"><i class="icon-pencil3"></i></button></td>*@
+                                <td ng-if="CanDelete"><button class="btn btn-sm btn-danger" ng-click="deleteConfirmation(BookIssue.BookIssueId)"><i class="fa fa-trash"></i></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </fieldset>
+        </div>
+
+        <div id="modal_Student_Charge" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{BookIssue.BookIssueId > 0 ? 'Update' : 'New' }} Book Issue</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <form name="formBookIssue" novalidate autocomplete="off">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label>Select Book <span class="text-danger">*</span></label>
+                                    <input type="text" placeholder="Enter Accession No" name="AccessionNo" ng-change="changeAccessionNo()" ng-model="BookIssue.AccessionNo" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus>
+                                    <span class="text-danger" ng-if="(formBookIssue.AccessionNo.$dirty || IsSubmitted) && formBookIssue.AccessionNo.$error.required">Accession is required!</span>
+                                    <span ng-if="selectedBookAccession.BookName"><b>Book Name: </b> {{selectedBookAccession.BookName}}</span>
+                                    @*<div angucomplete-alt id="BookAccessionAutoComplete"
+                                             placeholder="Enter Accession No"
+                                             pause="300"
+                                             selected-object="afterBookAccessionSelected"
+                                             local-data="BookAccessionList"
+                                             local-search="localSearch"
+                                             title-field="AccessionNo"
+                                             description-field="BookName"
+                                             minlength="1"
+                                             input-class="form-control form-control-small"
+                                             match-class="highlight">
+                                        </div>*@
+
+                                    @*<angucomplete-alt id="BookAccessionAutoComplete"
+                                                          placeholder="Enter Accession No"
+                                                          pause="100"
+                                                          selected-object="afterBookAccessionSelected"
+                                                          local-data="BookAccessionList"
+                                                          search-fields="AccessionNo"
+                                                          title-field="SearchBook"
+                                                          minlength="1"
+                                                          input-class="form-control"
+                                                          match-class="highlight"
+                                                          input-changed="inputChangeBookAccession"
+                                                          field-required="true"
+                                                          auto-match="true"
+                                                          focus-in="focusIn()">
+                                        </angucomplete-alt>*@
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label>Date Of Issue <span class="text-danger">*</span></label>
+                                    <input type="date" name="DateOfIssue" ng-model="BookIssue.DateOfIssue" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus>
+                                    <span class="text-danger" ng-if="(formBookIssue.DateOfIssue.$dirty || IsSubmitted) && formBookIssue.DateOfIssue.$error.required">Date Of Issue is required!</span>
+                                </div>
+                                @* <div class="col-md-12 form-group">
+                                           <label>Due Date <span class="text-danger">*</span></label>
+                                           <input type="date" name="DueDate" ng-model="BookIssue.DueDate" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus>
+                                           <span class="text-danger" ng-if="(formBookIssue.DueDate.$dirty || IsSubmitted) && formBookIssue.DueDate.$error.required">Due Date is required!</span>
+                                    </div>*@
+                                @*<div class="col-md-12 form-group">
+                                        <label>Type <span class="text-danger">*</span></label>
+                                        <select name="BookIssueType" ng-model="BookIssue.BookIssueType" ng-options="option.Key as option.Value for option in BookIssueTypeList" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus>
+                                            <option value="">--Select Type--</option>
+                                        </select>
+                                        <span class="text-danger" ng-if="(formBookIssue.BookIssueType.$dirty || IsSubmitted) && formBookIssue.BookIssueType.$error.required">Date Of Issue is required!</span>
+                                    </div>*@
+                                <div class="col-md-12 form-group">
+                                    <label>Remarks </label>
+                                    <textarea name="Comments" ng-model="BookIssue.IssueRemarks" class="form-control" placeholder="Enter Comments"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn bg-primary" ng-click="saveBookIssue()">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal_confirmation" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <h6 class="font-weight-semibold">Are you sure want to delete this record?</h6>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn bg-primary" ng-click="deleteBookIssue()">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

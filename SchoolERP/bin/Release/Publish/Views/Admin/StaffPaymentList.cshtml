@@ -1,0 +1,262 @@
+﻿@{
+    Layout = null;
+}
+<style>
+    th, td {
+        white-space: nowrap;
+    }
+</style>
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">List Staff Payment</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        @*<div class="card-header bg-white header-elements-inline">
+                <h6 class="card-title">Staff Payment</h6>
+            </div>*@
+        <div class="card-body">
+            <fieldset class="mb-3" style="margin-bottom: 0 !important;">
+                <legend class="text-uppercase font-size-sm font-weight-bold">
+                    List Staff Payment
+                    <a href="#!StaffPayment" class="float-right">New Payment</a>
+                </legend>
+                <div class="row">
+                    <div class="form-group col-sm-3">
+                        <label class="col-form-label col-sm-4">Year</label>
+                        <div class="col-sm-8">
+                            <input type="number" class="form-control" placeholder="All Year" ng-model="Year" />
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-3">
+                        <label class="col-form-label col-sm-4">Month</label>
+                        <div class="col-sm-8">
+                            <select ng-model="MonthNo" ng-change="getStaffPaymentList()" ng-options="option.Key as option.Value for option in MonthList" class="form-control">
+                                <option value="">--All Month--</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label class="col-form-label col-sm-3">Staff</label>
+                        <div class="col-sm-9">
+                            <angucomplete-alt id="SearchStaffAnguComplete"
+                                              placeholder="Enter Staff Name/Code"
+                                              pause="100"
+                                              selected-object="afterStaffSelectedSearch"
+                                              local-data="StaffList"
+                                              search-fields="StaffName,StaffCode"
+                                              title-field="StaffName,StaffCode"
+                                              description="DesignationName"
+                                              minlength="2"
+                                              input-class="form-control"
+                                              input-placeholder="All Staff"
+                                              match-class="highlight"
+                                              input-changed="selectionChanged"
+                                              field-required="true"
+                                              auto-match="true"
+                                              focus-in="focusIn()">
+                            </angucomplete-alt>
+                            @*<select ng-model="StaffId" ng-options="option.StaffId  as (option.StaffName +' (' + option.StaffCode + ')') for option in StaffList" class="form-control">
+                                    <option value="">--All Staff--</option>
+                                </select>*@
+                        </div>
+                    </div>
+                    <div class="col-lg-2 form-group">
+                        <button class="btn btn-sm btn-success" ng-click="getStaffPaymentList()"> <i class="fa fa-search"></i> Search</button>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="mb-3" style="margin-bottom: 0 !important;" ng-show="StaffPaymentList.length > 0">
+                <legend class="text-uppercase font-size-sm font-weight-bold">Payment List</legend>
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        Display
+                        <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+                    </div>
+                    <div class="form-group col-sm-6 float-right">
+                        <input type="text" class="float-right input-sm form-control" style="width:200px" ng-model="search" placeholder="Search..." />
+                    </div>
+                    <div class="col-sm-12">
+                        <a class="text-link font-weight-bold" ng-click="tablesToExcel(['table_staff_leave_list'],['Staff Payment List'],'StaffPaymentList','StaffPaymentList')">Export To Excel</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                        <a class="text-link font-weight-bold" ng-click="printReport(1)">Print All</a>
+                    </div>
+                    <div class="form-group col-sm-12 table-responsive" id="div_SalaryList">
+                        <table class="table table-bordered table-hover" id="table_staff_leave_list">
+                            <thead>
+                                <tr>
+                                    <th>Sl. No.</th>
+                                    <th ng-if="!IsExporting">Salary Slip</th>
+                                    <th style="cursor: pointer;" ng-click="sort('Year')">Year <span class="fa" ng-show="sortKey=='Year'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('MonthName')">Month <span class="fa" ng-show="sortKey=='MonthName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('SalaryDate')">Date <span class="fa" ng-show="sortKey=='SalaryDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('StaffName')">Staff Name<span class="fa" ng-show="sortKey=='StaffName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('StaffCode')">Staff Code<span class="fa" ng-show="sortKey=='StaffCode'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('DesignationName')">Designation <span class="fa" ng-show="sortKey=='DesignationName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('BankAccountNo')">A/c No <span class="fa" ng-show="sortKey=='BankAccountNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('PFNo')">PF No <span class="fa" ng-show="sortKey=='PFNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('ESINo')">ESI No <span class="fa" ng-show="sortKey=='ESINo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('LWPAvailed')">LWP Availed <span class="fa" ng-show="sortKey=='LWPAvailed'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('CLAvailed')">CL Availed <span class="fa" ng-show="sortKey=='CLAvailed'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('ELAvailed')">EL Availed <span class="fa" ng-show="sortKey=='ELAvailed'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('MLAvailed')">ML Availed <span class="fa" ng-show="sortKey=='MLAvailed'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('HPLAvailed')">HPL Availed <span class="fa" ng-show="sortKey=='HPLAvailed'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('BasicAmount')">Basic Amount <span class="fa" ng-show="sortKey=='BasicAmount'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('Increament')">Increament <span class="fa" ng-show="sortKey=='Increament'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('DA')">DA <span class="fa" ng-show="sortKey=='DA'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('Allowance')">Allowance <span class="fa" ng-show="sortKey=='Allowance'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('Arrear')">Arrear <span class="fa" ng-show="sortKey=='Arrear'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('HRA')">HRA <span class="fa" ng-show="sortKey=='HRA'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('MedicalAllowance')">Medical Allowance <span class="fa" ng-show="sortKey=='MedicalAllowance'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('SpecialAllowance')">Special Allowance <span class="fa" ng-show="sortKey=='SpecialAllowance'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('GrossTotal')">Gross Total <span class="fa" ng-show="sortKey=='GrossTotal'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('EPF')">EPF <span class="fa" ng-show="sortKey=='EPF'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('ESI')">ESI <span class="fa" ng-show="sortKey=='ESI'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('TDS')">TDS <span class="fa" ng-show="sortKey=='TDS'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('ProfessionalTax')">Professional Tax <span class="fa" ng-show="sortKey=='ProfessionalTax'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('SalaryAdvanced')">Salary Advanced <span class="fa" ng-show="sortKey=='SalaryAdvanced'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('OtherDeduction')">Other Deduction <span class="fa" ng-show="sortKey=='OtherDeduction'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('HouseRent')">House Rent <span class="fa" ng-show="sortKey=='HouseRent'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('ElectricityCharge')">Electricity Charge <span class="fa" ng-show="sortKey=='ElectricityCharge'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('LWP')">LWP <span class="fa" ng-show="sortKey=='LWP'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('TotalDeduction')">Total Deduction <span class="fa" ng-show="sortKey=='TotalDeduction'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('NetPayment')">Net Payment <span class="fa" ng-show="sortKey=='NetPayment'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('Remarks')">Remarks <span class="fa" ng-show="sortKey=='Remarks'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th ng-if="CanEdit && !IsExporting" class="not_print">Edit </th>
+                                    <th ng-if="CanDelete && !IsExporting" class="not_print">Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr dir-paginate="StaffPayment in StaffPaymentList|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize" current-page="currentPage" ng-model="search">
+                                    <td>{{(currentPage*pageSize - (pageSize-1))+ $index}}</td>
+                                    <th ng-if="!IsExporting"><a href="/print/SalarySlip?ids={{StaffPayment.StaffPaymentId}}&no=1" target="_blank" class="btn btn-sm btn-primary"><i class="fa fa-print"></i></a></th>
+                                    <td>{{StaffPayment.Year}}</td>
+                                    <td>{{StaffPayment.MonthName}}</td>
+                                    <td>{{StaffPayment.SalaryDate|date:'dd-MM-yyyy'}}</td>
+                                    <td>{{StaffPayment.StaffName}}</td>
+                                    <td>{{StaffPayment.StaffCode}}</td>
+                                    <td>{{StaffPayment.DesignationName}}</td>
+                                    <td>{{StaffPayment.BankAccountNo}}</td>
+                                    <td>{{StaffPayment.PFNo}}</td>
+                                    <td>{{StaffPayment.ESINo}}</td>
+                                    <td>{{StaffPayment.LWPAvailed}}</td>
+                                    <td>{{StaffPayment.CLAvailed}}</td>
+                                    <td>{{StaffPayment.ELAvailed}}</td>
+                                    <td>{{StaffPayment.MLAvailed}}</td>
+                                    <td>{{StaffPayment.HPLAvailed}}</td>
+                                    <td>{{StaffPayment.BasicAmount|number:2}}</td>
+                                    <td>{{StaffPayment.Increament|number:2}}</td>
+                                    <td>{{StaffPayment.DA|number:2}}</td>
+                                    <td>{{StaffPayment.Allowance|number:2}}</td>
+                                    <td>{{StaffPayment.Arrear|number:2}}</td>
+                                    <td>{{StaffPayment.HRA|number:2}}</td>
+                                    <td>{{StaffPayment.MedicalAllowance|number:2}}</td>
+                                    <td>{{StaffPayment.SpecialAllowance|number:2}}</td>
+                                    <td>{{StaffPayment.GrossTotal|number:2}}</td>
+                                    <td>{{StaffPayment.EPF|number:2}}</td>
+                                    <td>{{StaffPayment.ESI|number:2}}</td>
+                                    <td>{{StaffPayment.TDS|number:2}}</td>
+                                    <td>{{StaffPayment.ProfessionalTax|number:2}}</td>
+                                    <td>{{StaffPayment.SalaryAdvanced|number:2}}</td>
+                                    <td>{{StaffPayment.OtherDeduction|number:2}}</td>
+                                    <td>{{StaffPayment.HouseRent|number:2}}</td>
+                                    <td>{{StaffPayment.ElectricityCharge|number:2}}</td>
+                                    <td>{{StaffPayment.LWP|number:2}}</td>
+                                    <td>{{StaffPayment.TotalDeduction|number:2}}</td>
+                                    <td>{{StaffPayment.NetPayment|number:2}}</td>
+                                    <td>{{StaffPayment.Remarks}}</td>
+                                    <td ng-if="CanEdit && !IsExporting" class="not_print"><a href="#!StaffPayment?id={{StaffPayment.StaffPaymentId}}" class="btn btn-sm btn-primary"><i class="icon-pencil3"></i></a></td>
+                                    <td ng-if="CanDelete && !IsExporting" class="not_print"><button class="btn btn-sm btn-danger" ng-click="deleteConfirmation(StaffPayment.StaffPaymentId)"><i class="fa fa-trash"></i></button></td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th>Total</th>
+                                    <th>{{LWPAvailed}}</th>
+                                    <th>{{CLAvailed}}</th>
+                                    <th>{{ELAvailed}}</th>
+                                    <th>{{MLAvailed}}</th>
+                                    <th>{{HPLAvailed}}</th>
+                                    <th>{{BasicAmount|number:2}}</th>
+                                    <th>{{Increament|number:2}}</th>
+                                    <th>{{DA|number:2}}</th>
+                                    <th>{{Allowance|number:2}}</th>
+                                    <th>{{Arrear|number:2}}</th>
+                                    <th>{{HRA|number:2}}</th>
+                                    <th>{{MedicalAllowance|number:2}}</th>
+                                    <th>{{SpecialAllowance|number:2}}</th>
+                                    <th>{{GrossTotal|number:2}}</th>
+                                    <th>{{EPF|number:2}}</th>
+                                    <th>{{ESI|number:2}}</th>
+                                    <th>{{TDS|number:2}}</th>
+                                    <th>{{ProfessionalTax|number:2}}</th>
+                                    <th>{{SalaryAdvanced|number:2}}</th>
+                                    <th>{{OtherDeduction|number:2}}</th>
+                                    <th>{{HouseRent|number:2}}</th>
+                                    <th>{{ElectricityCharge|number:2}}</th>
+                                    <th>{{LWP|number:2}}</th>
+                                    <th>{{TotalDeduction|number:2}}</th>
+                                    <th>{{NetPayment|number:2}}</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="clearfix col-sm-12">
+                        <dir-pagination-controls max-size="pageSize" boundary-links="true" template-url="/Scripts/DirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+        <div id="modal_confirmation" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <h6 class="font-weight-semibold">Are you sure want to delete this record?</h6>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn bg-primary" ng-click="deleteStaffPayment()">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

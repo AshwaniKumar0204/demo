@@ -1,0 +1,169 @@
+﻿
+@{
+    Layout = null;
+}
+<style>
+    hr {
+        margin-top: 0;
+    }
+
+    tr, td, th {
+        white-space: nowrap
+    }
+
+    .redAmount {
+        color: #ce0505;
+        font-weight: bold;
+        text-align: right;
+    }
+
+    .redText {
+        color: #ce0505;
+        font-weight: bold;
+    }
+
+    .normalAmount {
+        text-align: right;
+    }
+
+    .greenAmount {
+        color: #067401;
+        font-weight: bold;
+        text-align: right;
+    }
+
+    .greenText {
+        color: #067401;
+        font-weight: bold;
+    }
+</style>
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Settlement Receipt Details</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Settlement Receipt Details</h6>
+        </div>
+        <div class="card-body">
+            <form name="formSD" novalidate>
+                <div class="form-group row">
+                    <div class="col-lg-4">
+                        <label class="col-form-label font-weight-bold ">From Date <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" ng-model="FromDate" name="FromDate" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                        <span class="text-danger" ng-if="(formSD.FromDate.$dirty || IsSubmitted) && formSD.FromDate.$error.required">From Date is required!</span>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="col-form-label font-weight-bold">To Date <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" ng-model="ToDate" name="ToDate" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                        <span class="text-danger" ng-if="(formSD.ToDate.$dirty || IsSubmitted) && formSD.ToDate.$error.required">To Date is required!</span>
+                    </div>
+
+                    <div class="col-lg-4" ng-show="SettlementReceiptDetails.length > 0" style="text-align:right">
+                        <label class="col-form-label font-weight-bold" style="text-align:right">Pending Settlement</label>
+                        <input type="text" class="form-control redAmount" style="border:none" ng-model="PendingSettlement|number:2" readonly />
+                    </div>
+                </div>
+            </form>
+
+            <div class="form-group col-sm-12 text-centre">
+                <button class="btn btn-primary" ng-click="getSettlementReceiptDetails()"><i class="fa fa-search"></i> Search</button>
+                @* <button class="btn btn-success" ng-if="DailyCollectionReport.TableItemList.length > 0" onclick="tableToExcel('tbl_daily_collection_report','daily_collection_report')"><i class="fa fa-file"></i> Export to Excel</button>*@
+                <button class="btn btn-success" ng-show="SettlementReceiptDetails.length > 0" ng-click="tablesToExcel(['tbl_daily_collection_report'], ['daily-collection-report'], 'SettlementDetailsReceiptWise','78457')" @*onclick="tablesToExcel(['tbl_daily_collection_report'], ['daily-collection-report'], 'DailyCollectionReport','78457')"*@><i class="fa fa-file"></i> Export to Excel</button>
+            </div>
+            <div class="form-group col-sm-6 float-right" ng-show="SettlementReceiptDetails.length > 0">
+                <input type="text" class="float-right form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+            </div>
+            <div class="form-group col-sm-6" ng-show="SettlementReceiptDetails.length > 0">
+                Display
+                <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+                Records Per Page
+            </div>
+
+            <div class="form-group col-sm-12 table-responsive" ng-show="SettlementReceiptDetails.length > 0">
+                <table class="table table-bordered table-hover" id="tbl_daily_collection_report">
+                    <thead>
+                        <tr>
+                            <th ng-show="!IsExporting">Sl. No.</th>
+                            <th style="cursor: pointer;" ng-click="sort('StudentStudentName')">Student Name<span class="fa" ng-show="sortKey=='StudentStudentName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('ReceiptNo')">Receipt No<span class="fa" ng-show="sortKey=='ReceiptNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('ReceiptDate')">Receipt Date<span class="fa" ng-show="sortKey=='ReceiptDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('PayUId')">PayU Id<span class="fa" ng-show="sortKey=='PayUId'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('MerchantTransactionId')">Merchant Transaction Id <span class="fa" ng-show="sortKey=='MerchantTransactionId'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('TransactionDate')">Transaction Date <span class="fa" ng-show="sortKey=='TransactionDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('Mode')">Mode <span class="fa" ng-show="sortKey=='Mode'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('SettlementDate')">Settlement Date <span class="fa" ng-show="sortKey=='SettlementDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('UtrNumber')">Utr Number<span class="fa" ng-show="sortKey=='UtrNumber'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('RequestAction')">Action <span class="fa" ng-show="sortKey=='RequestAction'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+
+                            <th style="cursor: pointer;" ng-click="sort('MerchantNetAmount')">Net Amount <span class="fa" ng-show="sortKey=='MerchantNetAmount'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr dir-paginate="settlementDetails in SettlementReceiptDetails|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize" current-page="currentPage" ng-model="search">
+                            <td>{{(currentPage*pageSize - (pageSize-1))+ $index}}</td>
+
+                            <td>{{settlementDetails.StudentStudentName}}{{settlementDetails.RegistrationStudentName}} </td>
+                            <td> {{settlementDetails.ReceiptNo}} </td>
+                            <td> {{settlementDetails.ReceiptDate | date:'dd/MM/yyyy'}} </td>
+                            <td> {{settlementDetails.PayUId}} </td>
+                            <td> {{settlementDetails.MerchantTransactionId}} </td>
+                            <td> {{settlementDetails.TransactionDate | date:'dd/MM/yyyy'}} </td>
+                            <td> {{settlementDetails.Mode}} </td>
+
+                            <td> {{settlementDetails.SettlementDate | date:'dd/MM/yyyy'}} </td>
+                            <td> {{settlementDetails.MerchantURTNumber}} </td>
+                            <td ng-class="settlementDetails.MerchantNetAmount<0?'redText':(settlementDetails.RequestAction=='chargebackreversal'?'greenText':'')"> {{settlementDetails.RequestAction}} </td>
+
+                            <td ng-class="settlementDetails.MerchantNetAmount<0?'redAmount':'normalAmount'" style="text-align:right;"> {{settlementDetails.MerchantNetAmount|number : 2}}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th style="text-align:right; font-weight:bold">
+                                {{TotalReceipt|number : 2}}
+                            </th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="clearfix" ng-show="SettlementReceiptDetails.length > 0">
+                <dir-pagination-controls max-size="pageSize" boundary-links="true" template-url="/Scripts/DirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

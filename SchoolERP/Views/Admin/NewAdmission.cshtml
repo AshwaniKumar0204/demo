@@ -1,0 +1,525 @@
+﻿
+@{
+    Layout = null;
+}
+<style>
+    hr {
+        margin-top: 0;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+        label span {
+            font-weight: normal;
+        }
+
+    h5 {
+        margin: 10px 0 3px
+    }
+    .mt-12{
+        margin-top:12px;
+    }
+</style>
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="index-2.html" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Dashboard</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">New Admission</h6>
+        </div>
+        <div class="card-body">
+            <form novalidate name="formAdmission">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Full Name <span class="text-danger">*</span></label>
+                            <input type="text" name="FullName" ng-model="Admission.FullName" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Your Full Name" required autofocus>
+                            <span class="text-danger" ng-if="(formAdmission.FullName.$dirty || IsSubmitted) && formAdmission.FullName.$error.required">Full Name is required!</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Student Type <span class="text-danger">*</span></label>
+                            <select ng-model="Admission.StudentTypeId" name="StudentTypeId" ng-options="option.StudentTypeId as option.TypeName for option in StudentTypeList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                            <span class="text-danger" ng-if="(formAdmission.StudentTypeId.$dirty || IsSubmitted) && formAdmission.StudentTypeId.$error.required">Student Type is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Gender <span class="text-danger">*</span></label>
+                            <select ng-model="Admission.Gender" name="Gender" ng-options="option.Key as option.Value for option in GenderList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                            <span class="text-danger" ng-if="(formAdmission.Gender.$dirty || IsSubmitted) && formAdmission.Gender.$error.required">Gender is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Date Of Birth <span class="text-danger">*</span></label>
+                            <input type="date" name="DateOfBirth" ng-model="Admission.DateOfBirth" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus>
+                            <span class="text-danger" ng-if="(formAdmission.DateOfBirth.$dirty || IsSubmitted) && formAdmission.DateOfBirth.$error.required">Date Of Birth is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Nationality <span class="text-danger">*</span></label>
+                            <select ng-model="Admission.Nationality" name="Nationality" ng-options="option.Key as option.Value for option in NationalityList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                            <span class="text-danger" ng-if="(formAdmission.Nationality.$dirty || IsSubmitted) && formAdmission.Nationality.$error.required">Nationality is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Religion <span class="text-danger">*</span></label>
+                            <select ng-model="Admission.Religion" name="Religion" ng-options="option.Key as option.Value for option in ReligionList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                            <span class="text-danger" ng-if="(formAdmission.Religion.$dirty || IsSubmitted) && formAdmission.Religion.$error.required">Religion is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Category <span class="text-danger">*</span></label>
+                            <select ng-model="Admission.Category" name="Category" ng-options="option.Key as option.Value for option in CategoryList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                            <span class="text-danger" ng-if="(formAdmission.Category.$dirty || IsSubmitted) && formAdmission.Category.$error.required">Category is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Blood Group</label>
+                            <select ng-model="Admission.BloodGroup" name="BloodGroup" ng-options="option.Key as option.Value for option in BloodGroupList" class="form-control"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Father Name</label>
+                            <input type="text" name="FatherName" ng-model="Admission.FatherName" placeholder="Enter Your Father Name" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Father Aadhaar No</label>
+                            <input type="number" name="FatherAadhaarNo" ng-model="Admission.FatherAadhaarNo" placeholder="Enter Your Father Aadhaar No" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Father Occupation</label>
+                            <input type="text" name="FatherOccupation" ng-model="Admission.FatherOccupation" placeholder="Enter Your Father Occupation" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Mother Name</label>
+                            <input type="text" name="MotherName" ng-model="Admission.MotherName" placeholder="Enter Your Mother Name" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Mother Aadhar No</label>
+                            <input type="number" ng-model="Admission.MotherAadharNo" placeholder="Enter Your Mother Aadhar No" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Mother Occupation</label>
+                            <input type="text" ng-model="Admission.MotherOccupation" placeholder="Enter Your Mother Occupation" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Family Annual Income</label>
+                            <input type="number" ng-model="Admission.FamilyAnnualIncome" placeholder="Enter Family Annual Income" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Mobile No <span class="text-danger">*</span></label>
+                            <input type="number" name="MobileNo" ng-model="Admission.MobileNo" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Your Mobile No" required autofocus>
+                            <span class="text-danger" ng-if="(formAdmission.MobileNo.$dirty || IsSubmitted) && formAdmission.MobileNo.$error.required">Mobile No is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Alternate No</label>
+                            <input type="number" ng-model="Admission.AlternateNo" placeholder="Enter Your Alternate No" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" name="Email" ng-model="Admission.Email" placeholder="Enter Your Email" class="form-control">
+                            <span class="text-danger" ng-if="formAdmission.Email.$error.email && IsSubmitted">Invalid Email!</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Aadhar No</label>
+                            <input type="number" ng-model="Admission.AadhaarNo" placeholder="Enter Your Aadhar No" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>House</label>
+                            <select ng-model="Admission.HouseName" name="HouseName" ng-options="option.HouseName as option.HouseName for option in HouseList" class="form-control">
+                                <option value="">--Select House--</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h5>
+                            Correspondence Address
+                        </h5>
+                        <hr />
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Line 1</label>
+                                <textarea ng-model="Admission.CorrespondenceAddressLine1" ng-change="sameAsCorrespondenceAddress()" placeholder="Enter Correspondence Address Line 1" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Line 2</label>
+                                <textarea ng-model="Admission.CorrespondenceAddressLine2" ng-change="sameAsCorrespondenceAddress()" placeholder="Enter Correspondence Address Line 2" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>State <span class="text-danger">*</span></label>
+                                <select ng-model="Admission.CorrespondenceStateId" name="CorrespondenceStateId" ng-change="changeCorrespondenceState()" ng-options="option.StateId as option.StateName for option in StateList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                                <span class="text-danger" ng-if="(formAdmission.CorrespondenceStateId.$dirty || IsSubmitted) && formAdmission.CorrespondenceStateId.$error.required">State is required!</span>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>City <span class="text-danger">*</span></label>
+                                <select ng-model="Admission.CorrespondenceCityId" name="CorrespondenceCityId" ng-change="sameAsCorrespondenceAddress()" ng-options="option.CityId as option.CityName for option in CorrespondenceCityList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                                <span class="text-danger" ng-if="(formAdmission.CorrespondenceCityId.$dirty || IsSubmitted) && formAdmission.CorrespondenceCityId.$error.required">City is required!</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Pin Code</label>
+                                <input type="number" ng-model="Admission.CorrespondecePinCode" ng-change="sameAsCorrespondenceAddress()" placeholder="Enter Pin Code" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h5 style="margin:10px 0 3px">
+                            Permanent Address
+                            <span style="float:right;font-size:14px;padding-top:8px">
+                                <input type="checkbox" ng-model="Admission.SameAddress" for ng-click="sameAsCorrespondenceAddress()" id="IsSameAddress" />
+                                &nbsp;<label for="IsSameAddress" style="cursor:pointer"><span> Same as Correspondence Address</span></label>
+                            </span>
+                        </h5>
+                        <hr />
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Line 1</label>
+                                <textarea ng-model="Admission.PermanentAddressLine1" ng-disabled="Admission.SameAddress" placeholder="Enter Permanent Address Line 1" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Line 2</label>
+                                <textarea ng-model="Admission.PermanentAddressLine2" ng-disabled="Admission.SameAddress" placeholder="Enter Permanent Address Line 2" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>State <span class="text-danger">*</span></label>
+                                <select ng-model="Admission.PermanentStateId" ng-disabled="Admission.SameAddress" ng-change="changePermanentState()" name="PermanentStateId" ng-options="option.StateId as option.StateName for option in StateList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                                <span class="text-danger" ng-if="(formAdmission.PermanentStateId.$dirty || IsSubmitted) && formAdmission.PermanentStateId.$error.required">State is required!</span>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>City <span class="text-danger">*</span></label>
+                                <select ng-model="Admission.PermanentCityId" ng-disabled="Admission.SameAddress" name="PermanentCityId" ng-options="option.CityId as option.CityName for option in PermanentCityList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                                <span class="text-danger" ng-if="(formAdmission.PermanentCityId.$dirty || IsSubmitted) && formAdmission.PermanentCityId.$error.required">City is required!</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Pin Code</label>
+                                <input type="number" ng-model="Admission.PermanentPinCode" ng-disabled="Admission.SameAddress" placeholder="Enter Pin Code" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h5>10th School Detail</h5>
+                        <hr />
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>School Name</label>
+                                <input type="text" ng-model="Admission.PreviousSchoolName" placeholder="Enter School Name" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Board Name</label>
+                                <input type="text" ng-model="Admission.PreviousBoardName" placeholder="Enter Board Name" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Last Class Attend</label>
+                                <input type="text" ng-model="Admission.LastClassAttend" placeholder="Enter Class" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Medium Of Instruction</label>
+                                <input type="text" ng-model="Admission.MediumOfInstruction" placeholder="Enter Medium Of Instruction" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>TC No</label>
+                                <input type="text" ng-model="Admission.PreviousSchoolTCNo" placeholder="Enter TC No" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>TC Issue No</label>
+                                <input type="date" ng-model="Admission.PreviousSchoolTCIssueDate" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h5>12th School Detail</h5>
+                        <hr />
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>School Name</label>
+                                <input type="text" ng-model="Admission.IntermediatePreviousSchoolName" placeholder="Enter School Name" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Board Name</label>
+                                <input type="text" ng-model="Admission.IntermediatePreviousBoardName" placeholder="Enter Board Name" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Last Class Attend</label>
+                                <input type="text" ng-model="Admission.IntermediateLastClassAttend" placeholder="Enter Class" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Medium Of Instruction</label>
+                                <input type="text" ng-model="Admission.IntermediateMediumOfInstruction" placeholder="Enter Medium Of Instruction" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>TC No</label>
+                                <input type="text" ng-model="Admission.IntermediatePreviousSchoolTCNo" placeholder="Enter TC No" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>TC Issue No</label>
+                                <input type="date" ng-model="Admission.IntermediatePreviousSchoolTCIssueDate" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h5>Admission Detail</h5>
+                        <hr />
+                        <div class="form-group" ng-if="RegistrationOnline.ClassNo >10">
+                            <label class="col-sm-2 "> Class : <span>{{RegistrationOnline.ClassName2}}</span></label>
+                            <label class="col-sm-2 form-group"> Stream Type : <span>{{RegistrationOnline.ClassStreamTypeName}}</span></label>
+                            <label class="col-sm-4 form-group"> Subject Option 1 : <span>{{RegistrationOnline.SubjectOptionOneName}}</span></label>
+                            <label class="col-sm-4 form-group"> Subject Option 2 : <span>{{RegistrationOnline.SubjectOptionTwoName}}</span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-md-4">
+                            <div class="form-group" ng-class="RegistrationOnline.ClassNo >10 : 'mt-12':''">
+                                <label>Course <span class="text-danger">*</span></label>
+                                <select ng-model="Admission.ClassId" ng-change="changeClass()" name="ClassId" ng-options="option.ClassId as option.ClassName for option in ClassList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                    <option value="">--Select Course--</option>
+                                </select>
+                                <span class="text-danger" ng-if="(formAdmission.ClassId.$dirty || IsSubmitted) && formAdmission.ClassId.$error.required">Course is required!</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group" ng-class="RegistrationOnline.ClassNo >10 : 'mt-12':''">
+                                <label>Branch <span class="text-danger">*</span></label>
+                                <select ng-model="Admission.SectionId" ng-change="getAvailableStudents()" name="SectionId" ng-options="option.SectionId as option.SectionName for option in SectionList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                    <option value="">--Select Branch--</option>
+                                </select>
+                                <span class="text-danger" ng-if="(formAdmission.SectionId.$dirty || IsSubmitted) && formAdmission.SectionId.$error.required">Branch is required!</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group" ng-class="RegistrationOnline.ClassNo >10 : 'mt-12':''">
+                                <label>Session <span class="text-danger">*</span> <span></span></label>
+                                <select ng-model="Admission.AcademicSessionId" ng-change="getAvailableStudents()" name="AcademicSessionId" ng-options="option.AcademicSessionId as option.SessionName for option in AcademicSessionList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                    <option value="">--Selecte Session--</option>
+                                </select>
+                                <span class="text-danger" ng-if="(formAdmission.AcademicSessionId.$dirty || IsSubmitted) && formAdmission.AcademicSessionId.$error.required">Session is required!</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Admission No <span class="text-danger">*</span></label>
+                                <input type="text" name="AdmissionNo" ng-model="Admission.AdmissionNo" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Admission No" required autofocus>
+                                <span class="text-danger" ng-if="(formAdmission.AdmissionNo.$dirty || IsSubmitted) && formAdmission.AdmissionNo.$error.required">Admission No is required!</span>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Admission Date <span class="text-danger">*</span></label>
+                                <input type="date" name="AdmissionDate" ng-model="Admission.AdmissionDate" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus>
+                                <span class="text-danger" ng-if="(formAdmission.AdmissionDate.$dirty || IsSubmitted) && formAdmission.AdmissionDate.$error.required">Admission Date is required!</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4" style="padding-top:30px">
+                            <div class="form-group">
+                                <b>Available Students : {{AvailableStudents}}</b>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Admission Type  <span class="text-danger">*</span></label>
+                                <select class="form-control" name="AdmissionType" id="AdmissionType">
+                                    <option value="1" selected>New Admission</option>
+                                    <option value="2">Old Admission</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Staff Ward </label>
+                                <select ng-model="Admission.StaffWard" class="form-control" ng-options="b.Key as b.Value for b in StaffWardList">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Remarks </label>
+                                <textarea ng-model="Admission.Remarks" class="form-control" placeholder="Enter Remarks.."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <form name="formStudentSubjectCombination" ng-show="SubjectCombinationList.length > 0">
+                <fieldset class="mb-3">
+                    <legend class="text-uppercase font-size-sm font-weight-bold">Subject Combination Detail</legend>
+                    <div class="col-sm-4 form-group">
+                        <label>Subject Combination <span class="text-danger">*</span></label>
+                        <select ng-model="StudentSubjectCombination.SubjectCombinationId" name="SubjectCombinationId" ng-options="option.SubjectCombinationId as option.SubjectCombinationName for option in SubjectCombinationList" class="form-control">
+                            <option value="">--Select Subject Combination--</option>
+                        </select>
+                        <span class="text-danger" ng-if="(formStudentSubjectCombination.SubjectCombinationId.$dirty || IsSubjectCombinationSubmitted) && formStudentSubjectCombination.SubjectCombinationId.$error.required">Subject Combination is required!</span>
+                    </div>
+
+                    <div class="col-sm-4 form-group">
+                        <label>Start Date <span class="text-danger">*</span></label>
+                        <input type="date" name="StartDate" ng-model="StudentSubjectCombination.StartDate" ng-class="IsSubjectCombinationSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Start Date" required autofocus>
+                        <span class="text-danger" ng-if="(formStudentSubjectCombination.StartDate.$dirty || IsSubjectCombinationSubmitted) && formStudentSubjectCombination.StartDate.$error.required">Start Date is required!</span>
+                    </div>
+                    @*<div class="col-sm-4 form-group">
+                        <label>End Date </label>
+                        <input type="date" name="EndDate" ng-model="StudentSubjectCombination.EndDate" class="form-control" />
+                    </div>*@
+                </fieldset>
+            </form>
+
+            <form name="formTransport">
+                <fieldset class="mb-3">
+                    <legend class="text-uppercase font-size-sm font-weight-bold">Transport Detail</legend>
+                    <div class="col-sm-4 form-group">
+                        <label>Transport Group<span class="text-danger"> *</span></label>
+                        <select name="TransportGroupTitle" ng-model="Transport.TransportGroupId" ng-class="IsTransportSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus ng-options="b.TransportGroupId as b.TransportGroupTitle for b in groups">
+                            <option value="">Select Transport Group</option>
+                        </select>
+                        <span class="text-danger" ng-if="(formTransport.TransportGroupTitle.$dirty || IsTransportSubmitted) && formTransport.TransportGroupTitle.$error.required">Transport Group is required!</span>
+                    </div>
+
+                    <div class="col-sm-4 form-group">
+                        <label>Vehicle (Bus/Auto)<span class="text-danger"> *</span></label>
+                        <select name="BusTitle" ng-model="Transport.BusId" ng-class="IsTransportSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus ng-options="b.BusId as b.BusTitle for b in buses">
+                            <option value="">Select Transport Bus/Auto</option>
+                        </select>
+                        <span class="text-danger" ng-if="(formTransport.BusTitle.$dirty || IsTransportSubmitted) && formTransport.BusTitle.$error.required">Transport Vehicle is required!</span>
+                    </div>
+                    @*<div class="col-sm-4 form-group">
+                        <label>Pickup Point<span class="text-danger"> *</span></label>
+                        <input type="text" name="PickupPoint" placeholder="Pickup Point" ng-model="Transport.PickupPoint" ng-class="IsTransportSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus>
+                        <span class="text-danger" ng-if="(formTransport.PickupPoint.$dirty || IsTransportSubmitted) && formTransport.PickupPoint.$error.required">Pickup Point is required!</span>
+                    </div>*@
+
+                    @*<div class="col-sm-4 form-group">
+                        <label>Pickup Time </label>
+                        <input type="time" class="form-control" ng-model="Transport.PickupTime" placeholder="Pickup Time">
+                    </div>*@
+
+                    <div class="col-sm-4 form-group">
+                        <label>Start Date<span class="text-danger"> *</span></label>
+                        <input type="date" name="StartDate" placeholder="Start Date" ng-model="Transport.StartDate" ng-class="IsTransportSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus>
+                        <span class="text-danger" ng-if="(formTransport.StartDate.$dirty || IsTransportSubmitted) && formTransport.StartDate.$error.required">Start Date is required!</span>
+                    </div>
+
+                    @*<div class="col-sm-4 form-group">
+                        <label>End Date </label>
+                        <input type="date" class="form-control" placeholder="End Date" ng-model="Transport.EndDate">
+                    </div>*@
+                    @*<div class="col-sm-4 form-group">
+                        <label>Status<span class="text-danger"> *</span></label>
+                        <select ng-model="Transport.Status" class="form-control" name="Status" ng-class="IsTransportSubmitted ? 'ng-dirty' : ''" required autofocus>
+                            <option value="">Select Staus</option>
+                            <option value="1">Active</option>
+                            <option value="2">Inactive</option>
+                        </select>
+                        <span class="text-danger" ng-if="(formTransport.Status.$dirty || IsTransportSubmitted) && formTransport.Status.$error.required">Status is required!</span>
+                    </div>*@
+                </fieldset>
+            </form>
+        </div>
+        <div class="card-footer text-centre">
+            <button class="btn btn-primary" ng-click="newAdmission()">Submit</button>
+            <a href="#!StudentRegistrationList" class="btn btn-danger" ng-if="StudentRegistrationId > 0">Back</a>
+            <a href="#!OnlineAdmission" class="btn btn-danger" ng-if="RegistrationOnlineId > 0">Back</a>
+        </div>
+    </div>
+</div>

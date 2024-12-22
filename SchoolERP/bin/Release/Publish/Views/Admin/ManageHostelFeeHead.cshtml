@@ -1,0 +1,63 @@
+﻿
+@{
+    Layout = null;
+}
+<style>
+    hr {
+        margin-top: 0;
+    }
+</style>
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!Index" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Hostel Fee Period</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header header-elements-inline">
+            <h5 class="card-title">Hostel Fee Head</h5>
+        </div>
+        <hr />
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <label class="font-weight-semibold">Select Fee Head</label>
+                    <div class="col-md-12">
+                        <div class="form-check col-sm-4" ng-repeat="item in heads">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="item.isSelected" ng-checked="{{item.isSelected}}">
+                                {{item.FeeHeadTitle}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer d-flex justify-content-between " ng-if="CanEdit">
+            <div class="col-md-12 text-centre">
+                <button ng-click="SaveFeeHead();" style="text-align:center;" type="submit" class="btn bg-blue">Submit <i class="icon-paperplane ml-12"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

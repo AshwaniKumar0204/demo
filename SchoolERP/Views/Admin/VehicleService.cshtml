@@ -1,0 +1,234 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Vehicle Service</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Vehicle Service</h6>
+        </div>
+        <div class="card-body">
+            <form name="formVehicleService" novalidate>
+                <div class="col-lg-4 form-group">
+                    <label class="col-form-label font-weight-bold col-lg-4">Bill No <span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <input type="text" ng-model="VehicleService.BillNo" name="BillNo" placeholder="Enter Bill No" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                        <span class="text-danger" ng-if="(formVehicleService.BillNo.$dirty || IsSubmitted) && formVehicleService.BillNo.$error.required">Bill No is required!</span>
+                    </div>
+                </div>
+                <div class="col-lg-4 form-group">
+                    <label class="col-form-label font-weight-bold col-lg-4">Bill Date <span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <input type="date" ng-model="VehicleService.BillDate" name="BillDate" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                        <span class="text-danger" ng-if="(formVehicleService.BillDate.$dirty || IsSubmitted) && formVehicleService.BillDate.$error.required">Bill Date is required!</span>
+                    </div>
+                </div>
+                <div class="col-lg-4 form-group">
+                    <label class="col-form-label font-weight-bold col-lg-4">Supplier <span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <angucomplete-alt id="SupplierAutoComplete"
+                                          placeholder="Enter Supplier Name"
+                                          pause="100"
+                                          selected-object="afterSupplierSelected"
+                                          local-data="SupplierList"
+                                          search-fields="SupplierName"
+                                          title-field="SupplierName"
+                                          minlength="1"
+                                          input-class="form-control"
+                                          match-class="highlight"
+                                          input-changed="selectionChanged"
+                                          field-required="true"
+                                          auto-match="true"
+                                          focus-in="focusIn()">
+                        </angucomplete-alt>
+                    </div>
+                </div>
+                <div class="col-lg-4 form-group">
+                    <label class="col-form-label font-weight-bold col-lg-4">Vehicle <span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <angucomplete-alt id="BusAutoComplete"
+                                          placeholder="Enter Vehicle No"
+                                          pause="100"
+                                          selected-object="afterBusSelected"
+                                          local-data="BusList"
+                                          search-fields="BusTitle"
+                                          title-field="BusTitle"
+                                          minlength="1"
+                                          input-class="form-control"
+                                          match-class="highlight"
+                                          input-changed="selectionChanged"
+                                          field-required="true"
+                                          auto-match="true"
+                                          focus-in="focusIn()">
+                        </angucomplete-alt>
+                    </div>
+                </div>
+                <div class="col-lg-4 form-group">
+                    <label class="col-form-label font-weight-bold col-lg-4">Reading <span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <input type="number" ng-model="VehicleService.MeterReading" name="MeterReading" placeholder="Enter Meter Reading" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                        <span class="text-danger" ng-if="(formVehicleService.MeterReading.$dirty || IsSubmitted) && formVehicleService.MeterReading.$error.required">Meter Reading is required!</span>
+                    </div>
+                </div>
+                <div class="col-lg-4 form-group">
+                    <label class="col-form-label font-weight-bold col-lg-4">Service Type <span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <select ng-model="VehicleService.VehicleServiceType" name="VehicleServiceType" ng-options="option.Key as option.Value for option in VehicleServiceTypeList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                            <option value="">--Select Service Type--</option>
+                        </select>
+                        <span class="text-danger" ng-if="(formVehicleService.VehicleServiceType.$dirty || IsSubmitted) && formVehicleService.VehicleServiceType.$error.required">Service Type is required!</span>
+                    </div>
+                </div>
+                <div class="col-lg-4 form-group">
+                    <label class="col-form-label font-weight-bold col-lg-4">Remarks </label>
+                    <div class="col-lg-8">
+                        <textarea type="text" ng-model="VehicleService.Remarks" name="Remarks" placeholder="Enter Remarks" class="form-control"></textarea>
+                    </div>
+                </div>
+            </form>
+            <div class="clearfix"></div>
+            <fieldset class="mb-3">
+                <legend class="text-uppercase font-size-sm font-weight-bold"></legend>
+                <form name="formVehicleServiceDetail" novalidate>
+                    <div class="col-lg-3 form-group">
+                        <angucomplete-alt id="JobTypeAnguComplete"
+                                          placeholder="Enter Job Type*"
+                                          pause="100"
+                                          selected-object="afterJobTypeSelected"
+                                          local-data="JobTypeList"
+                                          search-fields="JobType"
+                                          title-field="JobType"
+                                          minlength="2"
+                                          input-class="form-control"
+                                          match-class="highlight"
+                                          input-changed="selectionChanged"
+                                          field-required="true"
+                                          auto-match="true"
+                                          focus-in="focusIn()">
+                        </angucomplete-alt>
+                    </div>
+
+                    <div class="col-lg-2 form-group">
+                        <input type="number" ng-model="VehicleServiceDetail.UnitCost" ng-change="calculateItemTotal()" placeholder="Enter Unit Cost" name="UnitCost" class="form-control" ng-class="IsVehicleServiceDetailSubmitted ? 'ng-dirty' : ''" required autofocus />
+                        <span class="text-danger" ng-if="(formVehicleServiceDetail.UnitCost.$dirty || IsVehicleServiceDetailSubmitted) && formVehicleServiceDetail.UnitCost.$error.required">Unit Cost is required!</span>
+                    </div>
+
+                    <div class="col-lg-2 form-group">
+                        <input type="number" ng-model="VehicleServiceDetail.Quantity" ng-change="calculateItemTotal()" placeholder="Enter Quantity*" name="Quantity" class="form-control" ng-class="IsVehicleServiceDetailSubmitted ? 'ng-dirty' : ''" required autofocus />
+                        <span class="text-danger" ng-if="(formVehicleServiceDetail.Quantity.$dirty || IsVehicleServiceDetailSubmitted) && formVehicleServiceDetail.Quantity.$error.required">Quantity is required!</span>
+                    </div>
+
+
+                    <div class="col-lg-2 form-group">
+                        <input type="number" ng-model="VehicleServiceDetail.Amount" disabled="disabled" placeholder="Enter Amount*" name="Amount" class="form-control" ng-class="IsVehicleServiceDetailSubmitted ? 'ng-dirty' : ''" required autofocus />
+                        <span class="text-danger" ng-if="(formVehicleServiceDetail.Amount.$dirty || IsVehicleServiceDetailSubmitted) && formVehicleServiceDetail.Amount.$error.required">Amount is required!</span>
+                    </div>
+                    <div class="col-lg-2 form-group">
+                        <input type="text" ng-model="VehicleServiceDetail.Remarks" placeholder="Remarks" class="form-control" />
+                    </div>
+
+                    <div class="col-sm-1 form-group">
+                        <button class="btn btn-sm btn-success" ng-click="addVehicleServiceDetail()"><i class="fa fa-plus"></i> Add</button>
+                    </div>
+                </form>
+                @*</fieldset>
+                    <fieldset class="mb-3">
+                        <legend class="text-uppercase font-size-sm font-weight-bold"></legend>*@
+                <div class="form-group col-sm-12 table-responsive" style="padding-top:15px" ng-show="VehicleService.VehicleServiceDetails.length > 0">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Sl. No.</th>
+                                <th>Job Type</th>
+                                <th>Unit Cost</th>
+                                <th>Quantity</th>
+                                <th>Amount</th>
+                                <th>Remarks</th>
+                                <th ng-if="CanDelete">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="VehicleServiceDetail in VehicleService.VehicleServiceDetails">
+                                <td>{{$index + 1}}</td>
+                                <td>{{VehicleServiceDetail.JobType}}</td>
+                                <td>{{VehicleServiceDetail.UnitCost | number:2}}</td>
+                                <td>{{VehicleServiceDetail.Quantity}}</td>
+                                <td>{{VehicleServiceDetail.Amount | number:2}}</td>
+                                <td>{{VehicleServiceDetail.Remarks}}</td>
+                                <td ng-if="CanDelete"><button class="btn btn-sm btn-danger" ng-click="deleteVehicleServiceDetail($index)"><i class="fa fa-trash"></i></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </fieldset>
+            <div class="clearfix"></div>
+            <fieldset class="mb-3" ng-show="VehicleService.VehicleServiceDetails.length > 0">
+                <legend class="text-uppercase font-size-sm font-weight-bold"></legend>
+                <div class="col-lg-4 form-group">
+                    <label class="col-form-label font-weight-bold col-lg-4">Bill Amount</label>
+                    <div class="col-lg-8">
+                        <input type="number" ng-model="VehicleService.BillAmount" placeholder="Enter Bill Amount" class="form-control" disabled="disabled" />
+                    </div>
+                </div>
+                <div class="col-lg-4 form-group">
+                    <label class="col-form-label font-weight-bold col-lg-4">Discount</label>
+                    <div class="col-lg-8">
+                        <input type="number" ng-model="VehicleService.Discount" placeholder="Enter Discount Amount" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-lg-4 form-group">
+                    <label class="col-form-label font-weight-bold col-lg-4">Paid Amount</label>
+                    <div class="col-lg-8">
+                        <input type="text" value="{{VehicleService.BillAmount - VehicleService.Discount}}" placeholder="Enter Paid Amount" class="form-control" disabled="disabled" />
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+        <div class="card-footer text-centre" ng-show="VehicleService.VehicleServiceDetails.length > 0">
+            <button class="btn btn-primary" ng-click="SaveVehicleService()">Submit</button>
+        </div>
+
+        <div id="modal_confirmation" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <h6 class="font-weight-semibold">Are you sure want to delete this record?</h6>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn bg-primary" ng-click="deleteVehicleService()">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

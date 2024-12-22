@@ -1,0 +1,225 @@
+﻿@{
+    /**/
+
+    Layout = null;
+}
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Manage Staff Group</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Manage Staff Group</h6>
+        </div>
+        <div class="card-body">
+
+            <div class="form-group col-sm-6 float-right">
+                Display
+                <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+                <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+            </div>
+            <div class="form-group col-sm-2" ng-if="CanEdit">
+                <button class="btn btn-sm btn-primary" ng-click="newStaffGroup()" ng-if="CanEdit"> <i class="fa fa-plus"></i> New Staff Group</button>
+            </div>
+            @*<div class="col-sm-12">
+                <a class="text-link font-weight-bold" ng-click="tablesToExcel(['table_Purchase_list'],['StaffGroupList'],'StaffGroupList','StaffGroupList')">Export To Excel</a>
+
+            </div>*@
+            <div class="form-group col-sm-12 table-responsive" id="div_PurchaseList">
+                <table class="table table-bordered table-hover" id="table_Purchase_list">
+                    <thead>
+                        <tr>
+                            <th>Sl. No.</th>
+                            <th style="cursor: pointer;" ng-click="sort('GroupName')">Group Name <span class="fa" ng-show="sortKey=='GroupName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('NoOfStaffs')">No Of Staffs <span class="fa" ng-show="sortKey=='NoOfStaffs'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th style="cursor: pointer;" ng-click="sort('Status')">Status <span class="fa" ng-show="sortKey=='Status'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            <th ng-if="!IsExporting">Staff Details </th>
+                            <th ng-if="CanEdit && !IsExporting">Edit </th>
+                            <th ng-if="CanDelete && !IsExporting">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr dir-paginate="StaffGroup in StaffGroupList|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize" current-page="currentPage" ng-model="search">
+                            <td>{{(currentPage*pageSize - (pageSize-1))+ $index}}</td>
+                            <td>{{StaffGroup.GroupName}}</td>
+                            <td>{{StaffGroup.NoOfStaffs}}</td>
+                            <td><a ng-class="StaffGroup.Status == 1 ? 'badge bg-success-400' : 'badge bg-danger'"> {{StatusDetail[StaffGroup.Status]}}</a></td>
+                            <th ng-if="!IsExporting"><button class="btn btn-sm btn-secondary" ng-click="viewStaffDetail(StaffGroup)"><i class="fa fa-eye"></i></button></th>
+                            <td ng-if="CanEdit && !IsExporting"><button class="btn btn-sm btn-primary" ng-click="editStaffGroup(StaffGroup)"><i class="icon-pencil3"></i></button></td>
+                            <td ng-if="CanDelete && !IsExporting"><button class="btn btn-sm btn-danger" ng-click="deleteConfirmation(StaffGroup.StaffGroupId)"><i class="fa fa-trash"></i></button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="clearfix">
+                <dir-pagination-controls max-size="pageSize" boundary-links="true" template-url="/Scripts/DirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+            </div>
+            @*</fieldset>*@
+        </div>
+
+        <div id="modal_Student_Charge" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{StaffGroup.StaffGroupId > 0 ? 'Update' : 'New' }} Staff Group</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <form name="formStaffGroup" novalidate>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-4 form-group">
+                                    <label class="col-sm-4 col-form-label">Group Name <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" ng-model="StaffGroup.GroupName" name="GroupName" placeholder="Enter Group Name" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                                        <span class="text-danger" ng-if="(formStaffGroup.GroupName.$dirty || IsSubmitted) && formStaffGroup.GroupName.$error.required">Group Name is required!</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 form-group">
+                                    <label class="col-sm-4 col-form-label">Status <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <select ng-model="StaffGroup.Status" name="Status" ng-options="option.Key as option.Value for option in StatusList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                            <option value="">--Select Status--</option>
+                                        </select>
+                                        <span class="text-danger" ng-if="(formStaffGroup.Status.$dirty || IsSubmitted) && formStaffGroup.Status.$error.required">Status is required!</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <fieldset class="mb-3">
+                                <legend class="text-uppercase font-size-sm font-weight-bold">Staff List</legend>
+                                <div class="form-group col-sm-6 float-right">
+                                    <input type="text" class="float-right input-sm form-control" ng-model="searchStaff" style="width:200px;" placeholder="Search..." />
+                                </div>
+                                <div class="form-group col-sm-12">
+                                    <div class="table-responsive" style="max-height:320px">
+                                        <table class="table table-bordered table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Sl. No.</th>
+                                                    <th><input type="checkbox" ng-model="IsSelectedAll" ng-change="selectAll()" /></th>
+                                                    <th style="cursor: pointer;" ng-click="sort2('StaffName')">Staff Name <span class="fa" ng-show="sortKey2=='StaffName'" ng-class="{'fa-arrow-up':reverse2,'fa-arrow-down':!reverse2}"></span></th>
+                                                    <th style="cursor: pointer;" ng-click="sort2('StaffCode')">Staff Code <span class="fa" ng-show="sortKey2=='StaffCode'" ng-class="{'fa-arrow-up':reverse2,'fa-arrow-down':!reverse2}"></span></th>
+                                                    <th style="cursor: pointer;" ng-click="sort2('DepartmentName')">Department <span class="fa" ng-show="sortKey2=='DepartmentName'" ng-class="{'fa-arrow-up':reverse2,'fa-arrow-down':!reverse2}"></span></th>
+                                                    <th style="cursor: pointer;" ng-click="sort2('DesignationName')">Designation <span class="fa" ng-show="sortKey2=='DesignationName'" ng-class="{'fa-arrow-up':reverse2,'fa-arrow-down':!reverse2}"></span></th>
+                                                    <th style="cursor: pointer;" ng-click="sort2('StaffTypeName')">Staff Type <span class="fa" ng-show="sortKey2=='StaffTypeName'" ng-class="{'fa-arrow-up':reverse2,'fa-arrow-down':!reverse2}"></span></th>
+                                                    <th style="cursor: pointer;" ng-click="sort2('MobileNo')">Mobile No <span class="fa" ng-show="sortKey2=='MobileNo'" ng-class="{'fa-arrow-up':reverse2,'fa-arrow-down':!reverse2}"></span></th>
+                                                    <th style="cursor: pointer;" ng-click="sort2('JoinDate')">Join Date <span class="fa" ng-show="sortKey2=='JoinDate'" ng-class="{'fa-arrow-up':reverse2,'fa-arrow-down':!reverse2}"></span></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="Staff in StaffList|orderBy:sortKey2:reverse2|filter:searchStaff" ng-model="searchStaff">
+                                                    <td>{{$index + 1}}</td>
+                                                    <td><input type="checkbox" ng-model="Staff.IsSelected" /></td>
+                                                    <td>{{Staff.StaffName}}</td>
+                                                    <td>{{Staff.StaffCode}}</td>
+                                                    <td>{{Staff.DepartmentName}}</td>
+                                                    <td>{{Staff.DesignationName}}</td>
+                                                    <td>{{Staff.StaffTypeName}}</td>
+                                                    <td>{{Staff.MobileNo}}</td>
+                                                    <td style="white-space:nowrap">{{Staff.JoinDate | date:'dd-MM-yyyy'}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn bg-primary" ng-click="saveStaffGroup()">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal_detail" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Staff Group Detail</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                        <div class="modal-body">
+                                <div class="form-group col-sm-6 float-right">
+                                    <input type="text" class="float-right input-sm form-control" ng-model="searchStaff" style="width:200px;" placeholder="Search..." />
+                                </div>
+                                <div class="form-group col-sm-12">
+                                    <div class="table-responsive" style="max-height:400px">
+                                        <table class="table table-bordered table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Sl. No.</th>
+                                                    <th style="cursor: pointer;" ng-click="sort2('StaffName')">Staff Name <span class="fa" ng-show="sortKey2=='StaffName'" ng-class="{'fa-arrow-up':reverse2,'fa-arrow-down':!reverse2}"></span></th>
+                                                    <th style="cursor: pointer;" ng-click="sort2('StaffCode')">Staff Code <span class="fa" ng-show="sortKey2=='StaffCode'" ng-class="{'fa-arrow-up':reverse2,'fa-arrow-down':!reverse2}"></span></th>
+                                                    <th style="cursor: pointer;" ng-click="sort2('DepartmentName')">Department <span class="fa" ng-show="sortKey2=='DepartmentName'" ng-class="{'fa-arrow-up':reverse2,'fa-arrow-down':!reverse2}"></span></th>
+                                                    <th style="cursor: pointer;" ng-click="sort2('DesignationName')">Designation <span class="fa" ng-show="sortKey2=='DesignationName'" ng-class="{'fa-arrow-up':reverse2,'fa-arrow-down':!reverse2}"></span></th>
+                                                    <th style="cursor: pointer;" ng-click="sort2('StaffTypeName')">Staff Type <span class="fa" ng-show="sortKey2=='StaffTypeName'" ng-class="{'fa-arrow-up':reverse2,'fa-arrow-down':!reverse2}"></span></th>
+                                                    <th style="cursor: pointer;" ng-click="sort2('MobileNo')">Mobile No <span class="fa" ng-show="sortKey2=='MobileNo'" ng-class="{'fa-arrow-up':reverse2,'fa-arrow-down':!reverse2}"></span></th>
+                                                    <th style="cursor: pointer;" ng-click="sort2('JoinDate')">Join Date <span class="fa" ng-show="sortKey2=='JoinDate'" ng-class="{'fa-arrow-up':reverse2,'fa-arrow-down':!reverse2}"></span></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="Staff in StaffGroupDetailList|orderBy:sortKey2:reverse2|filter:searchStaff" ng-model="searchStaff" >
+                                                    <td>{{$index + 1}}</td>
+                                                    <td>{{Staff.StaffName}}</td>
+                                                    <td>{{Staff.StaffCode}}</td>
+                                                    <td>{{Staff.DepartmentName}}</td>
+                                                    <td>{{Staff.DesignationName}}</td>
+                                                    <td>{{Staff.StaffTypeName}}</td>
+                                                    <td>{{Staff.MobileNo}}</td>
+                                                    <td style="white-space:nowrap">{{Staff.JoinDate | date:'dd-MM-yyyy'}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal_confirmation" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <h6 class="font-weight-semibold">Are you sure want to delete this record?</h6>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn bg-primary" ng-click="deleteStaffGroup()">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

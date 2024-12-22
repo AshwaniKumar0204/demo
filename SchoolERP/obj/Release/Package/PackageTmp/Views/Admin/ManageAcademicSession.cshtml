@@ -1,0 +1,155 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Manage Academic Session</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Manage Academic Session</h6>
+        </div>
+        <div class="card-body">
+            <div class="col-lg-6">
+                <label class="col-form-label font-weight-bold col-lg-4">Course </label>
+                <div class="col-lg-8">
+                    <select ng-model="ClassId" ng-change="getAcademicSessionList()" ng-options="option.ClassId as option.ClassName for option in ClassList" class="form-control">
+                        <option value="">--Select All Course--</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <button class="btn btn-sm btn-primary" ng-if="CanEdit" ng-click="newAcademicSession()"> <i class="fa fa-plus"></i> New Session</button>
+            </div>
+            <div class="clearfix"></div>
+            <fieldset class="mb-3" ng-show="AcademicSessionList.length > 0">
+                <legend class="text-uppercase font-size-sm font-weight-bold">Academic Session List</legend>
+                <div class="form-group col-sm-6 float-right">
+                    <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+                </div>
+                <div class="form-group col-sm-12 table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Sl. No.</th>
+                                <th style="cursor: pointer;" ng-click="sort('ClassName')">Course Name <span class="fa" ng-show="sortKey=='ClassName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('SessionName')">Session Name <span class="fa" ng-show="sortKey=='SessionName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('SessionStartDate')">Session Start Date <span class="fa" ng-show="sortKey=='SessionStartDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('SessionEndDate')">Session End Date <span class="fa" ng-show="sortKey=='SessionEndDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Status')">Status<span class="fa" ng-show="sortKey=='Status'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="CanEdit">Edit </th>
+                                <th ng-if="CanDelete">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="AcademicSession in AcademicSessionList|orderBy:sortKey:reverse|filter:search" ng-model="search">
+                                <td>{{$index + 1}}</td>
+                                <td>{{AcademicSession.ClassName}}</td>
+                                <td>{{AcademicSession.SessionName}}</td>
+                                <td>{{AcademicSession.SessionStartDate|date:'dd-MM-yyyy'}}</td>
+                                <td>{{AcademicSession.SessionEndDate|date:'dd-MM-yyyy'}}</td>
+                                <td><span ng-class="AcademicSession.Status == 1 ? 'badge bg-success-400' : 'badge bg-danger'"> {{AcademicSession.StatusName}}</span></td>
+                                <td ng-if="CanEdit"><button class="btn btn-sm btn-primary" ng-click="editAcademicSession(AcademicSession)"><i class="icon-pencil3"></i></button></td>
+                                <td ng-if="CanDelete"><button class="btn btn-sm btn-danger" ng-click="deleteConfirmation(AcademicSession.AcademicSessionId)"><i class="fa fa-trash"></i></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </fieldset>
+        </div>
+
+        <div id="modal_Student_Charge" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{AcademicSession.AcademicSessionId > 0 ? 'Update' : 'New' }} AcademicSession</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <form name="formAcademicSession" novalidate>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label>Class <span class="text-danger">*</span></label>
+                                    <select ng-model="AcademicSession.ClassId" ng-disabled="ClassId" name="ClassId" ng-options="option.ClassId as option.ClassName for option in ClassList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                        <option value="">--Select Class--</option>
+                                    </select>
+                                    <span class="text-danger" ng-if="(formAcademicSession.ClassId.$dirty || IsSubmitted) && formAcademicSession.ClassId.$error.required">AcademicSession ClassId is required!</span>
+                                </div>
+
+                                <div class="col-md-12 form-group">
+                                    <label>Session Name <span class="text-danger">*</span></label>
+                                    <input type="text" name="SessionName" placeholder="Enter Session Name" ng-model="AcademicSession.SessionName" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus>
+                                    <span class="text-danger" ng-if="(formAcademicSession.SessionName.$dirty || IsSubmitted) && formAcademicSession.SessionName.$error.required">Session Name is required!</span>
+                                </div>
+
+                                <div class="col-md-12 form-group">
+                                    <label>Session Start Date <span class="text-danger">*</span></label>
+                                    <input type="date" name="SessionStartDate" placeholder="Enter Session Start Date" ng-model="AcademicSession.SessionStartDate" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus>
+                                    <span class="text-danger" ng-if="(formAcademicSession.SessionStartDate.$dirty || IsSubmitted) && formAcademicSession.SessionStartDate.$error.required">Session Start Date is required!</span>
+                                </div>
+
+                                <div class="col-md-12 form-group">
+                                    <label>Session End Date </label>
+                                    <input type="date" name="SessionEndDate" placeholder="Enter Session End Date" ng-model="AcademicSession.SessionEndDate" class="form-control">
+                                </div>
+
+                                <div class="col-md-12 form-group">
+                                    <label>Status <span class="text-danger">*</span></label>
+                                    <select ng-model="AcademicSession.Status" name="Status" ng-options="option.Key as option.Value for option in StatusList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                        <option value="">--Select Status--</option>
+                                    </select>
+                                    <span class="text-danger" ng-if="(formAcademicSession.Status.$dirty || IsSubmitted) && formAcademicSession.Status.$error.required">Status is required!</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn bg-primary" ng-click="SaveAcademicSession()">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal_confirmation" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <h6 class="font-weight-semibold">Are you sure want to delete this record?</h6>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn bg-primary" ng-click="deleteAcademicSession()">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

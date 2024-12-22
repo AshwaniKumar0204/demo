@@ -1,0 +1,283 @@
+﻿@{
+    Layout = null;
+}
+<style>
+    label span {
+        padding-left: 10px;
+    }
+
+    fieldset {
+        margin-bottom: 0 !important;
+    }
+</style>
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Staff Payment</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Staff Payment</h6>
+        </div>
+        <div class="card-body">
+            <form name="formStaff" novalidate>
+                <div class="row">
+                    <div class="col-md-5 form-group">
+                        <label class="col-sm-4 col-form-label">Select Staff <span class="text-danger">*</span></label>
+                        <div class="col-sm-8">
+                            <angucomplete-alt id="StaffAnguComplete"
+                                              placeholder="Enter Staff Name/Code"
+                                              pause="100"
+                                              selected-object="afterStaffSelected"
+                                              local-data="StaffList"
+                                              search-fields="StaffName,DesignationName,StaffCode"
+                                              title-field="StaffName,DesignationName,StaffCode"
+                                              description="ItemTypeName"
+                                              minlength="2"
+                                              input-class="form-control"
+                                              match-class="highlight"
+                                              input-changed="selectionChanged"
+                                              field-required="true"
+                                              auto-match="true"
+                                              focus-in="focusIn()">
+                            </angucomplete-alt>
+                            <select ng-model="StaffId" ng-hide="true" name="StaffId" ng-options="option.StaffId as option.StaffName for option in StaffList" class="form-control" ng-class="IsStaffSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                <option value="">--Selecty Staff--</option>
+                            </select>
+                            <span class="text-danger" ng-if="(formStaff.StaffId.$dirty || IsStaffSubmitted) && formStaff.StaffId.$error.required">Staff is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3 form-group">
+                        <label class="col-sm-4 col-form-label">Month <span class="text-danger">*</span></label>
+                        <div class="col-sm-8">
+                            <select ng-model="MonthNo" name="MonthNo" ng-options="option.Key as option.Value for option in MonthList" class="form-control" ng-class="IsStaffSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                <option value="">--Month--</option>
+                            </select>
+                            <span class="text-danger" ng-if="(formStaff.MonthNo.$dirty || IsStaffSubmitted) && formStaff.MonthNo.$error.required">Month is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3 form-group">
+                        <label class="col-sm-4 col-form-label">Year <span class="text-danger">*</span></label>
+                        <div class="col-sm-8">
+                            <input type="number" ng-maxlength="4" ng-minlength="4" ng-model="Year" name="Year" placeholder="Enter Year" class="form-control" ng-class="IsStaffSubmitted ? 'ng-dirty' : ''" required autofocus />
+                            <span class="text-danger" ng-if="(formStaff.Year.$dirty || IsStaffSubmitted) && formStaff.Year.$error.required">Year is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-1 form-group">
+                        <button class="btn btn-sm btn-success" ng-click="getStaffPaymentDetail()"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            </form>
+            <form name="formStaffPayment" novalidate ng-show="StaffPayment.StaffId">
+                <fieldset class="mb-3" style="margin-bottom: 0 !important;">
+                    <legend class="text-uppercase font-size-sm font-weight-bold">Staff Detail</legend>
+                    <div class="row">
+                        <div class="col-lg-4 form-group">
+                            <label class="col-form-label font-weight-bold col-lg-12">Staff Name : <span class="font-weight-semibold padding-10">{{StaffPayment.StaffName}}</span></label>
+                        </div>
+                        <div class="col-lg-4 form-group">
+                            <label class="col-form-label font-weight-bold col-lg-12">Staff Code : <span class="font-weight-semibold padding-10">{{StaffPayment.StaffCode}}</span></label>
+                        </div>
+                        <div class="col-lg-4 form-group">
+                            <label class="col-form-label font-weight-bold col-lg-12">Designation : <span class="font-weight-semibold padding-10">{{StaffPayment.DesignationName}}</span></label>
+                        </div>
+                        <div class="col-lg-4 form-group">
+                            <label class="col-form-label font-weight-bold col-lg-12">Account No : <span class="font-weight-semibold padding-10">{{StaffPayment.BankAccountNo}}</span></label>
+                        </div>
+                        <div class="col-lg-4 form-group">
+                            <label class="col-form-label font-weight-bold col-lg-12">PF No : <span class="font-weight-semibold padding-10">{{StaffPayment.PFNo}}</span></label>
+                        </div>
+                        <div class="col-lg-4 form-group">
+                            <label class="col-form-label font-weight-bold col-lg-12">ESI No : <span class="font-weight-semibold padding-10">{{StaffPayment.ESINo}}</span></label>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="mb-3" style="margin-bottom: 0 !important;">
+                    <legend class="text-uppercase font-size-sm font-weight-bold">Leave Detail</legend>
+                    <div class="col-lg-12 form-group">
+                        <label class="col-form-label font-weight-bold col-lg-2" ng-class="StaffPayment.LWPAvailed > 0 ? 'text-danger':''">LWP Availed :{{StaffPayment.LWPAvailed}} </label>
+                        <label class="col-form-label font-weight-bold col-lg-3" ng-class="StaffPayment.CLAvailed > 0 ? 'text-danger':''">CL Availed :{{StaffPayment.CLAvailed}} </label>
+                        <label class="col-form-label font-weight-bold col-lg-2" ng-class="StaffPayment.ELAvailed > 0 ? 'text-danger':''">EL Availed :{{StaffPayment.ELAvailed}} </label>
+                        <label class="col-form-label font-weight-bold col-lg-3" ng-class="StaffPayment.MLAvailed > 0 ? 'text-danger':''">ML Availed :{{StaffPayment.MLAvailed}} </label>
+                        <label class="col-form-label font-weight-bold col-lg-2" ng-class="StaffPayment.HPLAvailed > 0 ? 'text-danger':''">HPL Availed :{{StaffPayment.HPLAvailed}} </label>
+                    </div>
+                </fieldset>
+                <fieldset class="mb-3" style="margin-bottom: 0 !important;">
+                    <legend class="text-uppercase font-size-sm font-weight-bold">Payment Detail</legend>
+                    <div class="col-lg-4 form-group">
+                        <label class="col-form-label font-weight-bold col-lg-6">Basic Amount(₹) <span class="text-danger">*</span></label>
+                        <div class="col-lg-6">
+                            <input type="number" ng-disabled="true" ng-model="StaffPayment.BasicAmount" name="BasicAmount" placeholder="Enter Basic Amount" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                            <span class="text-danger" ng-if="(formStaffPayment.BasicAmount.$dirty || IsSubmitted) && formStaffPayment.BasicAmount.$error.required">Basic Amount is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 form-group">
+                        <label class="col-form-label font-weight-bold col-lg-6">Increament(₹) <span class="text-danger">*</span></label>
+                        <div class="col-lg-6">
+                            <input type="number" ng-disabled="true" ng-model="StaffPayment.Increament" name="Increament" placeholder="Enter Increament" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                            <span class="text-danger" ng-if="(formStaffPayment.Increament.$dirty || IsSubmitted) && formStaffPayment.Increament.$error.required">Increament is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 form-group">
+                        <label class="col-form-label font-weight-bold col-lg-6">DA(₹) <span class="text-danger">*</span></label>
+                        <div class="col-lg-6">
+                            <input type="number" ng-disabled="true" ng-model="StaffPayment.DA" name="DA" placeholder="Enter DA" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                            <span class="text-danger" ng-if="(formStaffPayment.DA.$dirty || IsSubmitted) && formStaffPayment.DA.$error.required">DA is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 form-group">
+                        <label class="col-form-label font-weight-bold col-lg-6">Allowance(₹) <span class="text-danger">*</span></label>
+                        <div class="col-lg-6">
+                            <input type="number" ng-disabled="true" ng-model="StaffPayment.Allowance" name="Allowance" placeholder="Enter Allowance" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                            <span class="text-danger" ng-if="(formStaffPayment.Allowance.$dirty || IsSubmitted) && formStaffPayment.Allowance.$error.required">Allowance is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 form-group">
+                        <label class="col-form-label font-weight-bold col-lg-6">Arrear(₹) <span class="text-danger">*</span></label>
+                        <div class="col-lg-6">
+                            <input type="number" ng-disabled="true" ng-model="StaffPayment.Arrear" name="Arrear" placeholder="Enter Arrear" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                            <span class="text-danger" ng-if="(formStaffPayment.Arrear.$dirty || IsSubmitted) && formStaffPayment.Arrear.$error.required">Arrear is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 form-group">
+                        <label class="col-form-label font-weight-bold col-lg-6">HRA(₹) <span class="text-danger">*</span></label>
+                        <div class="col-lg-6">
+                            <input type="number" ng-disabled="true" ng-model="StaffPayment.HRA" name="HRA" placeholder="Enter HRA" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                            <span class="text-danger" ng-if="(formStaffPayment.HRA.$dirty || IsSubmitted) && formStaffPayment.HRA.$error.required">HRA is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 form-group">
+                        <label class="col-form-label font-weight-bold col-lg-6">Medical Allowance(₹) </label>
+                        <div class="col-lg-6">
+                            <input type="number" ng-disabled="true" ng-model="StaffPayment.MedicalAllowance" name="MedicalAllowance" placeholder="Enter Medical Allowance" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                            <span class="text-danger" ng-if="(formStaffPayment.MedicalAllowance.$dirty || IsSubmitted) && formStaffPayment.MedicalAllowance.$error.required">Medical Allowance is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 form-group">
+                        <label class="col-form-label font-weight-bold col-lg-6">Special Allowance(₹) </label>
+                        <div class="col-lg-6">
+                            <input type="number" ng-disabled="true" ng-model="StaffPayment.SpecialAllowance" name="SpecialAllowance" placeholder="Enter Special Allowance" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                            <span class="text-danger" ng-if="(formStaffPayment.SpecialAllowance.$dirty || IsSubmitted) && formStaffPayment.SpecialAllowance.$error.required">Special Allowance is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 form-group">
+                        <label class="col-form-label font-weight-bold col-lg-6">Gross Total(₹) <span class="text-danger">*</span></label>
+                        <div class="col-lg-6">
+                            <input type="number" ng-disabled="true" ng-model="StaffPayment.GrossTotal" name="GrossTotal" placeholder="Enter Gross Total" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                            <span class="text-danger" ng-if="(formStaffPayment.GrossTotal.$dirty || IsSubmitted) && formStaffPayment.GrossTotal.$error.required">Gross Total is required!</span>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="mb-3">
+                    <legend class="text-uppercase font-size-sm font-weight-bold">Deduction Detail</legend>
+                    <div class="col-lg-4 form-group">
+                        <label class="col-form-label font-weight-bold col-lg-6">EPF(₹) <span class="text-danger">*</span></label>
+                        <div class="col-lg-6">
+                            <input type="number" ng-disabled="true" ng-model="StaffPayment.EPF" name="EPF" placeholder="Enter EPF" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                            <span class="text-danger" ng-if="(formStaffPayment.EPF.$dirty || IsSubmitted) && formStaffPayment.EPF.$error.required">EPF is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 form-group">
+                        <label class="col-form-label font-weight-bold col-lg-6">ESI(₹) <span class="text-danger">*</span></label>
+                        <div class="col-lg-6">
+                            <input type="number" ng-disabled="true" ng-model="StaffPayment.ESI" name="ESI" placeholder="Enter ESI" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                            <span class="text-danger" ng-if="(formStaffPayment.ESI.$dirty || IsSubmitted) && formStaffPayment.ESI.$error.required">ESI is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 form-group">
+                        <label class="col-form-label font-weight-bold col-lg-6">TDS(₹) <span class="text-danger">*</span></label>
+                        <div class="col-lg-6">
+                            <input type="number" ng-model="StaffPayment.TDS" ng-change="caculateTotal(StaffPayment)" name="TDS" placeholder="Enter TDS" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                            <span class="text-danger" ng-if="(formStaffPayment.TDS.$dirty || IsSubmitted) && formStaffPayment.TDS.$error.required">TDS is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 form-group">
+                        <label class="col-form-label font-weight-bold col-lg-6">Professional Tax(₹) <span class="text-danger">*</span></label>
+                        <div class="col-lg-6">
+                            <input type="number" ng-model="StaffPayment.ProfessionalTax" ng-change="caculateTotal(StaffPayment)" name="ProfessionalTax" placeholder="Enter Professional Tax" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                            <span class="text-danger" ng-if="(formStaffPayment.ProfessionalTax.$dirty || IsSubmitted) && formStaffPayment.ProfessionalTax.$error.required">Professional Tax is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 form-group">
+                        <label class="col-form-label font-weight-bold col-lg-6">Salary Advanced(₹) <span class="text-danger">*</span></label>
+                        <div class="col-lg-6">
+                            <input type="number" ng-disabled="true" ng-model="StaffPayment.SalaryAdvanced" name="SalaryAdvanced" placeholder="Enter Salary Advanced" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                            <span class="text-danger" ng-if="(formStaffPayment.SalaryAdvanced.$dirty || IsSubmitted) && formStaffPayment.SalaryAdvanced.$error.required">Salary Advanced is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 form-group">
+                        <label class="col-form-label font-weight-bold col-lg-6">Other Deduction(₹) <span class="text-danger">*</span></label>
+                        <div class="col-lg-6">
+                            <input type="number" ng-model="StaffPayment.OtherDeduction" ng-change="caculateTotal(StaffPayment)" name="OtherDeduction" placeholder="Enter Other Deduction" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                            <span class="text-danger" ng-if="(formStaffPayment.OtherDeduction.$dirty || IsSubmitted) && formStaffPayment.OtherDeduction.$error.required">Other Deduction is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 form-group">
+                        <label class="col-form-label font-weight-bold col-lg-6">House Rent(₹) <span class="text-danger">*</span></label>
+                        <div class="col-lg-6">
+                            <input type="number" ng-model="StaffPayment.HouseRent" ng-change="caculateTotal(StaffPayment)" name="HouseRent" placeholder="Enter House Rent" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                            <span class="text-danger" ng-if="(formStaffPayment.HouseRent.$dirty || IsSubmitted) && formStaffPayment.HouseRent.$error.required">House Rent is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 form-group">
+                        <label class="col-form-label font-weight-bold col-lg-6">Electricity (₹) <span class="text-danger">*</span></label>
+                        <div class="col-lg-6">
+                            <input type="number" ng-model="StaffPayment.ElectricityCharge" ng-change="caculateTotal(StaffPayment)" name="ElectricityCharge" placeholder="Enter Electricity Charge" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                            <span class="text-danger" ng-if="(formStaffPayment.ElectricityCharge.$dirty || IsSubmitted) && formStaffPayment.ElectricityCharge.$error.required">Electricity Charge is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 form-group">
+                        <label class="col-form-label font-weight-bold col-lg-6">LWP(₹) <span class="text-danger">*</span></label>
+                        <div class="col-lg-6">
+                            <input type="number" ng-disabled="true" ng-model="StaffPayment.LWP" name="LWP" placeholder="Enter LWP" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                            <span class="text-danger" ng-if="(formStaffPayment.LWP.$dirty || IsSubmitted) && formStaffPayment.LWP.$error.required">LWP is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 form-group">
+                        <label class="col-form-label font-weight-bold col-lg-6">Total Deduction(₹) <span class="text-danger">*</span></label>
+                        <div class="col-lg-6">
+                            <input type="number" ng-disabled="true" ng-model="StaffPayment.TotalDeduction" name="TotalDeduction" placeholder="Enter Total Deduction" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                            <span class="text-danger" ng-if="(formStaffPayment.TotalDeduction.$dirty || IsSubmitted) && formStaffPayment.TotalDeduction.$error.required">Total Deduction is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 form-group">
+                        <label class="col-form-label font-weight-bold col-lg-6">Net Payment(₹) <span class="text-danger">*</span></label>
+                        <div class="col-lg-6">
+                            <input type="number" ng-disabled="true" ng-model="StaffPayment.NetPayment" name="NetPayment" placeholder="Enter Net Payment" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                            <span class="text-danger" ng-if="(formStaffPayment.NetPayment.$dirty || IsSubmitted) && formStaffPayment.NetPayment.$error.required">Net Payment is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 form-group">
+                        <label class="col-form-label font-weight-bold col-lg-6">Remarks</label>
+                        <div class="col-lg-6">
+                            <textarea ng-model="StaffPayment.Remarks" placeholder="Enter Remarks" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+
+        <div class="card-footer text-centre" ng-show="StaffPayment.StaffId > 0">
+            <button class="btn btn-primary" ng-click="saveStaffPayment()">Submit</button>
+        </div>
+    </div>
+</div>
+

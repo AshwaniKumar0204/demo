@@ -1,0 +1,267 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item">Online Registration</span>
+                <span class="breadcrumb-item active">Manage Application Form</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Manage Application Form</h6>
+        </div>
+
+        <div class="card-body">
+            <div class="row form-group">
+                <div class="col-sm-5">
+                    <label class="col-sm-4 col-form-label">Course <span class="text-danger">*</span></label>
+                    <div class="col-sm-8">
+                        <select ng-model="ClassId" class="form-control" ng-change="getAcademicSessionList()" ng-options="option.ClassNo as option.ClassName for option in ClassList">
+                            <option value="">--All Course--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <label class="col-sm-4 col-form-label">Session <span class="text-danger">*</span></label>
+                    <div class="col-sm-8">
+                        <select ng-model="AcademicSessionId" class="form-control" ng-change="getRegistrationFormList()" ng-options="option.AcademicSessionId as option.SessionName for option in AcademicSessionList">
+                            <option value="">--All Session--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <button class="btn btn-sm btn-primary" ng-if="CanEdit && AcademicSessionId > 0" ng-click="newRegistrationForm()"> <i class="fa fa-plus"></i> New RegistrationForm</button>
+                </div>
+            </div>
+
+            <fieldset class="mb-3" ng-if="AcademicSessionId >0">
+                <legend class="text-uppercase font-size-sm font-weight-bold">List Application Form</legend>
+                <div class="form-group col-sm-6 float-right">
+                    <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+                </div>
+                <div class="form-group col-sm-6">
+                    Display
+                    <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+                    Records Per Page
+                </div>
+
+                <div class="form-group col-sm-12 table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Sl. No.</th>
+                                <th style="cursor: pointer;" ng-click="sort('ClassName')">Course <span class="fa" ng-show="sortKey=='ClassName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('PhaseName')">Name <span class="fa" ng-show="sortKey=='PhaseName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('FromDate')">From Date <span class="fa" ng-show="sortKey=='FromDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('ToDate')">To Date <span class="fa" ng-show="sortKey=='ToDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('FromDOB')">From DOB <span class="fa" ng-show="sortKey=='FromDOB'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('ToDOB')">To DOB <span class="fa" ng-show="sortKey=='ToDOB'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('FormCharge')">Form Charge<span class="fa" ng-show="sortKey=='FormCharge'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                @*<th style="cursor: pointer;" ng-click="sort('AllowSameSchool')">Allow Same School<span class="fa" ng-show="sortKey=='AllowSameSchool'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>*@
+                                @*<th style="cursor: pointer;" ng-click="sort('SameSchoolFormCharge')">Same School Form Charge<span class="fa" ng-show="sortKey=='SameSchoolFormCharge'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>*@
+                                <th style="cursor: pointer;" ng-click="sort('AllowStudentPhoto')">Allow Student Photo<span class="fa" ng-show="sortKey=='AllowStudentPhoto'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('AllowFathersPhoto')">Allow Fathers Photo<span class="fa" ng-show="sortKey=='AllowFathersPhoto'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('AllowMothersPhoto')">Allow Mothers Photo<span class="fa" ng-show="sortKey=='AllowMothersPhoto'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th>Thumbnail </th>
+                                <th ng-if="CanEdit">Edit </th>
+                                <th ng-if="CanDelete">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="RegistrationForm in RegistrationFormList|orderBy:sortKey:reverse|filter:search" ng-model="search">
+                                <td>{{$index + 1}}</td>
+                                <td style="white-space:nowrap">{{RegistrationForm.ClassName}}</td>
+                                <td style="white-space:nowrap">{{RegistrationForm.PhaseName}}</td>
+                                <td style="white-space:nowrap">{{RegistrationForm.FromDate | date:'dd-MM-yyyy'}}</td>
+                                <td style="white-space:nowrap">{{RegistrationForm.ToDate | date:'dd-MM-yyyy'}}</td>
+                                <td style="white-space:nowrap">{{RegistrationForm.FromDOB | date:'dd-MM-yyyy'}}</td>
+                                <td style="white-space:nowrap">{{RegistrationForm.ToDOB | date:'dd-MM-yyyy'}}</td>
+                                <td>{{RegistrationForm.FormCharge | number:2}}</td>
+                                @*<td>{{RegistrationForm.AllowSameSchool}}</td>*@
+                                @*<td>{{RegistrationForm.SameSchoolFormCharge}}</td>*@
+                                <td>{{RegistrationForm.AllowStudentPhoto}}</td>
+                                <td>{{RegistrationForm.AllowFathersPhoto}}</td>
+                                <td>{{RegistrationForm.AllowMothersPhoto}}</td>
+                                <td>
+                                    <label ng-if="RegistrationForm.ThumbnailPhoto == null" class="text-danger">N/A</label>
+                                    <a href="{{RegistrationForm.ThumbnailPhoto}}" target="_blank">
+                                        <img ng-if="RegistrationForm.ThumbnailPhoto != null" src="{{RegistrationForm.ThumbnailPhoto}}" width="100" height="60" />
+                                    </a>
+                                </td>
+                                <td ng-if="CanEdit"><button class="btn btn-sm btn-primary" ng-click="editRegistrationForm(RegistrationForm)"><i class="icon-pencil3"></i></button></td>
+                                <td ng-if="CanDelete"><button class="btn btn-sm btn-danger" ng-click="deleteConfirmation(RegistrationForm.RegistrationFormId)"><i class="fa fa-trash"></i></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </fieldset>
+        </div>
+
+        <div id="modal_Student_Charge" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{RegistrationForm.RegistrationFormId > 0 ? 'Update' : 'New' }} Application Form</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <form name="formRegistrationForm" novalidate>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label class="col-form-label font-weight-bold col-lg-4">Course <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <select ng-model="RegistrationForm.ClassNo" name="ClassNo" ng-options="option.ClassNo as option.ClassName for option in ClassList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                            <option value="">--Select Course--</option>
+                                        </select>
+                                        <span class="text-danger" ng-if="(formRegistrationForm.ClassNo.$dirty || IsSubmitted) && formRegistrationForm.ClassNo.$error.required">Class is required!</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label class="col-form-label font-weight-bold col-lg-4">Name <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="PhaseName" placeholder="Enter Name" ng-model="RegistrationForm.PhaseName" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus>
+                                        <span class="text-danger" ng-if="(formRegistrationForm.PhaseName.$dirty || IsSubmitted) && formRegistrationForm.PhaseName.$error.required">Name is required!</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label class="col-form-label font-weight-bold col-lg-4">From Date <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="date" name="FromDate" placeholder="Enter From Date" ng-model="RegistrationForm.FromDate" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus>
+                                        <span class="text-danger" ng-if="(formRegistrationForm.FromDate.$dirty || IsSubmitted) && formRegistrationForm.FromDate.$error.required">From Date is required!</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label class="col-form-label font-weight-bold col-lg-4">To Date </label>
+                                    <div class="col-sm-8">
+                                        <input type="date" name="ToDate" placeholder="Enter To Date" ng-model="RegistrationForm.ToDate" class="form-control required">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label class="col-form-label font-weight-bold col-lg-4">From DOB </label>
+                                    <div class="col-sm-8">
+                                        <input type="date" name="FromDOB" placeholder="Enter From DOB" ng-model="RegistrationForm.FromDOB" class="form-control required">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label class="col-form-label font-weight-bold col-lg-4"> To DOB </label>
+                                    <div class="col-sm-8">
+                                        <input type="date" name="ToDOB" placeholder="Enter To DOB" ng-model="RegistrationForm.ToDOB" class="form-control required">
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-6 form-group">
+                                    <label class="col-form-label font-weight-bold col-lg-4">Form Charge <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="number" name="FormCharge" placeholder="Enter Form Charge" ng-model="RegistrationForm.FormCharge" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus>
+                                        <span class="text-danger" ng-if="(formRegistrationForm.FormCharge.$dirty || IsSubmitted) && formRegistrationForm.FormCharge.$error.required">Form Charge is required!</span>
+                                    </div>
+                                </div>
+
+                                @*<div class="col-md-6 form-group">
+                                    <label class="col-form-label font-weight-bold col-lg-6">Same School Form Charge <span class="text-danger">*</span></label>
+                                    <div class="col-sm-6">
+                                        <input type="number" name="SameSchoolFormCharge" placeholder="Enter Same School Form Charge" ng-model="RegistrationForm.SameSchoolFormCharge" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus>
+                                        <span class="text-danger" ng-if="(formRegistrationForm.SameSchoolFormCharge.$dirty || IsSubmitted) && formRegistrationForm.SameSchoolFormCharge.$error.required">Same School Form Charge is required!</span>
+                                    </div>
+                                </div>*@
+
+                                <div class="col-md-6 form-group">
+                                    <label class="col-form-label font-weight-bold col-lg-4">Thumbnail</label>
+                                    <div class="col-sm-8">
+                                        <div class="custom-file">
+                                            <input type="file" id="thumbnailPhoto" onchange="angular.element(this).scope().setThumbnailPhoto(this,'thumbnailPhoto')" accept=".jpg,.jpeg,.png" class="custom-file-input">
+                                            <label class="custom-file-label" for="thumbnailPhoto">Choose file</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*<div class="col-md-6 form-group">
+                                    <label class="col-form-label font-weight-bold col-6" for="AllowSameSchool">Allow Same School<span class="text-danger">*</span></label>
+                                    <div class="col-6">
+                                        <input type="checkbox" name="AllowSameSchool" id="AllowSameSchool" ng-model="RegistrationForm.AllowSameSchool">
+                                    </div>
+                                </div>*@
+                                <div class="col-md-6 form-group">
+                                    <label class="col-form-label font-weight-bold col-6" for="AllowStudentPhoto">Allow Student Photo<span class="text-danger">*</span></label>
+                                    <div class="col-6">
+                                        <input type="checkbox" name="AllowStudentPhoto" id="AllowStudentPhoto" ng-model="RegistrationForm.AllowStudentPhoto">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label class="col-form-label font-weight-bold col-6" for="AllowFathersPhoto">Allow Father's Photo<span class="text-danger">*</span></label>
+                                    <div class="col-6">
+                                        <input type="checkbox" name="AllowFathersPhoto" id="AllowFathersPhoto" ng-model="RegistrationForm.AllowFathersPhoto">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label class="col-form-label font-weight-bold col-6" for="AllowMothersPhoto">Allow Mother's Photo<span class="text-danger">*</span></label>
+                                    <div class="col-6">
+                                        <input type="checkbox" name="AllowMothersPhoto" id="AllowMothersPhoto" ng-model="RegistrationForm.AllowMothersPhoto">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label class="col-form-label font-weight-bold col-sm-12">Notice </label>
+                                    <div class="col-sm-12">
+                                        <summernote config="options" ng-model="RegistrationForm.NoticeDetail" id="NoticeDetail" name="NoticeDetail"></summernote>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer text-centre">
+                            <div class="col-sm-12 text-centre">
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn bg-primary" ng-click="SaveRegistrationForm()">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal_confirmation" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <h6 class="font-weight-semibold">Are you sure want to delete this record?</h6>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn bg-primary" ng-click="deleteRegistrationForm()">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

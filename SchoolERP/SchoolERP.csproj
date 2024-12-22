@@ -1,0 +1,1543 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{169FCA8D-D9DE-4A55-83C0-08D4E0A08799}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SchoolERP</RootNamespace>
+    <AssemblyName>SchoolERP</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="EPPlus">
+      <HintPath>C:\Users\Amar\Downloads\EPPlus\sourceCode\epplus\EPPlusWebSample\bin\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.4\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.4\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.4\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.4\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.4\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Zen.Barcode.Core">
+      <HintPath>..\..\..\asp.net\MohanTimberERP\School_Web\bin\Zen.Barcode.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\HelpPage\ApiDescriptionExtensions.cs" />
+    <Compile Include="Areas\HelpPage\App_Start\HelpPageConfig.cs" />
+    <Compile Include="Areas\HelpPage\Controllers\HelpController.cs" />
+    <Compile Include="Areas\HelpPage\HelpPageAreaRegistration.cs" />
+    <Compile Include="Areas\HelpPage\HelpPageConfigurationExtensions.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\CollectionModelDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\ComplexTypeModelDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\DictionaryModelDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\EnumTypeModelDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\EnumValueDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\IModelDocumentationProvider.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\KeyValuePairModelDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\ModelDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\ModelDescriptionGenerator.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\ModelNameAttribute.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\ModelNameHelper.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\ParameterAnnotation.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\ParameterDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\SimpleTypeModelDescription.cs" />
+    <Compile Include="Areas\HelpPage\Models\HelpPageApiModel.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\HelpPageSampleGenerator.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\HelpPageSampleKey.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\ImageSample.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\InvalidSample.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\ObjectGenerator.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
+    <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\api\AcademicSessionController.cs" />
+    <Compile Include="Controllers\api\AdmissionController.cs" />
+    <Compile Include="Controllers\api\AdmissionFeeController.cs" />
+    <Compile Include="Controllers\api\AdmissionFeeHeadController.cs" />
+    <Compile Include="Controllers\api\AdmissionUpdateController.cs" />
+    <Compile Include="Controllers\api\BoardMarksController.cs" />
+    <Compile Include="Controllers\api\BonafideCertificateController.cs" />
+    <Compile Include="Controllers\api\BookAccessionController.cs" />
+    <Compile Include="Controllers\api\BookController.cs" />
+    <Compile Include="Controllers\api\BookIssueController.cs" />
+    <Compile Include="Controllers\api\BookSubjectController.cs" />
+    <Compile Include="Controllers\api\BookSubjectRackController.cs" />
+    <Compile Include="Controllers\api\BookTypeController.cs" />
+    <Compile Include="Controllers\api\ChequeBookController.cs" />
+    <Compile Include="Controllers\api\DesignationController.cs" />
+    <Compile Include="Controllers\api\DeviceController.cs" />
+    <Compile Include="Controllers\api\ExamCenterController.cs" />
+    <Compile Include="Controllers\api\HolidayController.cs" />
+    <Compile Include="Controllers\api\HostelController.cs" />
+    <Compile Include="Controllers\api\LeaveController.cs" />
+    <Compile Include="Controllers\api\ManagementController.cs" />
+    <Compile Include="Controllers\api\PaymentLinkTwoController.cs" />
+    <Compile Include="Controllers\api\RefundController.cs" />
+    <Compile Include="Controllers\api\SemesterController.cs" />
+    <Compile Include="Controllers\api\SettlementDetailsController.cs" />
+    <Compile Include="Controllers\api\StaffLeaveRequestController.cs" />
+    <Compile Include="Controllers\api\ParameterController.cs" />
+    <Compile Include="Controllers\api\PerformanceController.cs" />
+    <Compile Include="Controllers\api\PerformanceParameterController.cs" />
+    <Compile Include="Controllers\api\PaymentLinkController.cs" />
+    <Compile Include="Controllers\api\SessionController.cs" />
+    <Compile Include="Controllers\api\ShiftController.cs" />
+    <Compile Include="Controllers\api\AttendenceController.cs" />
+    <Compile Include="Controllers\api\StaffAdvancePaymentController.cs" />
+    <Compile Include="Controllers\api\StaffAvailableLeaveController.cs" />
+    <Compile Include="Controllers\api\StaffGroupController.cs" />
+    <Compile Include="Controllers\api\StaffGroupDetailController.cs" />
+    <Compile Include="Controllers\api\StaffGroupShiftController.cs" />
+    <Compile Include="Controllers\api\StaffLeaveController.cs" />
+    <Compile Include="Controllers\api\StaffPaymentController.cs" />
+    <Compile Include="Controllers\api\StaffSalaryController.cs" />
+    <Compile Include="Controllers\api\StudentDocumentController.cs" />
+    <Compile Include="Controllers\api\TeacherAttitudeController.cs" />
+    <Compile Include="Controllers\api\VehicleFuelConsumptionController.cs" />
+    <Compile Include="Controllers\api\CashbookController.cs" />
+    <Compile Include="Controllers\api\CharacterCertificateController.cs" />
+    <Compile Include="Controllers\api\CityController.cs" />
+    <Compile Include="Controllers\api\ClassController.cs" />
+    <Compile Include="Controllers\api\ClassFeeController.cs" />
+    <Compile Include="Controllers\api\ClassFeeHeadController.cs" />
+    <Compile Include="Controllers\api\ClassFineHeadController.cs" />
+    <Compile Include="Controllers\api\DepartmentController.cs" />
+    <Compile Include="Controllers\api\EnumeratorController.cs" />
+    <Compile Include="Controllers\api\ClassSubjectController.cs" />
+    <Compile Include="Controllers\api\EmployeeTypeController.cs" />
+    <Compile Include="Controllers\api\FeeHeadController.cs" />
+    <Compile Include="Controllers\api\FeePaymentController.cs" />
+    <Compile Include="Controllers\api\GSTController.cs" />
+    <Compile Include="Controllers\api\HouseController.cs" />
+    <Compile Include="Controllers\api\ItemTypeController.cs" />
+    <Compile Include="Controllers\api\MagazineController.cs" />
+    <Compile Include="Controllers\api\MagazinePurchaseController.cs" />
+    <Compile Include="Controllers\api\MiscellaneousStaffController.cs" />
+    <Compile Include="Controllers\api\NewsPaperPurchaseController.cs" />
+    <Compile Include="Controllers\api\OnlineAdmissionController.cs" />
+    <Compile Include="Controllers\api\ParentController.cs" />
+    <Compile Include="Controllers\api\PurchaseBookController.cs" />
+    <Compile Include="Controllers\api\PurchaseStoreItemController.cs" />
+    <Compile Include="Controllers\api\RackController.cs" />
+    <Compile Include="Controllers\api\RegistrationFormController.cs" />
+    <Compile Include="Controllers\api\RegistrationOnlineController.cs" />
+    <Compile Include="Controllers\api\RoleSectiomController.cs" />
+    <Compile Include="Controllers\api\StaffController.cs" />
+    <Compile Include="Controllers\api\StoreItemController.cs" />
+    <Compile Include="Controllers\api\StoreItemIssueController.cs" />
+    <Compile Include="Controllers\api\StudentRemarkController.cs" />
+    <Compile Include="Controllers\api\SupplierController.cs" />
+    <Compile Include="Controllers\api\LeftStudentController.cs" />
+    <Compile Include="Controllers\api\LoginController.cs" />
+    <Compile Include="Controllers\api\EmployeeController.cs" />
+    <Compile Include="Controllers\api\MenuController.cs" />
+    <Compile Include="Controllers\api\MiscellaneousFeeController.cs" />
+    <Compile Include="Controllers\api\MonthController.cs" />
+    <Compile Include="Controllers\api\RegistrationFeeController.cs" />
+    <Compile Include="Controllers\api\RegistrationFeeHeadController.cs" />
+    <Compile Include="Controllers\api\ReportController.cs" />
+    <Compile Include="Controllers\api\RoleController.cs" />
+    <Compile Include="Controllers\api\RoleTaskController.cs" />
+    <Compile Include="Controllers\api\SchoolController.cs" />
+    <Compile Include="Controllers\api\SectionController.cs" />
+    <Compile Include="Controllers\api\StateController.cs" />
+    <Compile Include="Controllers\api\StudentChargeController.cs" />
+    <Compile Include="Controllers\api\StudentConcessionController.cs" />
+    <Compile Include="Controllers\api\StudentController.cs" />
+    <Compile Include="Controllers\api\ClassPromotionController.cs" />
+    <Compile Include="Controllers\api\StudentRegistrationController.cs" />
+    <Compile Include="Controllers\api\StudentSubjectCombinationController.cs" />
+    <Compile Include="Controllers\api\SubjectCombinationController.cs" />
+    <Compile Include="Controllers\api\SubjectCombinationFeeController.cs" />
+    <Compile Include="Controllers\api\SubjectController.cs" />
+    <Compile Include="Controllers\api\TaskGroupController.cs" />
+    <Compile Include="Controllers\api\TaskMasterController.cs" />
+    <Compile Include="Controllers\api\SystemLoginController.cs" />
+    <Compile Include="Controllers\api\TeacherController.cs" />
+    <Compile Include="Controllers\api\TransferCertificateController.cs" />
+    <Compile Include="Controllers\api\TransportController.cs" />
+    <Compile Include="Controllers\api\UnitController.cs" />
+    <Compile Include="Controllers\api\VehicleRunningRecordController.cs" />
+    <Compile Include="Controllers\api\VehicleServiceController.cs" />
+    <Compile Include="Controllers\api\VehicleServiceDetailController.cs" />
+    <Compile Include="Controllers\api\VehicleTypeController.cs" />
+    <Compile Include="Controllers\PrintController.cs" />
+    <Compile Include="Controllers\api\PurchaseController.cs" />
+    <Compile Include="Controllers\SiteController.cs" />
+    <Compile Include="Controllers\SuperAdminController.cs" />
+    <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BarCodeGenerator.cs" />
+    <Compile Include="Models\CookieVariables.cs" />
+    <Compile Include="Models\Model.cs" />
+    <Compile Include="Models\PayUApi.cs" />
+    <Compile Include="Models\SchoolData.cs" />
+    <Compile Include="Models\SessionUtilities.cs" />
+    <Compile Include="Models\SessionVariables.cs" />
+    <Compile Include="Models\SMS.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="android-chrome-192x192.png" />
+    <Content Include="android-chrome-512x512.png" />
+    <Content Include="Angular\Admin\AdminRoute.js" />
+    <Content Include="Angular\Admin\AdminModule.js" />
+    <Content Include="Angular\Admin\Controller\AdminCardPrintController.js" />
+    <Content Include="Angular\Admin\Controller\AdminController.js" />
+    <Content Include="Angular\Admin\Controller\AdmissionNoPrintController.js" />
+    <Content Include="Angular\Admin\Controller\AdmitCardListForORController.js" />
+    <Content Include="Angular\Admin\Controller\AllowMarksheetDownloadController.js" />
+    <Content Include="Angular\Admin\Controller\AllStudentDetailUpdateController.js" />
+    <Content Include="Angular\Admin\Controller\AttendenceListController.js" />
+    <Content Include="Angular\Admin\Controller\BoardMarksListController.js" />
+    <Content Include="Angular\Admin\Controller\BonafideCertificateListController.js" />
+    <Content Include="Angular\Admin\Controller\BookAccessionList.js" />
+    <Content Include="Angular\Admin\Controller\BookAccessionListWithRackController.js" />
+    <Content Include="Angular\Admin\Controller\BookIssueController.js" />
+    <Content Include="Angular\Admin\Controller\BookIssueHistoryController.js" />
+    <Content Include="Angular\Admin\Controller\BookListController.js" />
+    <Content Include="Angular\Admin\Controller\BookPurchaseController.js" />
+    <Content Include="Angular\Admin\Controller\BookReturnController.js" />
+    <Content Include="Angular\Admin\Controller\ChequebookController.js" />
+    <Content Include="Angular\Admin\Controller\DailyCollectionReportStudentwiseController.js" />
+    <Content Include="Angular\Admin\Controller\DailyConcessionReportController.js" />
+    <Content Include="Angular\Admin\Controller\DailyConcessionReportStudentwiseController.js" />
+    <Content Include="Angular\Admin\Controller\EditReceiptController.js" />
+    <Content Include="Angular\Admin\Controller\FeeCollectionReportController.js" />
+    <Content Include="Angular\Admin\Controller\GenerateAdmitCardController.js" />
+    <Content Include="Angular\Admin\Controller\GeneratePaymentLinkTwoController.js" />
+    <Content Include="Angular\Admin\Controller\GenerateTimeTableTwoController.js" />
+    <Content Include="Angular\Admin\Controller\IssueBonafideCertificateController.js" />
+    <Content Include="Angular\Admin\Controller\MagazinePurchaseController.js" />
+    <Content Include="Angular\Admin\Controller\ManageAcademicSessionController.js" />
+    <Content Include="Angular\Admin\Controller\ManageBookAccessionController.js" />
+    <Content Include="Angular\Admin\Controller\ManageBookSubjectController.js" />
+    <Content Include="Angular\Admin\Controller\ManageBookSubjectRackController.js" />
+    <Content Include="Angular\Admin\Controller\ManageBookTypeController.js" />
+    <Content Include="Angular\Admin\Controller\ManageCityController.js" />
+    <Content Include="Angular\Admin\Controller\ManageDepartmentController.js" />
+    <Content Include="Angular\Admin\Controller\ManageDesignationController.js" />
+    <Content Include="Angular\Admin\Controller\ManageDeviceController.js" />
+    <Content Include="Angular\Admin\Controller\ManageDocumentUpload.js" />
+    <Content Include="Angular\Admin\Controller\ManageExamCenterController.js" />
+    <Content Include="Angular\Admin\Controller\GenerateMarksheetController.js" />
+    <Content Include="Angular\Admin\Controller\ManageHostelController.js" />
+    <Content Include="Angular\Admin\Controller\ManageHostelFeeController.js" />
+    <Content Include="Angular\Admin\Controller\ManageHostelFeeHeadController.js" />
+    <Content Include="Angular\Admin\Controller\ManageHostelFeePeriodController.js" />
+    <Content Include="Angular\Admin\Controller\ManageItemTypeController.js" />
+    <Content Include="Angular\Admin\Controller\ManageLeaveController.js" />
+    <Content Include="Angular\Admin\Controller\ManageMagazineController.js" />
+    <Content Include="Angular\Admin\Controller\ManageParentController.js" />
+    <Content Include="Angular\Admin\Controller\ManageRackController.js" />
+    <Content Include="Angular\Admin\Controller\ManageRefundController.js" />
+    <Content Include="Angular\Admin\Controller\ManageRegistrationFormController.js" />
+    <Content Include="Angular\Admin\Controller\ManageSemesterController.js" />
+    <Content Include="Angular\Admin\Controller\ManageShiftController.js" />
+    <Content Include="Angular\Admin\Controller\ManageStaffAdvancePaymentController.js" />
+    <Content Include="Angular\Admin\Controller\ManageStaffController.js" />
+    <Content Include="Angular\Admin\Controller\ManageStaffGroupController.js" />
+    <Content Include="Angular\Admin\Controller\ManageStaffGroupShiftController.js" />
+    <Content Include="Angular\Admin\Controller\ManageStaffLeaveController.js" />
+    <Content Include="Angular\Admin\Controller\ManageStaffSalaryController.js" />
+    <Content Include="Angular\Admin\Controller\ManageStateController.js" />
+    <Content Include="Angular\Admin\Controller\ManageStoreItemController.js" />
+    <Content Include="Angular\Admin\Controller\ManageStudentHostelFeeController.js" />
+    <Content Include="Angular\Admin\Controller\ManageSupplierController.js" />
+    <Content Include="Angular\Admin\Controller\ManageUnitController.js" />
+    <Content Include="Angular\Admin\Controller\ManageVehicleRunningRecordController.js" />
+    <Content Include="Angular\Admin\Controller\ManageVehicleTypeController.js" />
+    <Content Include="Angular\Admin\Controller\ManageSectionController.js" />
+    <Content Include="Angular\Admin\Controller\NewsPaperPurchaseController.js" />
+    <Content Include="Angular\Admin\Controller\NewsPaperPurchaseListController.js" />
+    <Content Include="Angular\Admin\Controller\OnlineAdmissionController.js" />
+    <Content Include="Angular\Admin\Controller\PaidPaymentLinkListController.js" />
+    <Content Include="Angular\Admin\Controller\ParentFeedBackListController.js" />
+    <Content Include="Angular\Admin\Controller\PaymentLinkListController.js" />
+    <Content Include="Angular\Admin\Controller\PrintBookBarCodeController.js" />
+    <Content Include="Angular\Admin\Controller\PurchaseListController.js" />
+    <Content Include="Angular\Admin\Controller\PurchaseStoreItemController.js" />
+    <Content Include="Angular\Admin\Controller\PurchaseStoreItemListController.js" />
+    <Content Include="Angular\Admin\Controller\GenerateAdmissionPaymentLinkController.js" />
+    <Content Include="Angular\Admin\Controller\RefundListController.js" />
+    <Content Include="Angular\Admin\Controller\RegistrationOfflineController.js" />
+    <Content Include="Angular\Admin\Controller\RegistrationOnlineController.js" />
+    <Content Include="Angular\Admin\Controller\RegistrationOnlineListController.js" />
+    <Content Include="Angular\Admin\Controller\RegistrationOnlineListForAdmissionDetailController.js" />
+    <Content Include="Angular\Admin\Controller\RegistrationOnlineResultController.js" />
+    <Content Include="Angular\Admin\Controller\RegistrationOnlineResultListController.js" />
+    <Content Include="Angular\Admin\Controller\SearchRegistrationOnlineController.js" />
+    <Content Include="Angular\Admin\Controller\SettlementDetailsController.js" />
+    <Content Include="Angular\Admin\Controller\StaffPaymentController.js" />
+    <Content Include="Angular\Admin\Controller\StaffPaymentListController.js" />
+    <Content Include="Angular\Admin\Controller\StoreItemIssueController.js" />
+    <Content Include="Angular\Admin\Controller\StoreItemIssueReportController.js" />
+    <Content Include="Angular\Admin\Controller\StudentFeedBackListController.js" />
+    <Content Include="Angular\Admin\Controller\TeacherFeedbackDetailController.js" />
+    <Content Include="Angular\Admin\Controller\TeacherFeedbackFormController.js" />
+    <Content Include="Angular\Admin\Controller\TeacherFeedbackListController.js" />
+    <Content Include="Angular\Admin\Controller\TeacherPerformanceListController.js" />
+    <Content Include="Angular\Admin\Controller\TuitionFeeDueListController.js" />
+    <Content Include="Angular\Admin\Controller\SectionPeriodListController.js" />
+    <Content Include="Angular\Admin\Controller\FeeDueReport2Controller.js" />
+    <Content Include="Angular\Admin\Controller\UpdateAttendenceCodeController.js" />
+    <Content Include="Angular\Admin\Controller\UpdateFeePaymentStatusController.js" />
+    <Content Include="Angular\Admin\Controller\UpdateStudentFeePaymentController.js" />
+    <Content Include="Angular\Admin\Controller\ManageStudentConcessionController.js" />
+    <Content Include="Angular\Admin\Controller\FeePaymentHistoryController.js" />
+    <Content Include="Angular\Admin\Controller\GenerateTimeTableController.js" />
+    <Content Include="Angular\Admin\Controller\TransferCertificateListController.js" />
+    <Content Include="Angular\Admin\Controller\CharacterCertificateListController.js" />
+    <Content Include="Angular\Admin\Controller\IssueTransferCertificateController.js" />
+    <Content Include="Angular\Admin\Controller\IssueCharacterCertificateController.js" />
+    <Content Include="Angular\Admin\Controller\StudentAdmissionListController.js" />
+    <Content Include="Angular\Admin\Controller\ManageTeacherController.js" />
+    <Content Include="Angular\Admin\Controller\ManageSubjectController.js" />
+    <Content Include="Angular\Admin\Controller\ManageClassSubjectController.js" />
+    <Content Include="Angular\Admin\Controller\StudentLeftListController.js" />
+    <Content Include="Angular\Admin\Controller\FeeDueReportController.js" />
+    <Content Include="Angular\Admin\Controller\CashbookController.js" />
+    <Content Include="Angular\Admin\Controller\AdmissionNoUpdateController.js" />
+    <Content Include="Angular\Admin\Controller\DCRUserwiseController.js" />
+    <Content Include="Angular\Admin\Controller\FeePaymentDeleteController.js" />
+    <Content Include="Angular\Admin\Controller\FeePaymentCancleController.js" />
+    <Content Include="Angular\Admin\Controller\MiscellaneousFeeController.js" />
+    <Content Include="Angular\Admin\Controller\ManageStudentSubjectCombinationController.js" />
+    <Content Include="Angular\Admin\Controller\AdmissionFeeController.js" />
+    <Content Include="Angular\Admin\Controller\AdmissionFeeHeadController.js" />
+    <Content Include="Angular\Admin\Controller\StudentLeftController.js" />
+    <Content Include="Angular\Admin\Controller\SubjectCombinationFeeController.js" />
+    <Content Include="Angular\Admin\Controller\StudentRegistrationListController.js" />
+    <Content Include="Angular\Admin\Controller\ChangePasswordController.js" />
+    <Content Include="Angular\Admin\Controller\StudentRegistrationUpdateController.js" />
+    <Content Include="Angular\Admin\Controller\StudentRegistrationController.js" />
+    <Content Include="Angular\Admin\Controller\RegistrationFeeController.js" />
+    <Content Include="Angular\Admin\Controller\RegistrationFeeHeadController.js" />
+    <Content Include="Angular\Admin\Controller\DailyCollectionReportController.js" />
+    <Content Include="Angular\Admin\Controller\BusController.js" />
+    <Content Include="Angular\Admin\Controller\ClassPromotionController.js" />
+    <Content Include="Angular\Admin\Controller\AdmissionListController.js" />
+    <Content Include="Angular\Admin\Controller\ClassFeeController.js" />
+    <Content Include="Angular\Admin\Controller\NewAdmissionController.js" />
+    <Content Include="Angular\Admin\Controller\DashboardController.js" />
+    <Content Include="Angular\Admin\Controller\ClassFeeHeadController.js" />
+    <Content Include="Angular\Admin\Controller\ManageStudentChargeController.js" />
+    <Content Include="Angular\Admin\Controller\StudentDetailUpdateController.js" />
+    <Content Include="Angular\Admin\Controller\FeePaymentController.js" />
+    <Content Include="Angular\Admin\Controller\StudentPhotoUpdateController.js" />
+    <Content Include="Angular\Admin\Controller\StudentTransportController.js" />
+    <Content Include="Angular\Admin\Controller\StudentTransportReportController.js" />
+    <Content Include="Angular\Admin\Controller\TransportFeeController.js" />
+    <Content Include="Angular\Admin\Controller\TransportFeeHeadController.js" />
+    <Content Include="Angular\Admin\Controller\TransportFeePeriodController.js" />
+    <Content Include="Angular\Admin\Controller\TransportGroupController.js" />
+    <Content Include="Angular\Admin\Controller\UpdateStudentRollNoController.js" />
+    <Content Include="Angular\Admin\Controller\UpdateSuccessFeePaymentStatusController.js" />
+    <Content Include="Angular\Admin\Controller\VehicleFuelConsumptionController.js" />
+    <Content Include="Angular\Admin\Controller\VehicleFuelConsumptionListController.js" />
+    <Content Include="Angular\Admin\Controller\VehicleServiceController.js" />
+    <Content Include="Angular\Admin\Controller\VehicleServiceListController.js" />
+    <Content Include="Angular\Shared\ConstantData.js" />
+    <Content Include="Angular\Shared\exportToExcel.js" />
+    <Content Include="Angular\Shared\Factory.js" />
+    <Content Include="Angular\Shared\LoadDataService.js" />
+    <Content Include="Angular\Shared\AdminService.js" />
+    <Content Include="Angular\Shared\sceDelegateProvider.js" />
+    <Content Include="Angular\Shared\tableToExcel.js" />
+    <Content Include="Angular\Site\Controller\PrintController.js" />
+    <Content Include="Angular\Site\Controller\SystemLoginController.js" />
+    <Content Include="Angular\Site\SiteService.js" />
+    <Content Include="Angular\Site\SiteModule.js" />
+    <Content Include="Angular\SuperAdmin\Controller\FeeDueReportController.js" />
+    <Content Include="Angular\SuperAdmin\Controller\ManageRoleController.js" />
+    <Content Include="Angular\SuperAdmin\Controller\ManageMenuController.js" />
+    <Content Include="Angular\SuperAdmin\Controller\ManageRoleSectionController.js" />
+    <Content Include="Angular\SuperAdmin\Controller\ManageRoleTaskController.js" />
+    <Content Include="Angular\SuperAdmin\Controller\ManageTaskGroupController.js" />
+    <Content Include="Angular\SuperAdmin\Controller\ManageTaskMasterController.js" />
+    <Content Include="Angular\SuperAdmin\Controller\ManageSysytemLoginController.js" />
+    <Content Include="Angular\SuperAdmin\Controller\ManageEmployeeController.js" />
+    <Content Include="Angular\SuperAdmin\Controller\ManageSchoolController.js" />
+    <Content Include="Angular\SuperAdmin\Controller\EmployeeTypeController.js" />
+    <Content Include="Angular\SuperAdmin\SuperAdminService.js" />
+    <Content Include="Angular\SuperAdmin\Controller\SuperAdminController.js" />
+    <Content Include="Angular\SuperAdmin\Controller\DashboardController.js" />
+    <Content Include="Angular\SuperAdmin\SuperAdminModule.js" />
+    <Content Include="Angular\SuperAdmin\SuperAdminRoute.js" />
+    <Content Include="apple-touch-icon.png" />
+    <Content Include="Areas\HelpPage\HelpPage.css" />
+    <Content Include="Content\154887547-initial-letter-w-logo-or-ww-logo-vector-design-template.jpg" />
+    <Content Include="Content\admin\assets\css\bootstrap.min.css" />
+    <Content Include="Content\admin\assets\css\bootstrap_limitless.min.css" />
+    <Content Include="Content\admin\assets\css\colors.min.css" />
+    <Content Include="Content\admin\assets\css\components.min.css" />
+    <Content Include="Content\admin\assets\css\layout.min.css" />
+    <Content Include="Content\admin\assets\js\app.js" />
+    <Content Include="Content\admin\css\extras\animate.min.css" />
+    <Content Include="Content\admin\css\icons\fontawesome\fonts\fa-brands-400.svg" />
+    <Content Include="Content\admin\css\icons\fontawesome\fonts\fa-regular-400.svg" />
+    <Content Include="Content\admin\css\icons\fontawesome\fonts\fa-solid-900.svg" />
+    <Content Include="Content\admin\css\icons\fontawesome\styles.min.css" />
+    <Content Include="Content\admin\css\icons\icomoon\fonts\icomoone627.svg" />
+    <Content Include="Content\admin\css\icons\icomoon\styles.min.css" />
+    <Content Include="Content\admin\css\icons\material\fonts\material-icons119d.svg" />
+    <Content Include="Content\admin\css\icons\material\styles.min.css" />
+    <Content Include="Content\admin\demo_data\maps\vector\gdp_demo_data.js" />
+    <Content Include="Content\admin\images\backgrounds\boxed_bg.png" />
+    <Content Include="Content\admin\images\backgrounds\panel_bg.png" />
+    <Content Include="Content\admin\images\backgrounds\seamless.png" />
+    <Content Include="Content\admin\images\brands\amazon.png" />
+    <Content Include="Content\admin\images\brands\bing.png" />
+    <Content Include="Content\admin\images\brands\dribbble.png" />
+    <Content Include="Content\admin\images\brands\facebook.png" />
+    <Content Include="Content\admin\images\brands\spotify.png" />
+    <Content Include="Content\admin\images\brands\twitter.png" />
+    <Content Include="Content\admin\images\brands\youtube.png" />
+    <Content Include="Content\admin\images\demo\blog\1.jpg" />
+    <Content Include="Content\admin\images\demo\blog\10.jpg" />
+    <Content Include="Content\admin\images\demo\blog\11.jpg" />
+    <Content Include="Content\admin\images\demo\blog\12.jpg" />
+    <Content Include="Content\admin\images\demo\blog\2.jpg" />
+    <Content Include="Content\admin\images\demo\blog\3.jpg" />
+    <Content Include="Content\admin\images\demo\blog\4.jpg" />
+    <Content Include="Content\admin\images\demo\blog\5.jpg" />
+    <Content Include="Content\admin\images\demo\blog\6.jpg" />
+    <Content Include="Content\admin\images\demo\blog\7.jpg" />
+    <Content Include="Content\admin\images\demo\blog\8.jpg" />
+    <Content Include="Content\admin\images\demo\blog\9.jpg" />
+    <Content Include="Content\admin\images\demo\brands\amazon.png" />
+    <Content Include="Content\admin\images\demo\brands\cnn.png" />
+    <Content Include="Content\admin\images\demo\brands\dell.png" />
+    <Content Include="Content\admin\images\demo\brands\facebook.png" />
+    <Content Include="Content\admin\images\demo\brands\ibm.png" />
+    <Content Include="Content\admin\images\demo\brands\ing.png" />
+    <Content Include="Content\admin\images\demo\brands\microsoft.png" />
+    <Content Include="Content\admin\images\demo\brands\northface.png" />
+    <Content Include="Content\admin\images\demo\brands\transferwise.png" />
+    <Content Include="Content\admin\images\demo\brands\uber.png" />
+    <Content Include="Content\admin\images\demo\cover2.jpg" />
+    <Content Include="Content\admin\images\demo\cover3.jpg" />
+    <Content Include="Content\admin\images\demo\flat\1.png" />
+    <Content Include="Content\admin\images\demo\flat\10.png" />
+    <Content Include="Content\admin\images\demo\flat\11.png" />
+    <Content Include="Content\admin\images\demo\flat\12.png" />
+    <Content Include="Content\admin\images\demo\flat\13.png" />
+    <Content Include="Content\admin\images\demo\flat\14.png" />
+    <Content Include="Content\admin\images\demo\flat\15.png" />
+    <Content Include="Content\admin\images\demo\flat\16.png" />
+    <Content Include="Content\admin\images\demo\flat\17.png" />
+    <Content Include="Content\admin\images\demo\flat\18.png" />
+    <Content Include="Content\admin\images\demo\flat\19.png" />
+    <Content Include="Content\admin\images\demo\flat\2.png" />
+    <Content Include="Content\admin\images\demo\flat\20.png" />
+    <Content Include="Content\admin\images\demo\flat\21.png" />
+    <Content Include="Content\admin\images\demo\flat\22.png" />
+    <Content Include="Content\admin\images\demo\flat\23.png" />
+    <Content Include="Content\admin\images\demo\flat\24.png" />
+    <Content Include="Content\admin\images\demo\flat\25.png" />
+    <Content Include="Content\admin\images\demo\flat\3.png" />
+    <Content Include="Content\admin\images\demo\flat\4.png" />
+    <Content Include="Content\admin\images\demo\flat\5.png" />
+    <Content Include="Content\admin\images\demo\flat\6.png" />
+    <Content Include="Content\admin\images\demo\flat\7.png" />
+    <Content Include="Content\admin\images\demo\flat\8.png" />
+    <Content Include="Content\admin\images\demo\flat\9.png" />
+    <Content Include="Content\admin\images\demo\images\1.png" />
+    <Content Include="Content\admin\images\demo\images\10.png" />
+    <Content Include="Content\admin\images\demo\images\2.png" />
+    <Content Include="Content\admin\images\demo\images\3.png" />
+    <Content Include="Content\admin\images\demo\images\4.png" />
+    <Content Include="Content\admin\images\demo\images\5.png" />
+    <Content Include="Content\admin\images\demo\images\6.png" />
+    <Content Include="Content\admin\images\demo\images\7.png" />
+    <Content Include="Content\admin\images\demo\images\8.png" />
+    <Content Include="Content\admin\images\demo\images\9.png" />
+    <Content Include="Content\admin\images\demo\images\blog1.jpg" />
+    <Content Include="Content\admin\images\demo\images\blog2.jpg" />
+    <Content Include="Content\admin\images\demo\images\blog3.jpg" />
+    <Content Include="Content\admin\images\demo\images\blog4.jpg" />
+    <Content Include="Content\admin\images\demo\images\blog5.jpg" />
+    <Content Include="Content\admin\images\demo\images\for_crop.png" />
+    <Content Include="Content\admin\images\demo\products\1.jpg" />
+    <Content Include="Content\admin\images\demo\products\10.jpg" />
+    <Content Include="Content\admin\images\demo\products\11.jpg" />
+    <Content Include="Content\admin\images\demo\products\12.jpg" />
+    <Content Include="Content\admin\images\demo\products\13.jpg" />
+    <Content Include="Content\admin\images\demo\products\14.jpg" />
+    <Content Include="Content\admin\images\demo\products\2.jpg" />
+    <Content Include="Content\admin\images\demo\products\3.jpg" />
+    <Content Include="Content\admin\images\demo\products\4.jpg" />
+    <Content Include="Content\admin\images\demo\products\5.jpg" />
+    <Content Include="Content\admin\images\demo\products\6.jpg" />
+    <Content Include="Content\admin\images\demo\products\7.jpg" />
+    <Content Include="Content\admin\images\demo\products\8.jpg" />
+    <Content Include="Content\admin\images\demo\products\9.jpg" />
+    <Content Include="Content\admin\images\demo\users\face1.jpg" />
+    <Content Include="Content\admin\images\demo\users\face10.jpg" />
+    <Content Include="Content\admin\images\demo\users\face11.jpg" />
+    <Content Include="Content\admin\images\demo\users\face12.jpg" />
+    <Content Include="Content\admin\images\demo\users\face13.jpg" />
+    <Content Include="Content\admin\images\demo\users\face14.jpg" />
+    <Content Include="Content\admin\images\demo\users\face15.jpg" />
+    <Content Include="Content\admin\images\demo\users\face16.jpg" />
+    <Content Include="Content\admin\images\demo\users\face17.jpg" />
+    <Content Include="Content\admin\images\demo\users\face18.jpg" />
+    <Content Include="Content\admin\images\demo\users\face19.jpg" />
+    <Content Include="Content\admin\images\demo\users\face2.jpg" />
+    <Content Include="Content\admin\images\demo\users\face20.jpg" />
+    <Content Include="Content\admin\images\demo\users\face21.jpg" />
+    <Content Include="Content\admin\images\demo\users\face22.jpg" />
+    <Content Include="Content\admin\images\demo\users\face23.jpg" />
+    <Content Include="Content\admin\images\demo\users\face24.jpg" />
+    <Content Include="Content\admin\images\demo\users\face25.jpg" />
+    <Content Include="Content\admin\images\demo\users\face3.jpg" />
+    <Content Include="Content\admin\images\demo\users\face4.jpg" />
+    <Content Include="Content\admin\images\demo\users\face5.jpg" />
+    <Content Include="Content\admin\images\demo\users\face6.jpg" />
+    <Content Include="Content\admin\images\demo\users\face7.jpg" />
+    <Content Include="Content\admin\images\demo\users\face8.jpg" />
+    <Content Include="Content\admin\images\demo\users\face9.jpg" />
+    <Content Include="Content\admin\images\demo\video1.png" />
+    <Content Include="Content\admin\images\demo\video2.png" />
+    <Content Include="Content\admin\images\dribbble.png" />
+    <Content Include="Content\admin\images\lang\de.png" />
+    <Content Include="Content\admin\images\lang\es.png" />
+    <Content Include="Content\admin\images\lang\gb.png" />
+    <Content Include="Content\admin\images\lang\it.png" />
+    <Content Include="Content\admin\images\lang\ru.png" />
+    <Content Include="Content\admin\images\lang\ua.png" />
+    <Content Include="Content\admin\images\login_cover.jpg" />
+    <Content Include="Content\admin\images\logo_dark.png" />
+    <Content Include="Content\admin\images\logo_demo.png" />
+    <Content Include="Content\admin\images\logo_light.png" />
+    <Content Include="Content\admin\images\pie-chart.png" />
+    <Content Include="Content\admin\images\signature.png" />
+    <Content Include="Content\admin\js\demo_charts\c3\c3_advanced.js" />
+    <Content Include="Content\admin\js\demo_charts\c3\c3_axis.js" />
+    <Content Include="Content\admin\js\demo_charts\c3\c3_bars_pies.js" />
+    <Content Include="Content\admin\js\demo_charts\c3\c3_grid.js" />
+    <Content Include="Content\admin\js\demo_charts\c3\c3_lines_areas.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\bars\bars_advanced_hierarchical.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\bars\bars_advanced_histogram.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\bars\bars_advanced_simple_interaction.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\bars\bars_advanced_sortable_horizontal.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\bars\bars_advanced_sortable_vertical.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\bars\bars_advanced_stacked_multiple.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\bars\bars_basic_grouped.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\bars\bars_basic_horizontal.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\bars\bars_basic_stacked.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\bars\bars_basic_stacked_normalized.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\bars\bars_basic_tooltip.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\bars\bars_basic_vertical.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\chords\chord_arcs.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\chords\chord_basic.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\chords\chord_chart.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\chords\chord_tweens.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\lines\lines_advanced_difference.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\lines\lines_advanced_missing.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\lines\lines_advanced_small_multiples.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\lines\lines_advanced_spline_transition.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\lines\lines_advanced_transitions.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\lines\lines_advanced_zoom.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\lines\lines_basic.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\lines\lines_basic_area.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\lines\lines_basic_bivariate.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\lines\lines_basic_gradient.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\lines\lines_basic_multi_series.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\lines\lines_basic_stacked.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\lines\lines_basic_stacked_nest.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\other\bubbles.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\other\treemap.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\other\waterfall.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\pies\donut_arc_tween.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\pies\donut_basic.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\pies\donut_entry_animation.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\pies\donut_multiple.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\pies\donut_multiple_nesting.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\pies\donut_update.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\pies\pie_arc_tween.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\pies\pie_basic.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\pies\pie_entry_animation.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\pies\pie_multiple.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\pies\pie_multiple_nesting.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\pies\pie_update.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\sunburst\sunburst_basic.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\sunburst\sunburst_combined.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\sunburst\sunburst_distortion.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\sunburst\sunburst_zoom.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\tree\tree_basic.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\tree\tree_bracket.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\tree\tree_collapsible.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\tree\tree_dendrogram.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\tree\tree_dendrogram_radial.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\tree\tree_radial.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\venn\venn_basic.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\venn\venn_colors.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\venn\venn_interactive.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\venn\venn_rings.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\venn\venn_tooltip.js" />
+    <Content Include="Content\admin\js\demo_charts\d3\venn\venn_weighted.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\bars\bars_basic.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\bars\bars_floating.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\bars\bars_line.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\bars\bars_stacked.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\bars\bars_stacked_clustered.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\bars\columns_basic.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\bars\columns_stacked.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\bars\columns_stacked_clustered.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\bars\columns_thermometer.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\bars\columns_timeline.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\bars\tornado_negative_stack.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\bars\tornado_staggered.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\bars\waterfall_change.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\bars\waterfall_compositive.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\calendars\calendar_multiple.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\calendars\calendar_single.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\candlesticks\candlestick_basic.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\candlesticks\candlestick_line.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\candlesticks\candlestick_scatter.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\funnels\funnel_basic.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\funnels\funnel_left.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\funnels\funnel_multiple_overlay.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\funnels\funnel_multiple_separate.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\funnels\funnel_right.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\funnels\funnel_sorting.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\gauge\gauge_basic.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\gauge\gauge_custom.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\lines\area_basic.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\lines\area_multiple.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\lines\area_point_values.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\lines\area_reversed_axis.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\lines\area_stacked.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\lines\area_zoom.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\lines\lines_basic.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\lines\lines_inverted_axes.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\lines\lines_multiple.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\lines\lines_point_values.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\lines\lines_stacked.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\lines\lines_zoom.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\pies\pie_basic.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\pies\pie_donut.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\pies\pie_infographic.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\pies\pie_levels.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\pies\pie_multiple.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\pies\pie_nested.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\pies\pie_rose.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\pies\pie_rose_labels.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\pies\pie_timeline.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\radar\radar_basic.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\radar\radar_filled.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\scatter\scatter_basic.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\scatter\scatter_category.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\scatter\scatter_punch.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\scatter\scatter_roaming.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\scatter\scatter_scale.js" />
+    <Content Include="Content\admin\js\demo_charts\echarts\light\scatter\scatter_size.js" />
+    <Content Include="Content\admin\js\demo_charts\google\light\bars\bar.js" />
+    <Content Include="Content\admin\js\demo_charts\google\light\bars\bar_stacked.js" />
+    <Content Include="Content\admin\js\demo_charts\google\light\bars\column.js" />
+    <Content Include="Content\admin\js\demo_charts\google\light\bars\column_stacked.js" />
+    <Content Include="Content\admin\js\demo_charts\google\light\bars\combo.js" />
+    <Content Include="Content\admin\js\demo_charts\google\light\bars\histogram.js" />
+    <Content Include="Content\admin\js\demo_charts\google\light\bubbles\bubble.js" />
+    <Content Include="Content\admin\js\demo_charts\google\light\bubbles\bubble_gradient.js" />
+    <Content Include="Content\admin\js\demo_charts\google\light\lines\area.js" />
+    <Content Include="Content\admin\js\demo_charts\google\light\lines\area_intervals.js" />
+    <Content Include="Content\admin\js\demo_charts\google\light\lines\area_stacked.js" />
+    <Content Include="Content\admin\js\demo_charts\google\light\lines\area_stepped.js" />
+    <Content Include="Content\admin\js\demo_charts\google\light\lines\lines.js" />
+    <Content Include="Content\admin\js\demo_charts\google\light\lines\line_intervals.js" />
+    <Content Include="Content\admin\js\demo_charts\google\light\other\candlestick.js" />
+    <Content Include="Content\admin\js\demo_charts\google\light\other\diff.js" />
+    <Content Include="Content\admin\js\demo_charts\google\light\other\geo.js" />
+    <Content Include="Content\admin\js\demo_charts\google\light\other\sankey.js" />
+    <Content Include="Content\admin\js\demo_charts\google\light\other\trendline.js" />
+    <Content Include="Content\admin\js\demo_charts\google\light\pies\3d_exploded.js" />
+    <Content Include="Content\admin\js\demo_charts\google\light\pies\donut.js" />
+    <Content Include="Content\admin\js\demo_charts\google\light\pies\donut_exploded.js" />
+    <Content Include="Content\admin\js\demo_charts\google\light\pies\donut_rotate.js" />
+    <Content Include="Content\admin\js\demo_charts\google\light\pies\pie.js" />
+    <Content Include="Content\admin\js\demo_charts\google\light\pies\pie_3d.js" />
+    <Content Include="Content\admin\js\demo_charts\google\light\pies\pie_diff_border.js" />
+    <Content Include="Content\admin\js\demo_charts\google\light\pies\pie_diff_invert.js" />
+    <Content Include="Content\admin\js\demo_charts\google\light\pies\pie_diff_opacity.js" />
+    <Content Include="Content\admin\js\demo_charts\google\light\pies\pie_diff_radius.js" />
+    <Content Include="Content\admin\js\demo_charts\google\light\pies\pie_exploded.js" />
+    <Content Include="Content\admin\js\demo_charts\google\light\pies\pie_rotate.js" />
+    <Content Include="Content\admin\js\demo_charts\google\light\scatter\scatter.js" />
+    <Content Include="Content\admin\js\demo_charts\google\light\scatter\scatter_diff.js" />
+    <Content Include="Content\admin\js\demo_charts\pages\dashboard\light\areas.js" />
+    <Content Include="Content\admin\js\demo_charts\pages\dashboard\light\bars.js" />
+    <Content Include="Content\admin\js\demo_charts\pages\dashboard\light\bullets.js" />
+    <Content Include="Content\admin\js\demo_charts\pages\dashboard\light\donuts.js" />
+    <Content Include="Content\admin\js\demo_charts\pages\dashboard\light\heatmaps.js" />
+    <Content Include="Content\admin\js\demo_charts\pages\dashboard\light\lines.js" />
+    <Content Include="Content\admin\js\demo_charts\pages\dashboard\light\pies.js" />
+    <Content Include="Content\admin\js\demo_charts\pages\dashboard\light\progress.js" />
+    <Content Include="Content\admin\js\demo_charts\pages\dashboard\light\sparklines.js" />
+    <Content Include="Content\admin\js\demo_charts\pages\dashboard\light\streamgraph.js" />
+    <Content Include="Content\admin\js\demo_charts\pages\ecommerce\light\customers.js" />
+    <Content Include="Content\admin\js\demo_charts\pages\profile\light\available_hours.js" />
+    <Content Include="Content\admin\js\demo_charts\pages\profile\light\balance_stats.js" />
+    <Content Include="Content\admin\js\demo_charts\pages\timelines\light\daily_statistics.js" />
+    <Content Include="Content\admin\js\demo_maps\google\basic\basic.js" />
+    <Content Include="Content\admin\js\demo_maps\google\basic\click_event.js" />
+    <Content Include="Content\admin\js\demo_maps\google\basic\coordinates.js" />
+    <Content Include="Content\admin\js\demo_maps\google\basic\geolocation.js" />
+    <Content Include="Content\admin\js\demo_maps\google\controls\adding_controls.js" />
+    <Content Include="Content\admin\js\demo_maps\google\controls\control_options.js" />
+    <Content Include="Content\admin\js\demo_maps\google\controls\control_positioning.js" />
+    <Content Include="Content\admin\js\demo_maps\google\controls\disable_ui.js" />
+    <Content Include="Content\admin\js\demo_maps\google\drawings\circles.js" />
+    <Content Include="Content\admin\js\demo_maps\google\drawings\polygons.js" />
+    <Content Include="Content\admin\js\demo_maps\google\drawings\polylines.js" />
+    <Content Include="Content\admin\js\demo_maps\google\drawings\rectangles.js" />
+    <Content Include="Content\admin\js\demo_maps\google\layers\bicycling.js" />
+    <Content Include="Content\admin\js\demo_maps\google\layers\fusion_tables.js" />
+    <Content Include="Content\admin\js\demo_maps\google\layers\traffic.js" />
+    <Content Include="Content\admin\js\demo_maps\google\layers\transit.js" />
+    <Content Include="Content\admin\js\demo_maps\google\markers\animation.js" />
+    <Content Include="Content\admin\js\demo_maps\google\markers\simple.js" />
+    <Content Include="Content\admin\js\demo_maps\google\markers\symbols_custom.js" />
+    <Content Include="Content\admin\js\demo_maps\google\markers\symbols_predefined.js" />
+    <Content Include="Content\admin\js\demo_maps\vector\vector_maps_demo.js" />
+    <Content Include="Content\admin\js\demo_pages\alpaca_advanced.js" />
+    <Content Include="Content\admin\js\demo_pages\alpaca_basic.js" />
+    <Content Include="Content\admin\js\demo_pages\alpaca_controls.js" />
+    <Content Include="Content\admin\js\demo_pages\animations_css3.js" />
+    <Content Include="Content\admin\js\demo_pages\animations_velocity_basic.js" />
+    <Content Include="Content\admin\js\demo_pages\animations_velocity_examples.js" />
+    <Content Include="Content\admin\js\demo_pages\animations_velocity_ui.js" />
+    <Content Include="Content\admin\js\demo_pages\blog_single.js" />
+    <Content Include="Content\admin\js\demo_pages\chat_layouts.js" />
+    <Content Include="Content\admin\js\demo_pages\colors_blue.js" />
+    <Content Include="Content\admin\js\demo_pages\colors_brown.js" />
+    <Content Include="Content\admin\js\demo_pages\colors_danger.js" />
+    <Content Include="Content\admin\js\demo_pages\colors_green.js" />
+    <Content Include="Content\admin\js\demo_pages\colors_grey.js" />
+    <Content Include="Content\admin\js\demo_pages\colors_indigo.js" />
+    <Content Include="Content\admin\js\demo_pages\colors_info.js" />
+    <Content Include="Content\admin\js\demo_pages\colors_orange.js" />
+    <Content Include="Content\admin\js\demo_pages\colors_pink.js" />
+    <Content Include="Content\admin\js\demo_pages\colors_primary.js" />
+    <Content Include="Content\admin\js\demo_pages\colors_purple.js" />
+    <Content Include="Content\admin\js\demo_pages\colors_slate.js" />
+    <Content Include="Content\admin\js\demo_pages\colors_success.js" />
+    <Content Include="Content\admin\js\demo_pages\colors_teal.js" />
+    <Content Include="Content\admin\js\demo_pages\colors_violet.js" />
+    <Content Include="Content\admin\js\demo_pages\colors_warning.js" />
+    <Content Include="Content\admin\js\demo_pages\components_buttons.js" />
+    <Content Include="Content\admin\js\demo_pages\components_collapsible.js" />
+    <Content Include="Content\admin\js\demo_pages\components_dropdowns.js" />
+    <Content Include="Content\admin\js\demo_pages\components_media.js" />
+    <Content Include="Content\admin\js\demo_pages\components_modals.js" />
+    <Content Include="Content\admin\js\demo_pages\components_pagination.js" />
+    <Content Include="Content\admin\js\demo_pages\components_popups.js" />
+    <Content Include="Content\admin\js\demo_pages\components_progress.js" />
+    <Content Include="Content\admin\js\demo_pages\components_scrollspy.js" />
+    <Content Include="Content\admin\js\demo_pages\content_cards_content.js" />
+    <Content Include="Content\admin\js\demo_pages\content_cards_draggable.js" />
+    <Content Include="Content\admin\js\demo_pages\content_cards_footer.js" />
+    <Content Include="Content\admin\js\demo_pages\content_cards_header.js" />
+    <Content Include="Content\admin\js\demo_pages\content_page_header.js" />
+    <Content Include="Content\admin\js\demo_pages\dashboard.js" />
+    <Content Include="Content\admin\js\demo_pages\datatables_advanced.js" />
+    <Content Include="Content\admin\js\demo_pages\datatables_api.js" />
+    <Content Include="Content\admin\js\demo_pages\datatables_basic.js" />
+    <Content Include="Content\admin\js\demo_pages\datatables_data_sources.js" />
+    <Content Include="Content\admin\js\demo_pages\datatables_extension_autofill.js" />
+    <Content Include="Content\admin\js\demo_pages\datatables_extension_buttons_flash.js" />
+    <Content Include="Content\admin\js\demo_pages\datatables_extension_buttons_html5.js" />
+    <Content Include="Content\admin\js\demo_pages\datatables_extension_buttons_init.js" />
+    <Content Include="Content\admin\js\demo_pages\datatables_extension_buttons_print.js" />
+    <Content Include="Content\admin\js\demo_pages\datatables_extension_colvis.js" />
+    <Content Include="Content\admin\js\demo_pages\datatables_extension_fixed_columns.js" />
+    <Content Include="Content\admin\js\demo_pages\datatables_extension_fixed_header.js" />
+    <Content Include="Content\admin\js\demo_pages\datatables_extension_key_table.js" />
+    <Content Include="Content\admin\js\demo_pages\datatables_extension_reorder.js" />
+    <Content Include="Content\admin\js\demo_pages\datatables_extension_row_reorder.js" />
+    <Content Include="Content\admin\js\demo_pages\datatables_extension_scroller.js" />
+    <Content Include="Content\admin\js\demo_pages\datatables_extension_select.js" />
+    <Content Include="Content\admin\js\demo_pages\datatables_responsive.js" />
+    <Content Include="Content\admin\js\demo_pages\datatables_sorting.js" />
+    <Content Include="Content\admin\js\demo_pages\ecommerce_customers.js" />
+    <Content Include="Content\admin\js\demo_pages\ecommerce_orders_history.js" />
+    <Content Include="Content\admin\js\demo_pages\ecommerce_product_list.js" />
+    <Content Include="Content\admin\js\demo_pages\editor_ckeditor_default.js" />
+    <Content Include="Content\admin\js\demo_pages\editor_code.js" />
+    <Content Include="Content\admin\js\demo_pages\editor_summernote.js" />
+    <Content Include="Content\admin\js\demo_pages\editor_trumbowyg.js" />
+    <Content Include="Content\admin\js\demo_pages\extension_blockui.js" />
+    <Content Include="Content\admin\js\demo_pages\extension_dnd.js" />
+    <Content Include="Content\admin\js\demo_pages\extension_image_cropper.js" />
+    <Content Include="Content\admin\js\demo_pages\extra_context_menu.js" />
+    <Content Include="Content\admin\js\demo_pages\extra_fab.js" />
+    <Content Include="Content\admin\js\demo_pages\extra_idle_timeout.js" />
+    <Content Include="Content\admin\js\demo_pages\extra_jgrowl_noty.js" />
+    <Content Include="Content\admin\js\demo_pages\extra_pnotify.js" />
+    <Content Include="Content\admin\js\demo_pages\extra_session_timeout.js" />
+    <Content Include="Content\admin\js\demo_pages\extra_sliders_ion.js" />
+    <Content Include="Content\admin\js\demo_pages\extra_sliders_noui.js" />
+    <Content Include="Content\admin\js\demo_pages\extra_sweetalert.js" />
+    <Content Include="Content\admin\js\demo_pages\extra_trees.js" />
+    <Content Include="Content\admin\js\demo_pages\form_actions.js" />
+    <Content Include="Content\admin\js\demo_pages\form_checkboxes_radios.js" />
+    <Content Include="Content\admin\js\demo_pages\form_controls_extended.js" />
+    <Content Include="Content\admin\js\demo_pages\form_dual_listboxes.js" />
+    <Content Include="Content\admin\js\demo_pages\form_floating_labels.js" />
+    <Content Include="Content\admin\js\demo_pages\form_inputs.js" />
+    <Content Include="Content\admin\js\demo_pages\form_input_groups.js" />
+    <Content Include="Content\admin\js\demo_pages\form_layouts.js" />
+    <Content Include="Content\admin\js\demo_pages\form_multiselect.js" />
+    <Content Include="Content\admin\js\demo_pages\form_select2.js" />
+    <Content Include="Content\admin\js\demo_pages\form_tags_input.js" />
+    <Content Include="Content\admin\js\demo_pages\form_validation.js" />
+    <Content Include="Content\admin\js\demo_pages\form_wizard.js" />
+    <Content Include="Content\admin\js\demo_pages\fullcalendar_advanced.js" />
+    <Content Include="Content\admin\js\demo_pages\fullcalendar_basic.js" />
+    <Content Include="Content\admin\js\demo_pages\fullcalendar_formats.js" />
+    <Content Include="Content\admin\js\demo_pages\fullcalendar_styling.js" />
+    <Content Include="Content\admin\js\demo_pages\gallery.js" />
+    <Content Include="Content\admin\js\demo_pages\gallery_library.js" />
+    <Content Include="Content\admin\js\demo_pages\internationalization_callbacks.js" />
+    <Content Include="Content\admin\js\demo_pages\internationalization_fallback.js" />
+    <Content Include="Content\admin\js\demo_pages\internationalization_switch_direct.js" />
+    <Content Include="Content\admin\js\demo_pages\internationalization_switch_query.js" />
+    <Content Include="Content\admin\js\demo_pages\invoice_archive.js" />
+    <Content Include="Content\admin\js\demo_pages\invoice_grid.js" />
+    <Content Include="Content\admin\js\demo_pages\invoice_template_default.js" />
+    <Content Include="Content\admin\js\demo_pages\job_apply.js" />
+    <Content Include="Content\admin\js\demo_pages\job_list.js" />
+    <Content Include="Content\admin\js\demo_pages\jqueryui_components.js" />
+    <Content Include="Content\admin\js\demo_pages\jqueryui_forms.js" />
+    <Content Include="Content\admin\js\demo_pages\jqueryui_interactions.js" />
+    <Content Include="Content\admin\js\demo_pages\jqueryui_navigation.js" />
+    <Content Include="Content\admin\js\demo_pages\jqueryui_sliders.js" />
+    <Content Include="Content\admin\js\demo_pages\layout_fixed_sidebar_custom.js" />
+    <Content Include="Content\admin\js\demo_pages\learning.js" />
+    <Content Include="Content\admin\js\demo_pages\learning_detailed.js" />
+    <Content Include="Content\admin\js\demo_pages\login.js" />
+    <Content Include="Content\admin\js\demo_pages\login_validation.js" />
+    <Content Include="Content\admin\js\demo_pages\mail_list.js" />
+    <Content Include="Content\admin\js\demo_pages\mail_list_read.js" />
+    <Content Include="Content\admin\js\demo_pages\mail_list_write.js" />
+    <Content Include="Content\admin\js\demo_pages\navbar_components.js" />
+    <Content Include="Content\admin\js\demo_pages\navbar_hideable.js" />
+    <Content Include="Content\admin\js\demo_pages\navbar_multiple.js" />
+    <Content Include="Content\admin\js\demo_pages\navbar_multiple_sticky.js" />
+    <Content Include="Content\admin\js\demo_pages\navigation_horizontal_mega.js" />
+    <Content Include="Content\admin\js\demo_pages\picker_color.js" />
+    <Content Include="Content\admin\js\demo_pages\picker_date.js" />
+    <Content Include="Content\admin\js\demo_pages\picker_location.js" />
+    <Content Include="Content\admin\js\demo_pages\sidebar_components.js" />
+    <Content Include="Content\admin\js\demo_pages\sidebar_secondary.js" />
+    <Content Include="Content\admin\js\demo_pages\table_elements.js" />
+    <Content Include="Content\admin\js\demo_pages\table_responsive.js" />
+    <Content Include="Content\admin\js\demo_pages\task_manager_detailed.js" />
+    <Content Include="Content\admin\js\demo_pages\task_manager_grid.js" />
+    <Content Include="Content\admin\js\demo_pages\task_manager_list.js" />
+    <Content Include="Content\admin\js\demo_pages\timelines.js" />
+    <Content Include="Content\admin\js\demo_pages\uploader_bootstrap.js" />
+    <Content Include="Content\admin\js\demo_pages\uploader_dropzone.js" />
+    <Content Include="Content\admin\js\demo_pages\uploader_plupload.js" />
+    <Content Include="Content\admin\js\demo_pages\user_pages_profile.js" />
+    <Content Include="Content\admin\js\demo_pages\user_pages_profile_tabbed.js" />
+    <Content Include="Content\admin\js\demo_pages\widgets_content.js" />
+    <Content Include="Content\admin\js\demo_pages\widgets_stats.js" />
+    <Content Include="Content\admin\js\main\bootstrap.bundle.min.js" />
+    <Content Include="Content\admin\js\main\jquery.min.js" />
+    <Content Include="Content\admin\js\plugins\buttons\hover_dropdown.min.js" />
+    <Content Include="Content\admin\js\plugins\buttons\ladda.min.js" />
+    <Content Include="Content\admin\js\plugins\buttons\spin.min.js" />
+    <Content Include="Content\admin\js\plugins\editors\ace\ace.js" />
+    <Content Include="Content\admin\js\plugins\editors\ckeditor\ckeditor.js" />
+    <Content Include="Content\admin\js\plugins\editors\trumbowyg\plugins\base64\trumbowyg.base64.min.js" />
+    <Content Include="Content\admin\js\plugins\editors\trumbowyg\plugins\cleanpaste\trumbowyg.cleanpaste.min.js" />
+    <Content Include="Content\admin\js\plugins\editors\trumbowyg\plugins\colors\trumbowyg.colors.min.js" />
+    <Content Include="Content\admin\js\plugins\editors\trumbowyg\plugins\insertaudio\trumbowyg.insertaudio.min.js" />
+    <Content Include="Content\admin\js\plugins\editors\trumbowyg\plugins\noembed\trumbowyg.noembed.min.js" />
+    <Content Include="Content\admin\js\plugins\editors\trumbowyg\plugins\pasteimage\trumbowyg.pasteimage.min.js" />
+    <Content Include="Content\admin\js\plugins\editors\trumbowyg\plugins\preformatted\trumbowyg.preformatted.min.js" />
+    <Content Include="Content\admin\js\plugins\editors\trumbowyg\plugins\template\trumbowyg.template.min.js" />
+    <Content Include="Content\admin\js\plugins\editors\trumbowyg\plugins\upload\trumbowyg.upload.min.js" />
+    <Content Include="Content\admin\js\plugins\editors\trumbowyg\trumbowyg.min.js" />
+    <Content Include="Content\admin\js\plugins\extensions\contextmenu.js" />
+    <Content Include="Content\admin\js\plugins\extensions\cookie.js" />
+    <Content Include="Content\admin\js\plugins\extensions\jquery_ui\core.min.js" />
+    <Content Include="Content\admin\js\plugins\extensions\jquery_ui\effects.min.js" />
+    <Content Include="Content\admin\js\plugins\extensions\jquery_ui\globalize\cultures\globalize.culture.de-DE.js" />
+    <Content Include="Content\admin\js\plugins\extensions\jquery_ui\globalize\cultures\globalize.culture.ja-JP.js" />
+    <Content Include="Content\admin\js\plugins\extensions\jquery_ui\globalize\globalize.js" />
+    <Content Include="Content\admin\js\plugins\extensions\jquery_ui\interactions.min.js" />
+    <Content Include="Content\admin\js\plugins\extensions\jquery_ui\touch.min.js" />
+    <Content Include="Content\admin\js\plugins\extensions\jquery_ui\widgets.min.js" />
+    <Content Include="Content\admin\js\plugins\extensions\mousewheel.min.js" />
+    <Content Include="Content\admin\js\plugins\extensions\rowlink.js" />
+    <Content Include="Content\admin\js\plugins\extensions\session_timeout.min.js" />
+    <Content Include="Content\admin\js\plugins\forms\inputs\alpaca\alpaca.min.js" />
+    <Content Include="Content\admin\js\plugins\forms\inputs\alpaca\price_format.min.js" />
+    <Content Include="Content\admin\js\plugins\forms\inputs\autosize.min.js" />
+    <Content Include="Content\admin\js\plugins\forms\inputs\duallistbox\duallistbox.min.js" />
+    <Content Include="Content\admin\js\plugins\forms\inputs\formatter.min.js" />
+    <Content Include="Content\admin\js\plugins\forms\inputs\inputmask.js" />
+    <Content Include="Content\admin\js\plugins\forms\inputs\maxlength.min.js" />
+    <Content Include="Content\admin\js\plugins\forms\inputs\passy.js" />
+    <Content Include="Content\admin\js\plugins\forms\inputs\touchspin.min.js" />
+    <Content Include="Content\admin\js\plugins\forms\inputs\typeahead\handlebars.min.js" />
+    <Content Include="Content\admin\js\plugins\forms\inputs\typeahead\typeahead.bundle.min.js" />
+    <Content Include="Content\admin\js\plugins\forms\selects\bootstrap_multiselect.js" />
+    <Content Include="Content\admin\js\plugins\forms\selects\select2.min.js" />
+    <Content Include="Content\admin\js\plugins\forms\styling\switch.min.js" />
+    <Content Include="Content\admin\js\plugins\forms\styling\switchery.min.js" />
+    <Content Include="Content\admin\js\plugins\forms\styling\uniform.min.js" />
+    <Content Include="Content\admin\js\plugins\forms\tags\tagsinput.min.js" />
+    <Content Include="Content\admin\js\plugins\forms\tags\tokenfield.min.js" />
+    <Content Include="Content\admin\js\plugins\forms\validation\validate.min.js" />
+    <Content Include="Content\admin\js\plugins\forms\wizards\steps.min.js" />
+    <Content Include="Content\admin\js\plugins\internationalization\i18next.min.js" />
+    <Content Include="Content\admin\js\plugins\internationalization\i18nextBrowserLanguageDetector.min.js" />
+    <Content Include="Content\admin\js\plugins\internationalization\i18nextXHRBackend.min.js" />
+    <Content Include="Content\admin\js\plugins\internationalization\jquery-i18next.min.js" />
+    <Content Include="Content\admin\js\plugins\loaders\blockui.min.js" />
+    <Content Include="Content\admin\js\plugins\loaders\progressbar.min.js" />
+    <Content Include="Content\admin\js\plugins\maps\jvectormap\jvectormap.min.js" />
+    <Content Include="Content\admin\js\plugins\maps\jvectormap\map_files\countries\germany.js" />
+    <Content Include="Content\admin\js\plugins\maps\jvectormap\map_files\countries\usa.js" />
+    <Content Include="Content\admin\js\plugins\maps\jvectormap\map_files\world.js" />
+    <Content Include="Content\admin\js\plugins\media\cropper.min.js" />
+    <Content Include="Content\admin\js\plugins\media\fancybox.min.js" />
+    <Content Include="Content\admin\js\plugins\notifications\bootbox.min.js" />
+    <Content Include="Content\admin\js\plugins\notifications\jgrowl.min.js" />
+    <Content Include="Content\admin\js\plugins\notifications\noty.min.js" />
+    <Content Include="Content\admin\js\plugins\notifications\pnotify.min.js" />
+    <Content Include="Content\admin\js\plugins\notifications\sweet_alert.min.js" />
+    <Content Include="Content\admin\js\plugins\pagination\bs_pagination.min.js" />
+    <Content Include="Content\admin\js\plugins\pickers\anytime.min.js" />
+    <Content Include="Content\admin\js\plugins\pickers\color\spectrum.js" />
+    <Content Include="Content\admin\js\plugins\pickers\daterangepicker.js" />
+    <Content Include="Content\admin\js\plugins\pickers\location\autocomplete_addresspicker.js" />
+    <Content Include="Content\admin\js\plugins\pickers\location\location.js" />
+    <Content Include="Content\admin\js\plugins\pickers\location\typeahead_addresspicker.js" />
+    <Content Include="Content\admin\js\plugins\pickers\pickadate\legacy.js" />
+    <Content Include="Content\admin\js\plugins\pickers\pickadate\picker.date.js" />
+    <Content Include="Content\admin\js\plugins\pickers\pickadate\picker.js" />
+    <Content Include="Content\admin\js\plugins\pickers\pickadate\picker.time.js" />
+    <Content Include="Content\admin\js\plugins\sliders\ion_rangeslider.min.js" />
+    <Content Include="Content\admin\js\plugins\sliders\nouislider.min.js" />
+    <Content Include="Content\admin\js\plugins\sliders\slider_pips.min.js" />
+    <Content Include="Content\admin\js\plugins\tables\datatables\datatables.min.js" />
+    <Content Include="Content\admin\js\plugins\tables\datatables\extensions\autofill.min.js" />
+    <Content Include="Content\admin\js\plugins\tables\datatables\extensions\buttons.min.js" />
+    <Content Include="Content\admin\js\plugins\tables\datatables\extensions\col_reorder.min.js" />
+    <Content Include="Content\admin\js\plugins\tables\datatables\extensions\fixed_columns.min.js" />
+    <Content Include="Content\admin\js\plugins\tables\datatables\extensions\fixed_header.min.js" />
+    <Content Include="Content\admin\js\plugins\tables\datatables\extensions\jszip\jszip.min.js" />
+    <Content Include="Content\admin\js\plugins\tables\datatables\extensions\key_table.min.js" />
+    <Content Include="Content\admin\js\plugins\tables\datatables\extensions\natural_sort.js" />
+    <Content Include="Content\admin\js\plugins\tables\datatables\extensions\pdfmake\pdfmake.min.js" />
+    <Content Include="Content\admin\js\plugins\tables\datatables\extensions\pdfmake\vfs_fonts.min.js" />
+    <Content Include="Content\admin\js\plugins\tables\datatables\extensions\responsive.min.js" />
+    <Content Include="Content\admin\js\plugins\tables\datatables\extensions\row_reorder.min.js" />
+    <Content Include="Content\admin\js\plugins\tables\datatables\extensions\scroller.min.js" />
+    <Content Include="Content\admin\js\plugins\tables\datatables\extensions\select.min.js" />
+    <Content Include="Content\admin\js\plugins\tables\footable\footable.min.js" />
+    <Content Include="Content\admin\js\plugins\trees\fancytree_all.min.js" />
+    <Content Include="Content\admin\js\plugins\trees\fancytree_childcounter.js" />
+    <Content Include="Content\admin\js\plugins\ui\dragula.min.js" />
+    <Content Include="Content\admin\js\plugins\ui\fab.min.js" />
+    <Content Include="Content\admin\js\plugins\ui\fullcalendar\core\locales-all.min.js" />
+    <Content Include="Content\admin\js\plugins\ui\fullcalendar\core\locales\ar.js" />
+    <Content Include="Content\admin\js\plugins\ui\fullcalendar\core\main.min.js" />
+    <Content Include="Content\admin\js\plugins\ui\fullcalendar\daygrid\main.min.js" />
+    <Content Include="Content\admin\js\plugins\ui\fullcalendar\interaction\main.min.js" />
+    <Content Include="Content\admin\js\plugins\ui\fullcalendar\list\main.min.js" />
+    <Content Include="Content\admin\js\plugins\ui\fullcalendar\timegrid\main.min.js" />
+    <Content Include="Content\admin\js\plugins\ui\headroom.min.js" />
+    <Content Include="Content\admin\js\plugins\ui\moment\moment.min.js" />
+    <Content Include="Content\admin\js\plugins\ui\moment\moment_locales.min.js" />
+    <Content Include="Content\admin\js\plugins\ui\perfect_scrollbar.min.js" />
+    <Content Include="Content\admin\js\plugins\ui\prism.min.js" />
+    <Content Include="Content\admin\js\plugins\ui\slinky.min.js" />
+    <Content Include="Content\admin\js\plugins\ui\sticky.min.js" />
+    <Content Include="Content\admin\js\plugins\uploaders\dropzone.min.js" />
+    <Content Include="Content\admin\js\plugins\uploaders\fileinput\fileinput.min.js" />
+    <Content Include="Content\admin\js\plugins\uploaders\fileinput\plugins\purify.min.js" />
+    <Content Include="Content\admin\js\plugins\uploaders\fileinput\plugins\sortable.min.js" />
+    <Content Include="Content\admin\js\plugins\uploaders\plupload\plupload.full.min.js" />
+    <Content Include="Content\admin\js\plugins\uploaders\plupload\plupload.queue.min.js" />
+    <Content Include="Content\admin\js\plugins\velocity\velocity.min.js" />
+    <Content Include="Content\admin\js\plugins\velocity\velocity.ui.min.js" />
+    <Content Include="Content\admin\js\plugins\visualization\c3\c3.min.js" />
+    <Content Include="Content\admin\js\plugins\visualization\d3\d3.min.js" />
+    <Content Include="Content\admin\js\plugins\visualization\d3\d3_tooltip.js" />
+    <Content Include="Content\admin\js\plugins\visualization\d3\venn.js" />
+    <Content Include="Content\admin\js\plugins\visualization\echarts\echarts.min.js" />
+    <Content Include="Content\Custome.css" />
+    <Content Include="Content\diops-removebg-preview.png" />
+    <Content Include="Content\Images\CBSE_Logonew.png" />
+    <Content Include="Content\Images\error-404.png" />
+    <Content Include="Content\Images\thank_you.png" />
+    <Content Include="Content\Images\thank_you_feedback.png" />
+    <Content Include="Content\Images\user-1.jpg" />
+    <Content Include="Content\Images\user.png" />
+    <Content Include="Content\Plugins\summernote\angular-summernote.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-ar-AR.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-bg-BG.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-ca-ES.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-cs-CZ.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-da-DK.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-de-DE.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-el-GR.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-es-ES.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-es-EU.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-fa-IR.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-fi-FI.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-fr-FR.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-gl-ES.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-he-IL.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-hr-HR.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-hu-HU.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-id-ID.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-it-IT.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-ja-JP.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-ko-KR.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-lt-LT.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-lt-LV.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-mn-MN.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-nb-NO.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-nl-NL.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-pl-PL.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-pt-BR.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-pt-PT.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-ro-RO.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-ru-RU.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-sk-SK.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-sl-SI.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-sr-RS-Latin.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-sr-RS.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-sv-SE.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-ta-IN.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-th-TH.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-tr-TR.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-uk-UA.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-vi-VN.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-zh-CN.js" />
+    <Content Include="Content\Plugins\summernote\js\lang\summernote-zh-TW.js" />
+    <Content Include="Content\Plugins\summernote\js\plugin\databasic\summernote-ext-databasic.css" />
+    <Content Include="Content\Plugins\summernote\js\plugin\databasic\summernote-ext-databasic.js" />
+    <Content Include="Content\Plugins\summernote\js\plugin\hello\summernote-ext-hello.js" />
+    <Content Include="Content\Plugins\summernote\js\plugin\specialchars\summernote-ext-specialchars.js" />
+    <Content Include="Content\Plugins\summernote\js\summernote-bs4.js" />
+    <Content Include="Content\Plugins\summernote\js\summernote-bs4.min.js" />
+    <Content Include="Content\Plugins\summernote\js\summernote-lite.js" />
+    <Content Include="Content\Plugins\summernote\js\summernote.js" />
+    <Content Include="Content\Plugins\summernote\js\summernote.min.js" />
+    <Content Include="Content\Plugins\summernote\summernote-bs4.css" />
+    <Content Include="Content\Plugins\summernote\summernote-lite.css" />
+    <Content Include="Content\Plugins\summernote\summernote.css" />
+    <Content Include="Content\Plugins\Toastr\toastr.css" />
+    <Content Include="Content\Plugins\Toastr\toastr.min.css" />
+    <Content Include="Content\Plugins\Toastr\toastr.min.js" />
+    <Content Include="diops-removebg-preview.png" />
+    <Content Include="download %2811%29.png" />
+    <Content Include="favicon-16x16.png" />
+    <Content Include="favicon-32x32.png" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="Areas\HelpPage\Views\Web.config" />
+    <Content Include="Areas\HelpPage\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\ResourceModel.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\Index.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\TextSample.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\SimpleTypeModelDescription.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\Samples.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\Parameters.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ModelDescriptionLink.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\KeyValuePairModelDescription.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\InvalidSample.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ImageSample.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\HelpPageApiModel.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\EnumTypeModelDescription.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\DictionaryModelDescription.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ComplexTypeModelDescription.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
+    <Content Include="Scripts\AnguComplete\angucomplete-alt.css" />
+    <Content Include="Scripts\AnguComplete\angucomplete-alt.min.js" />
+    <Content Include="Scripts\AnguComplete\angucomplete.css" />
+    <Content Include="Scripts\AngularRoute\angular-route.js" />
+    <Content Include="Scripts\AngularRoute\angular-route.min.js" />
+    <Content Include="Scripts\Angular\angular-mocks.js" />
+    <Content Include="Scripts\Angular\angular.js" />
+    <Content Include="Scripts\Angular\angular.min.js" />
+    <Content Include="Scripts\DirPagination\dirPagination.js" />
+    <Content Include="Scripts\DirPagination\dirPagination.tpl.html" />
+    <Content Include="Scripts\MultiSelect\multi-select.css" />
+    <Content Include="Scripts\MultiSelect\multi-select.html" />
+    <Content Include="Scripts\MultiSelect\multiselect.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Angular\NewFolder1\" />
+    <Folder Include="App_Data\" />
+    <Folder Include="Content\Files\" />
+    <Folder Include="Content\Photo\" />
+    <Folder Include="Photos\notice\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\admin\css\icons\fontawesome\fonts\fa-brands-400.eot" />
+    <Content Include="Content\admin\css\icons\fontawesome\fonts\fa-brands-400.ttf" />
+    <Content Include="Content\admin\css\icons\fontawesome\fonts\fa-brands-400.woff" />
+    <Content Include="Content\admin\css\icons\fontawesome\fonts\fa-brands-400.woff2" />
+    <Content Include="Content\admin\css\icons\fontawesome\fonts\fa-brands-400d41d.eot" />
+    <Content Include="Content\admin\css\icons\fontawesome\fonts\fa-regular-400.eot" />
+    <Content Include="Content\admin\css\icons\fontawesome\fonts\fa-regular-400.ttf" />
+    <Content Include="Content\admin\css\icons\fontawesome\fonts\fa-regular-400.woff" />
+    <Content Include="Content\admin\css\icons\fontawesome\fonts\fa-regular-400.woff2" />
+    <Content Include="Content\admin\css\icons\fontawesome\fonts\fa-regular-400d41d.eot" />
+    <Content Include="Content\admin\css\icons\fontawesome\fonts\fa-solid-900.eot" />
+    <Content Include="Content\admin\css\icons\fontawesome\fonts\fa-solid-900.ttf" />
+    <Content Include="Content\admin\css\icons\fontawesome\fonts\fa-solid-900.woff" />
+    <Content Include="Content\admin\css\icons\fontawesome\fonts\fa-solid-900.woff2" />
+    <Content Include="Content\admin\css\icons\fontawesome\fonts\fa-solid-900d41d.eot" />
+    <Content Include="Content\admin\css\icons\icomoon\fonts\icomoond41d.eot" />
+    <Content Include="Content\admin\css\icons\icomoon\fonts\icomoone627.eot" />
+    <Content Include="Content\admin\css\icons\icomoon\fonts\icomoone627.ttf" />
+    <Content Include="Content\admin\css\icons\icomoon\fonts\icomoone627.woff" />
+    <Content Include="Content\admin\css\icons\material\fonts\material-icons119d.ttf" />
+    <Content Include="Content\admin\css\icons\material\fonts\material-icons119d.woff" />
+    <Content Include="Content\Plugins\Toastr\toastr.js.map" />
+    <Content Include="Content\Plugins\summernote\font\summernote.eot" />
+    <Content Include="Content\Plugins\summernote\font\summernote.ttf" />
+    <Content Include="Content\Plugins\summernote\font\summernote.woff" />
+    <None Include="packages.config" />
+    <Content Include="Views\Admin\LayoutAdmin.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Scripts\AngularRoute\angular-route.min.js.map" />
+    <Content Include="Scripts\Angular\angular.min.js.map" />
+    <Content Include="Views\Site\SystemLogin.cshtml" />
+    <Content Include="Views\Admin\NewAdmission.cshtml" />
+    <Content Include="Views\Admin\AdmissionList.cshtml" />
+    <Content Include="Views\Admin\StudentPhotoUpdate.cshtml" />
+    <Content Include="Views\Admin\StudentDetailUpdate.cshtml" />
+    <Content Include="Views\Admin\ClassFeeHead.cshtml" />
+    <Content Include="Views\Admin\ClassFee.cshtml" />
+    <Content Include="Views\Admin\FeePayment.cshtml" />
+    <Content Include="Views\Admin\ClassPromotion.cshtml" />
+    <Content Include="Views\Admin\manage_bus.cshtml" />
+    <Content Include="Views\Admin\manage_student_transport.cshtml" />
+    <Content Include="Views\Admin\manage_transport_fee.cshtml" />
+    <Content Include="Views\Admin\manage_transport_fee_head.cshtml" />
+    <Content Include="Views\Admin\manage_transport_fee_period.cshtml" />
+    <Content Include="Views\Admin\manage_transport_group.cshtml" />
+    <Content Include="Views\Admin\student_transport_report.cshtml" />
+    <Content Include="Views\Admin\ManageStudentCharge.cshtml" />
+    <Content Include="Views\Admin\RegistrationFeeHead.cshtml" />
+    <Content Include="Views\Admin\RegistrationFee.cshtml" />
+    <Content Include="Views\Admin\StudentRegistration.cshtml" />
+    <Content Include="Views\Admin\StudentRegistrationList.cshtml" />
+    <Content Include="Views\Admin\StudentRegistrationUpdate.cshtml" />
+    <Content Include="Reports\cash-fee-receipt.rpt" />
+    <Content Include="Views\Admin\PrintRegistrationReceipt.cshtml" />
+    <Content Include="Views\Admin\ExcelAdmissionList.cshtml" />
+    <Content Include="Views\Admin\ManageStudentSubjectCombination.cshtml" />
+    <Content Include="Views\Admin\FeeCollectionReport.cshtml" />
+    <Content Include="Views\Admin\PrintFeeCollectionReport.cshtml" />
+    <Content Include="Views\Admin\ChangePassword.cshtml" />
+    <Content Include="Views\Admin\AdmissionFeeHead.cshtml" />
+    <Content Include="Views\Admin\AdmissionFee.cshtml" />
+    <Content Include="Views\Admin\SubjectCombinationFee.cshtml" />
+    <Content Include="Views\Admin\MiscellaneousFee.cshtml" />
+    <Content Include="Views\Admin\FeePaymentWithEdit.cshtml" />
+    <Content Include="Reports\cash-fee-receipt-miscellaneous.rpt" />
+    <Content Include="Views\Admin\PrintCaseFeeReceipt.cshtml" />
+    <Content Include="Views\Admin\PrintMiscellaneousFeeReceipt.cshtml" />
+    <Content Include="Views\Admin\PrintUserDCR.cshtml" />
+    <Content Include="Views\Admin\DCRUserwise.cshtml" />
+    <Content Include="Views\Admin\AdmissionNoUpdate.cshtml" />
+    <Content Include="Views\Admin\FeePaymentCancle.cshtml" />
+    <Content Include="Views\Admin\FeePaymentDelete.cshtml" />
+    <Content Include="Views\Admin\Cashbook.cshtml" />
+    <Content Include="Views\Admin\PrintCashbook.cshtml" />
+    <Content Include="Views\Admin\FeeDueReport.cshtml" />
+    <Content Include="Views\SuperAdmin\Index.cshtml" />
+    <Content Include="Views\SuperAdmin\LayoutSuperAdmin.cshtml" />
+    <Content Include="Views\SuperAdmin\ChangePassword.cshtml" />
+    <Content Include="Views\SuperAdmin\EmployeeType.cshtml" />
+    <Content Include="Views\SuperAdmin\ManageSchool.cshtml" />
+    <Content Include="Views\SuperAdmin\ManageEmployee.cshtml" />
+    <Content Include="Views\Admin\StudentLeft.cshtml" />
+    <Content Include="Views\Admin\StudentLeftList.cshtml" />
+    <Content Include="Views\Admin\ManageClassSubject.cshtml" />
+    <Content Include="Views\Admin\ManageSubject.cshtml" />
+    <Content Include="Views\Admin\ManageTeacher.cshtml" />
+    <Content Include="Views\Admin\StudentAdmissionList.cshtml" />
+    <Content Include="Views\Site\PrintA4Portrait.cshtml" />
+    <Content Include="Views\SuperAdmin\ManageSysytemLogin.cshtml" />
+    <Content Include="Views\SuperAdmin\ManageTaskMaster.cshtml" />
+    <Content Include="Views\SuperAdmin\ManageRole.cshtml" />
+    <Content Include="Views\SuperAdmin\ManageRoleTask.cshtml" />
+    <Content Include="Views\SuperAdmin\ManageMenu.cshtml" />
+    <Content Include="Views\Admin\IssueCharacterCertificate.cshtml" />
+    <Content Include="Reports\character-certificate.rpt" />
+    <Content Include="Views\Admin\PrintCharacterCertificate.cshtml" />
+    <Content Include="Views\Admin\CharacterCertificateList.cshtml" />
+    <Content Include="Views\Admin\PrintAllCharacterCertificate.cshtml" />
+    <Content Include="Views\Admin\IssueTransferCertificate.cshtml" />
+    <Content Include="Views\Admin\TransferCertificateList.cshtml" />
+    <Content Include="Reports\transfer-certificate.rpt" />
+    <Content Include="Views\Admin\PrintTransferCertificate.cshtml" />
+    <Content Include="Views\Admin\FeePaymentHistory.cshtml" />
+    <Content Include="Views\Admin\FeeDueReport2.cshtml" />
+    <Content Include="Views\Admin\PrintFeeDueReport2.cshtml" />
+    <Content Include="Views\Admin\ManageStudentConcession.cshtml" />
+    <Content Include="Views\Admin\UpdateFeePaymentStatus.cshtml" />
+    <Content Include="Views\Admin\SectionPeriodList.cshtml" />
+    <Content Include="Views\Site\InvalidUrl.cshtml" />
+    <Content Include="Views\Admin\TuitionFeeDueList.cshtml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\SchoolERP.pubxml" />
+    <Content Include="Views\Admin\PrintAdmissionList.cshtml" />
+    <Content Include="Views\Site\PrintA4PortraitTimeTable.cshtml" />
+    <Content Include="Views\Admin\ManageCity.cshtml" />
+    <Content Include="Views\Admin\ManageState.cshtml" />
+    <Content Include="Views\Print\PrintMarksheetNineHY.cshtml" />
+    <Content Include="Views\Print\PrintMarksheetUptoEightAN.cshtml" />
+    <Content Include="Views\Print\PrintMarksheetUptoEightHY.cshtml" />
+    <Content Include="Views\Admin\UpdateStudentFeePayment.cshtml" />
+    <Content Include="Views\Print\CreateExcel.cshtml" />
+    <Content Include="Views\Print\ExcelMarksheetEntry.cshtml" />
+    <Content Include="Views\Print\ExcelForGradeMarks.cshtml" />
+    <Content Include="Views\Admin\ManageSection.cshtml" />
+    <Content Include="Views\Admin\EditReceipt.cshtml" />
+    <Content Include="Views\Admin\AdmissionListWithFields.cshtml" />
+    <Content Include="Views\SuperAdmin\ManageRoleSection.cshtml" />
+    <Content Include="Views\Print\PrintMarksheetNineAndTenHY.cshtml" />
+    <Content Include="Views\Print\PrintMarksheetEleven.cshtml" />
+    <Content Include="Views\Print\PrintMarksheetTwelve.cshtml" />
+    <Content Include="Views\Print\PrintRankerList.cshtml" />
+    <Content Include="Views\Print\PrintRankerAnalysisList.cshtml" />
+    <Content Include="Views\Print\PrintCorssReport.cshtml" />
+    <Content Include="Views\Admin\ManageRegistrationForm.cshtml" />
+    <Content Include="Views\Print\PrintCorssReportExamTypeWise.cshtml" />
+    <Content Include="Views\Print\PrintMarksheetHY.cshtml" />
+    <Content Include="Views\Print\PrintMarksAnalysis.cshtml" />
+    <Content Include="Views\Admin\RegistrationOnlineList.cshtml" />
+    <Content Include="Views\Print\PrintRegistrationFeeReceiptOnline.cshtml" />
+    <Content Include="Views\Admin\OnlineAdmission.cshtml" />
+    <Content Include="Views\Admin\BookPurchase.cshtml" />
+    <Content Include="Views\Admin\ManageSupplier.cshtml" />
+    <Content Include="Views\Admin\PurchaseList.cshtml" />
+    <Content Include="Views\Admin\BookAccessionList.cshtml" />
+    <Content Include="Views\Site\PrintA4Landscape.cshtml" />
+    <Content Include="Views\Admin\BookList.cshtml" />
+    <Content Include="Views\Admin\ManageBookType.cshtml" />
+    <Content Include="Views\Admin\ManageDepartment.cshtml" />
+    <Content Include="Views\Admin\ManageStaff.cshtml" />
+    <Content Include="Views\Print\PrintCorssReportClassEleven.cshtml" />
+    <Content Include="Views\Admin\BookIssue.cshtml" />
+    <Content Include="Views\Admin\BookReturn.cshtml" />
+    <Content Include="Views\Admin\BookIssueHistory.cshtml" />
+    <Content Include="Views\Print\PrintBookBarCode.cshtml" />
+    <Content Include="Reports\book_bar_code.rpt" />
+    <Content Include="Views\Admin\PrintBookBarCode.cshtml" />
+    <Content Include="Views\Admin\ManageItemType.cshtml" />
+    <Content Include="Views\Admin\BookReIssue.cshtml" />
+    <Content Include="Views\Admin\NewsPaperPurchase.cshtml" />
+    <Content Include="Views\Admin\MagazinePurchase.cshtml" />
+    <Content Include="Views\Admin\ManageBookAccession.cshtml" />
+    <Content Include="Views\Admin\BookIssueReport.cshtml" />
+    <Content Include="Views\Admin\BookReturnReport.cshtml" />
+    <Content Include="Views\Admin\NewsPaperPurchaseList.cshtml" />
+    <Content Include="Views\Admin\ManageUnit.cshtml" />
+    <Content Include="Views\Admin\ManageStoreItem.cshtml" />
+    <Content Include="Views\Admin\PurchaseStoreItem.cshtml" />
+    <Content Include="Views\Admin\PurchaseStoreItemList.cshtml" />
+    <Content Include="Views\Admin\StoreItemIssue.cshtml" />
+    <Content Include="Views\Admin\StoreItemIssueReport.cshtml" />
+    <Content Include="Views\Admin\StoreItemReturnReport.cshtml" />
+    <Content Include="Views\Admin\ManageRack.cshtml" />
+    <Content Include="Views\Admin\ManageBookSubject.cshtml" />
+    <Content Include="Views\Admin\ManageBookSubjectRack.cshtml" />
+    <Content Include="Views\Admin\DailyCollectionReportStudentwise.cshtml" />
+    <Content Include="Views\Admin\ManageMagazine.cshtml" />
+    <Content Include="Views\Admin\ManageParent.cshtml" />
+    <Content Include="Views\SuperAdmin\ManageTaskGroup.cshtml" />
+    <Content Include="Views\Admin\ManageVehicleType.cshtml" />
+    <Content Include="Views\Admin\VehicleFuelConsumption.cshtml" />
+    <Content Include="Views\Admin\VehicleFuelConsumptionList.cshtml" />
+    <Content Include="Views\Admin\BookAccessionListWithRack.cshtml" />
+    <Content Include="Views\Admin\ManageVehicleRunningRecord.cshtml" />
+    <Content Include="Views\Admin\VehicleService.cshtml" />
+    <Content Include="Views\Admin\VehicleServiceList.cshtml" />
+    <Content Include="Views\Admin\DailyCollectionReportStudentwise2.cshtml" />
+    <Content Include="Views\Admin\VehicleServiceEdit.cshtml" />
+    <Content Include="Views\Admin\ParentFeedBackList.cshtml" />
+    <Content Include="Views\Admin\GenerateAdmissionPaymentLink.cshtml" />
+    <Content Include="Views\Admin\RegistrationOnline.cshtml" />
+    <Content Include="Views\Print\VehicleFuelConsumptionReport.cshtml" />
+    <Content Include="Views\Print\PrintVehicleFuelConsumptionReport.cshtml" />
+    <Content Include="Views\Admin\ManageDesignation.cshtml" />
+    <Content Include="Views\Admin\StudentFeedBackList.cshtml" />
+    <Content Include="Views\Admin\TeacherPerformanceList.cshtml" />
+    <Content Include="Views\Admin\AdmitCardPrint.cshtml" />
+    <Content Include="Views\Print\PrintAdmitCard.cshtml" />
+    <Content Include="Views\Admin\UpdateStudentStreamType.cshtml" />
+    <Content Include="Views\Admin\ManageExamCenter.cshtml" />
+    <Content Include="Views\Admin\GenerateAdmitCard.cshtml" />
+    <Content Include="Views\Print\PrintPurchaseInvoiceStore.cshtml" />
+    <Content Include="Views\Print\PrintVehicleServiceReport.cshtml" />
+    <Content Include="Views\Admin\AdmitCardListForOR.cshtml" />
+    <Content Include="Views\Print\PrintAdmintCardForRO.cshtml" />
+    <Content Include="Views\Print\PrintBookBarCodeWithAccessionNo.cshtml" />
+    <Content Include="Views\Admin\AdmissionNoPrint.cshtml" />
+    <Content Include="Views\Print\PrintBarCodeAdmissionNos.cshtml" />
+    <Content Include="Views\Admin\PrintBookBarCode2.cshtml" />
+    <Content Include="Views\SuperAdmin\FeeDueReport.cshtml" />
+    <Content Include="Views\Admin\PrintFeeDueReport4.cshtml" />
+    <Content Include="Views\Admin\PaymentLinkList.cshtml" />
+    <Content Include="Views\Admin\PaidPaymentLinkList.cshtml" />
+    <Content Include="Views\Admin\RegistrationOnlineResult.cshtml" />
+    <Content Include="Views\Admin\RegistrationOnlineResultList.cshtml" />
+    <Content Include="Views\Admin\UpdateStudentRollNo.cshtml" />
+    <Content Include="Views\Admin\ManageShift.cshtml" />
+    <Content Include="Views\Admin\ManageDevice.cshtml" />
+    <Content Include="Views\Admin\ManageStaffGroup.cshtml" />
+    <Content Include="Views\Admin\ManageStaffGroupShift.cshtml" />
+    <Content Include="Views\Admin\SearchRegistrationOnline.cshtml" />
+    <Content Include="Views\Admin\AllStudentDetailUpdate.cshtml" />
+    <Content Include="Views\Admin\AttendenceList.cshtml" />
+    <Content Include="Views\Print\PrintMarksheet.cshtml" />
+    <Content Include="Views\Print\PrintRankerListTermwise.cshtml" />
+    <Content Include="Views\Admin\RegistrationOnlineListForAdmissionDetail.cshtml" />
+    <Content Include="Views\Admin\ManageLeave.cshtml" />
+    <Content Include="Views\Admin\ManageStaffSalary.cshtml" />
+    <Content Include="Views\Print\TransportReportForAllStudent.cshtml" />
+    <Content Include="Views\Print\TransportReportBusWise.cshtml" />
+    <Content Include="Views\Print\TrasnportReportGroupWise.cshtml" />
+    <Content Include="Views\Print\PrintRankerAnalysisClasswise.cshtml" />
+    <Content Include="Views\Admin\ManageStaffLeave.cshtml" />
+    <Content Include="Views\Admin\ManageStaffAdvancePayment.cshtml" />
+    <Content Include="Views\Admin\StaffPayment.cshtml" />
+    <Content Include="Views\Admin\StaffPaymentList.cshtml" />
+    <Content Include="Views\Admin\BankStatement.cshtml" />
+    <Content Include="Views\Admin\LeaveReport.cshtml" />
+    <Content Include="Views\Admin\UpdateAttendenceCode.cshtml" />
+    <Content Include="Views\Admin\UpdateSuccessFeePaymentStatus.cshtml" />
+    <Content Include="Views\Print\PrintMarksheetRetake.cshtml" />
+    <Content Include="Views\Print\AttendanceReportShiftwise.cshtml" />
+    <Content Include="Views\Admin\AttendanceReportShiftwise.cshtml" />
+    <Content Include="Views\Admin\AttendanceReport.cshtml" />
+    <Content Include="Views\Admin\TeacherFeedbackForm.cshtml" />
+    <Content Include="Views\Admin\TeacherFeedbackFormList.cshtml" />
+    <Content Include="Views\Admin\TeacherFeedbackList.cshtml" />
+    <Content Include="Views\Admin\TeacherFeedbackDetail.cshtml" />
+    <Content Include="Views\Admin\GeneratePaymentLinkTwo.cshtml" />
+    <Content Include="Views\Admin\IssueBonafideCertificate.cshtml" />
+    <Content Include="Views\Admin\BonafideCertificateList.cshtml" />
+    <Content Include="Views\Admin\PrintBonafideCertificate.cshtml" />
+    <Content Include="Views\Admin\BoardMarksList.cshtml" />
+    <Content Include="Views\Admin\RefundList.cshtml" />
+    <Content Include="Views\Admin\ManageRefund.cshtml" />
+    <Content Include="Views\Admin\ManageSemester.cshtml" />
+    <Content Include="Views\Admin\DailyCollectionReport.cshtml" />
+    <Content Include="Views\Admin\ManageAcademicSession.cshtml" />
+    <Content Include="Views\Admin\ManageHostel.cshtml" />
+    <Content Include="Views\Admin\ManageHostelFeePeriod.cshtml" />
+    <Content Include="Views\Admin\ManageHostelFeeHead.cshtml" />
+    <Content Include="Views\Admin\ManageHostelFee.cshtml" />
+    <Content Include="Views\Admin\ManageStudentHostelFee.cshtml" />
+    <Content Include="Views\Admin\RegistrationOffline.cshtml" />
+    <Content Include="Views\Admin\DailyConcessionReport.cshtml" />
+    <Content Include="Views\Admin\DailyConcessionReportStudentwise.cshtml" />
+    <Content Include="Views\Admin\Chequebook.cshtml" />
+    <Content Include="Reports\chequebook.rpt" />
+    <Content Include="Views\Admin\SettlementDetails.cshtml" />
+    <Content Include="Views\Admin\SettlementReceiptWise.cshtml" />
+    <Content Include="Views\Admin\ManageDocumentUpload.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\School\School.csproj">
+      <Project>{9e126486-f407-4dee-bf75-c7e211a51c05}</Project>
+      <Name>School</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>16246</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:16247/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

@@ -1,0 +1,95 @@
+﻿
+@{
+    Layout = null;
+}
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <a href="#" class="breadcrumb-item">Registration Fee</a>
+                <span class="breadcrumb-item active">Manage Registration Fee</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Manage Registration Fee</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group row">
+                <div class="col-lg-4">
+                    <label class="col-form-label  col-lg-4">Class<span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <select ng-model="ClassId" ng-change="getRegistrationFeeList()" ng-options="option.ClassId as option.ClassName for option in ClassList" class="form-control"></select>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="col-form-label col-lg-4">Student Type<span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <select ng-model="StudentTypeId" ng-change="getRegistrationFeeList()" ng-options="option.StudentTypeId as option.TypeName for option in StudentTypeList" class="form-control"></select>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="col-form-label  col-lg-4">Session <span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <select ng-model="AcademicSessionId" ng-change="getRegistrationFeeList()" ng-options="option.AcademicSessionId as option.SessionName for option in AcademicSessionList" class="form-control"></select>
+                    </div>
+                </div>
+            </div>
+
+            <fieldset class="mb-3" ng-if="RegistrationFeeList.length > 0">
+                <legend class="text-uppercase font-size-sm font-weight-bold">Fee Heads</legend>
+                <div class="form-group row" >
+                    <div class="col-lg-12 table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Sl. No.</th>
+                                    <th>Fee Head </th>
+                                    <th>Amount</th>
+                                    <th>Remarks</th>
+                                    @*<th>Is Active</th>*@
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="RegistrationFee in RegistrationFeeList">
+                                    <td>{{$index + 1}}</td>
+                                    <td>{{RegistrationFee.FeeHeadTitle}}</td>
+                                    <td>
+                                        <input type="number" min="0" ng-model="RegistrationFee.Amount" />
+                                    </td>
+                                    <td>
+                                        <input type="text" ng-model="RegistrationFee.Remarks" placeholder="Enter Remarks..." />
+                                    </td>
+                                    @*<td>
+                                            <input type="checkbox" ng-model="RegistrationFee.RegistrationFee.IsActive" />
+                                        </td>*@
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </fieldset>
+
+        </div>
+        <div class="card-footer text-centre" ng-if="RegistrationFeeList.length > 0">
+            <button class="btn btn-primary" ng-click="saveRegistrationFee()">Submit</button>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,96 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Update Student Fee Payment</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Update Student Fee Payment</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    <label class="col-form-label  col-lg-4">Admission No <span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <angucomplete-alt id="StudentAutoComplete"
+                                          placeholder="Enter Admission No/Student Name"
+                                          pause="100"
+                                          selected-object="afterStudentSelected"
+                                          local-data="AdmissionList"
+                                          search-fields="SearchAdmission"
+                                          title-field="SearchAdmission"
+                                          minlength="1"
+                                          input-class="form-control"
+                                          match-class="highlight"
+                                          input-changed="selectionChanged"
+                                          field-required="true"
+                                          auto-match="true"
+                                          focus-in="focusIn()">
+                        </angucomplete-alt>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <button class="btn btn-sm btn-success" ng-click="getPendingFeePaymentTempList()"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+            <fieldset class="mb-3" ng-show="FeeCollectionTempList.length > 0">
+                <legend class="text-uppercase font-size-sm font-weight-bold">Pending Fee Payment List</legend>
+                <div class="form-group col-sm-6 float-right">
+                    <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+                </div>
+                <div class="form-group col-sm-12 table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Sl. No.</th>
+                                <th style="cursor: pointer;" ng-click="sort('StudentDetail')">Student Detail <span class="fa" ng-show="sortKey=='StudentDetail'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('PaymentDate')">Date <span class="fa" ng-show="sortKey=='PaymentDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('TransactionId')">Transaction Id <span class="fa" ng-show="sortKey=='TransactionId'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('PaidAmount')">Amount <span class="fa" ng-show="sortKey=='PaidAmount'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('PaymentMode')">Mode <span class="fa" ng-show="sortKey=='PaymentMode'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="CanEdit">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="feeCollection in FeeCollectionTempList|filter:search" ng-model="search">
+                                <td>{{$index + 1}}</td>
+                                <td style="white-space:nowrap">{{feeCollection.StudentDetail}}</td>
+                                <td style="white-space:nowrap">{{feeCollection.PaymentDate | date:'dd-MM-yyyy'}}</td>
+                                <td>{{feeCollection.TransactionId == null ? feeCollection.FeeCollectionTempId : feeCollection.TransactionId}}</td>
+                                <td>{{feeCollection.PaidAmount | number:2}}</td>
+                                <td>{{PaymentModes[feeCollection.PaymentMode]}}</td>
+                                <td ng-if="CanEdit">
+                                    @*<button class="btn btn-sm btn-success" ng-click="updateStudentFeePayment(feeCollection.FeeCollectionTempId,1)">Approve</button>
+                                    <button class="btn btn-sm btn-danger" ng-click="updateStudentFeePayment(feeCollection.FeeCollectionTempId,2)">Cancel</button>*@
+                                    <button class="btn btn-sm btn-primary" ng-click="autoUpdateFeePaymentStatus(feeCollection)" ng-if="feeCollection.TransactionId != null">Auto Update</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>
+

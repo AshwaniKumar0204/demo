@@ -1,0 +1,300 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Purchase Item</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Purchase Item</h6>
+        </div>
+        <div class="card-body">
+            <form name="formPurchase" novalidate>
+                <div class="col-lg-6 form-group">
+                    <label class="col-form-label font-weight-bold col-lg-4">Supplier <span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <select ng-model="Purchase.SupplierId" name="SupplierId" ng-options="option.SupplierId as option.SupplierName for option in SupplierList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                            <option value="">--Select Supplier--</option>
+                        </select>
+                        <span class="text-danger" ng-if="(formPurchase.SupplierId.$dirty || IsSubmitted) && formPurchase.SupplierId.$error.required">Supplier is required!</span>
+                    </div>
+                </div>
+                <div class="col-lg-6 form-group">
+                    <label class="col-form-label font-weight-bold col-lg-4">Bill No <span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <input type="text" ng-model="Purchase.BillNo" name="BillNo" placeholder="Enter Bill No" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                        <span class="text-danger" ng-if="(formPurchase.BillNo.$dirty || IsSubmitted) && formPurchase.BillNo.$error.required">Bill No is required!</span>
+                    </div>
+                </div>
+                <div class="col-lg-6 form-group">
+                    <label class="col-form-label font-weight-bold col-lg-4">Bill Date <span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <input type="date" ng-model="Purchase.BillDate" name="BillDate" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                        <span class="text-danger" ng-if="(formPurchase.BillDate.$dirty || IsSubmitted) && formPurchase.BillDate.$error.required">Bill Date is required!</span>
+                    </div>
+                </div>
+                <div class="col-lg-6 form-group">
+                    <label class="col-form-label font-weight-bold col-lg-4">Remarks</label>
+                    <div class="col-lg-8">
+                        <textarea ng-model="Purchase.Remarks" name="Remarks" class="form-control" placeholder="Enter Remarks"></textarea>
+                    </div>
+                </div>
+            </form>
+            <div class="clearfix"></div>
+            <fieldset class="mb-3">
+                <legend class="text-uppercase font-size-sm font-weight-bold"></legend>
+                <form name="formPurchaseStoreItem" novalidate>
+                    <div class="col-lg-5 form-group">
+                        <label class="col-form-label font-weight-bold col-lg-2"> Item <span class="text-danger">*</span></label>
+                        <div class="col-sm-7">
+                            <angucomplete-alt id="StoreItemAnguComplete"
+                                              placeholder="Enter Item Name/Code"
+                                              pause="100"
+                                              selected-object="afterStoreItemSelected"
+                                              local-data="StoreItemList"
+                                              search-fields="SearchStoreItem"
+                                              title-field="SearchStoreItem"
+                                              description="ItemTypeName"
+                                              minlength="2"
+                                              input-class="form-control"
+                                              match-class="highlight"
+                                              input-changed="selectionChanged"
+                                              field-required="true"
+                                              auto-match="true"
+                                              focus-in="focusIn()">
+                            </angucomplete-alt>
+                        </div>
+                        <div class="col-sm-3">
+                            <button class="btn btn-sm btn-primary" ng-click="newStoreItem()">New Item</button>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 form-group">
+                        <label class="col-form-label font-weight-bold col-lg-5">Price <span class="text-danger">*</span></label>
+                        <div class="col-lg-7">
+                            <input type="number" ng-model="PurchaseStoreItem.Rate" ng-change="changePurchaseStoreItem(PurchaseStoreItem)" placeholder="Price" name="Rate" class="form-control" ng-class="IsPurchaseStoreItemSubmitted ? 'ng-dirty' : ''" required autofocus />
+                            <span class="text-danger" ng-if="(formPurchaseStoreItem.Rate.$dirty || IsPurchaseStoreItemSubmitted) && formPurchaseStoreItem.Rate.$error.required">Price is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 form-group">
+                        <label class="col-form-label font-weight-bold col-lg-5">Qty. <span class="text-danger">*</span></label>
+                        <div class="col-lg-7">
+                            <input type="number" ng-model="PurchaseStoreItem.Quantity" name="Quantity" ng-change="changePurchaseStoreItem(PurchaseStoreItem)" placeholder="Qty." class="form-control" ng-class="IsPurchaseStoreItemSubmitted ? 'ng-dirty' : ''" required autofocus />
+                            <span class="text-danger" ng-if="(formPurchaseStoreItem.Quantity.$dirty || IsPurchaseStoreItemSubmitted) && formPurchaseStoreItem.Quantity.$error.required">Quantity is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 form-group">
+                        <label class="col-form-label font-weight-bold col-lg-5">Discount Amt. <span class="text-danger"></span></label>
+                        <div class="col-lg-7">
+                            <input type="number" ng-model="PurchaseStoreItem.DiscountAmount" name="DiscountAmount" ng-change="changeDiscountAmount(PurchaseStoreItem)" placeholder="Discount Amt." class="form-control" ng-class="IsPurchaseStoreItemSubmitted ? 'ng-dirty' : ''" autofocus />
+                            <span class="text-danger" ng-if="(formPurchaseStoreItem.DiscountAmount.$dirty || IsPurchaseStoreItemSubmitted) && formPurchaseStoreItem.DiscountAmount.$error.required">Quantity is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 form-group">
+                        <label class="col-form-label font-weight-bold col-lg-5">Discount % <span class="text-danger"></span></label>
+                        <div class="col-lg-7">
+                            <input type="number"   max="100" ng-model="PurchaseStoreItem.DiscountPercentage" name="DiscountPercentage" ng-change="changePurchaseStoreItem(PurchaseStoreItem)" placeholder="Discount %" class="form-control" ng-class="IsPurchaseStoreItemSubmitted ? 'ng-dirty' : ''" autofocus />
+                            <span class="text-danger" ng-if="(formPurchaseStoreItem.DiscountPercentage.$dirty || IsPurchaseStoreItemSubmitted) && formPurchaseStoreItem.DiscountPercentage.$error.required">Quantity is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 form-group">
+                        <label class="col-form-label font-weight-bold col-lg-5">Unit</label>
+                        <div class="col-lg-7">
+                            <input type="text" ng-model="SelectedStoreItem.UnitName" class="form-control" disabled="disabled" />
+                        </div>
+                    </div>
+                    <div class="col-lg-3 form-group">
+                        <label class="col-form-label font-weight-bold col-lg-7">Taxable Amount</label>
+                        <div class="col-lg-5">
+                            <input type="text" value="₹ {{PurchaseStoreItem.TaxableAmount|number:2}}" class="form-control" disabled="disabled" style="color:#0f1601" />
+                        </div>
+                    </div>
+                    @*<div class="col-lg-3 form-group">
+                            <label class="col-form-label font-weight-bold col-lg-12">Taxable Amount : ₹ {{(PurchaseStoreItem.TaxableAmount)  | number:2}}</label>
+                        </div>*@
+                    <div class="col-lg-2 form-group">
+                        <label class="col-form-label font-weight-bold col-lg-4">GST </label>
+                        <div class="col-lg-8">
+                            <select ng-model="PurchaseStoreItem.GSTId" name="GSTId" ng-change="changePurchaseStoreItem(PurchaseStoreItem)" ng-options="option.GSTId as option.GSTTitle for option in GSTList" class="form-control">
+                                <option value="">--GST--</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 form-group">
+                        <label class="col-form-label font-weight-bold col-lg-12">Tax Amount : ₹ {{(PurchaseStoreItem.CGSTAmount + PurchaseStoreItem.SGSTAmount + PurchaseStoreItem.IGSTAmount)  | number:2}}</label>
+                    </div>
+                    <div class="col-lg-2 form-group">
+                        <label class="col-form-label font-weight-bold col-lg-12">Total : ₹ {{(PurchaseStoreItem.LineTotal)  | number:2}}</label>
+                    </div>
+                    <div class="col-sm-2 form-group">
+                        <button class="btn btn-sm btn-success" ng-click="addPurchaseStoreItem()">Add Item</button>
+                    </div>
+                </form>
+                @*</fieldset>
+                    <fieldset class="mb-3">
+                        <legend class="text-uppercase font-size-sm font-weight-bold">StoreItem List</legend>*@
+                <div class="form-group col-sm-12 table-responsive" ng-show="PurchaseStoreItemList.length > 0">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Sl. No.</th>
+                                <th>Item</th>
+                                <th>Rate</th>
+                                <th>Qty.</th>
+                                <th>Discount Amt.</th>
+                                <th>Discount %</th>
+                                <th>Unit</th>
+                                <th>Taxable Amount</th>
+                                <th>GST(%)</th>
+                                <th>CGST(₹)</th>
+                                <th>SGST(₹)</th>
+                                <th>IGST(₹)</th>
+                                <th>Total</th>
+                                <th ng-if="CanDelete">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="purchaseStoreItem in PurchaseStoreItemList">
+                                <td>{{$index + 1}}</td>
+                                <td>{{purchaseStoreItem.SearchStoreItem}}</td>
+                                <td>
+                                    <input type="number" ng-model="purchaseStoreItem.Rate" style="width:80px" ng-change="changePurchaseStoreItem(purchaseStoreItem)" placeholder="Rate" class="form-control">
+                                    @*{{purchaseStoreItem.Rate | number:2}}*@
+                                </td>
+                                <td>
+                                    <input type="number" ng-model="purchaseStoreItem.Quantity" style="width:80px" ng-change="changePurchaseStoreItem(purchaseStoreItem)" placeholder="Rate" class="form-control">
+                                    @*{{purchaseStoreItem.Quantity}}*@
+                                </td>
+                                <td>
+                                    <input type="number" ng-model="purchaseStoreItem.DiscountAmount" style="width:80px" ng-change="changeDiscountAmount(purchaseStoreItem)" placeholder="Discount Amt." class="form-control">
+                                </td>
+                                <td>
+                                    <input type="number" ng-model="purchaseStoreItem.DiscountPercentage" style="width:80px" ng-change="changePurchaseStoreItem(purchaseStoreItem)" placeholder="Discount %" class="form-control">
+                                </td>
+                                <td>{{purchaseStoreItem.UnitName}}</td>
+                                <td>{{purchaseStoreItem.TaxableAmount |number:2}}</td>
+                                <td>
+                                    <select ng-model="purchaseStoreItem.GSTId" ng-change="changePurchaseStoreItem(purchaseStoreItem)" ng-options="option.GSTId as option.GSTTitle for option in GSTList" class="form-control">
+                                        <option value="">--GST--</option>
+                                    </select>
+                                </td>
+                                <td>{{purchaseStoreItem.CGSTAmount |number:2}}</td>
+                                <td>{{purchaseStoreItem.SGSTAmount |number:2}}</td>
+                                <td>{{purchaseStoreItem.IGSTAmount |number:2}}</td>
+                                <td>{{purchaseStoreItem.LineTotal |number:2}}</td>
+                                <td ng-if="CanDelete"><button class="btn btn-sm btn-danger" ng-click="deletePurchaseStoreItem($index)"><i class="fa fa-trash"></i></button></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Total</th>
+                                <th></th>
+                                <th></th>
+                                <th>{{Purchase.TotalQuantity}}</th>
+                                <th></th>
+                                <th>{{Purchase.TotalAmount | number:2}}</th>
+                                <th></th>
+                                <th>{{Purchase.TotalCGST | number:2}}</th>
+                                <th>{{Purchase.TotalSGST | number:2}}</th>
+                                <th>{{Purchase.TotalIGST | number:2}}</th>
+                                <th>{{Purchase.GrandTotal | number:2}}</th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </fieldset>
+        </div>
+
+        <div class="card-footer text-centre" ng-show="PurchaseStoreItemList.length > 0">
+            <button class="btn btn-primary" ng-click="SavePurchase()">Submit</button>
+        </div>
+
+        <div id="modal_new_StoreItem" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{StoreItem.StoreItemId > 0 ? 'Update' : 'New' }} Item</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <form name="formStoreItem" novalidate>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label>Item Name <span class="text-danger">*</span></label>
+                                    <input type="text" ng-model="StoreItem.ItemName" name="ItemName" placeholder="Enter Item Name" class="form-control" ng-class="IsStoreItemSubmitted ? 'ng-dirty' : ''" required autofocus />
+                                    <span class="text-danger" ng-if="(formStoreItem.ItemName.$dirty || IsStoreItemSubmitted) && formStoreItem.ItemName.$error.required">Item Name is required!</span>
+                                </div>
+                                @*<div class="col-md-12 form-group">
+                                    <label>Item Code <span class="text-danger">*</span></label>
+                                    <input type="text" ng-model="StoreItem.ItemCode" name="ItemCode" placeholder="Enter Item Code" class="form-control" ng-class="IsStoreItemSubmitted ? 'ng-dirty' : ''" required autofocus />
+                                    <span class="text-danger" ng-if="(formStoreItem.ItemCode.$dirty || IsStoreItemSubmitted) && formStoreItem.ItemCode.$error.required">Item Code is required!</span>
+                                </div>*@
+
+                                <div class="col-md-12 form-group">
+                                    <label>Select Unit <span class="text-danger">*</span></label>
+                                    <select ng-model="StoreItem.UnitId" name="UnitId" ng-options="option.UnitId as option.UnitName for option in UnitList" class="form-control" ng-class="IsStoreItemSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                        <option value="">--Selecty Unit--</option>
+                                    </select>
+                                    <span class="text-danger" ng-if="(formStoreItem.UnitId.$dirty || IsStoreItemSubmitted) && formStoreItem.UnitId.$error.required">Unit is required!</span>
+                                </div>
+
+                                <div class="col-md-12 form-group">
+                                    <label>Item Type <span class="text-danger">*</span></label>
+                                    <select ng-model="StoreItem.ItemTypeId" name="ItemTypeId" ng-options="option.ItemTypeId as option.ItemTypeName for option in ItemTypeList" class="form-control" ng-class="IsStoreItemSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                        <option value="">--Selecty Item Type--</option>
+                                    </select>
+                                    <span class="text-danger" ng-if="(formStoreItem.ItemType.$dirty || IsStoreItemSubmitted) && formStoreItem.ItemType.$error.required">Item Type is required!</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn bg-primary" ng-click="saveStoreItem()">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal_confirmation" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <h6 class="font-weight-semibold">Are you sure want to delete this record?</h6>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn bg-primary" ng-click="deletePurchase()">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

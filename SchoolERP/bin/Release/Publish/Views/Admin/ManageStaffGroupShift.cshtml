@@ -1,0 +1,223 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Manage Staff Group Shift</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Manage Staff Group Shift</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-12 serach-margine">
+                    <label class="col-sm-2 control-label"><b>Select Group</b></label>
+                    <div class="col-sm-5">
+                        <angucomplete-alt id="StaffGroupAutocomplete"
+                                          placeholder="Enter Group Name"
+                                          pause="100"
+                                          selected-object="afterStaffGroupSelected"
+                                          local-data="StaffGroupList"
+                                          search-fields="GroupName"
+                                          title-field="GroupName"
+                                          minlength="1"
+                                          input-class="form-control"
+                                          match-class="highlight"
+                                          input-changed="selectionChanged"
+                                          field-required="true"
+                                          auto-match="true"
+                                          focus-in="focusIn()">
+                        </angucomplete-alt>
+                    </div>
+                    <div class="col-sm-2" ng-if="SelectedStaffGroup.StaffGroupId > 0">
+                        <button class="btn btn-sm btn-primary" ng-click="newShifts()"> <i class="fa fa-plus"></i> New Shift</button>
+                    </div>
+                </div>
+            </div>
+
+
+            <fieldset class="mb-3" ng-show="StaffGroupShiftList.length > 0">
+                <legend class="text-uppercase font-size-sm font-weight-bold">Shift Detail</legend>
+                <div class="form-group col-sm-6 float-right">
+                    <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+                </div>
+                <div class="form-group col-sm-6" ng-if="CanEdit">
+                    Display
+                    <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+                    Records Per Page
+                </div>
+                <div class="form-group col-sm-12 table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Sl. No.</th>
+                                <th style="cursor: pointer;" ng-click="sort('ShiftDate')"><b>Date </b> <span class="glyphicon sort-icon" ng-show="sortKey=='ShiftDate'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('ShiftDate')"><b>Day </b> <span class="glyphicon sort-icon" ng-show="sortKey=='ShiftDate'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('ShiftName')"><b>Shift</b> <span class="glyphicon sort-icon" ng-show="sortKey=='ShiftName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('InTime')"><b>In Time</b> <span class="glyphicon sort-icon" ng-show="sortKey=='InTime'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('OutTime')"><b>Out Time</b> <span class="glyphicon sort-icon" ng-show="sortKey=='OutTime'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('GapeTime')"><b>Gape Time</b> <span class="glyphicon sort-icon" ng-show="sortKey=='GapeTime'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('ShiftDurationString')"><b>Shift Duration</b> <span class="glyphicon sort-icon" ng-show="sortKey=='ShiftDurationString'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                                <th ng-if="CanEdit">Edit </th>
+                                <th ng-if="CanDelete">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @*<tr dir-paginate="model in StaffGroupShiftList|orderBy:sortKey:reverse|filter:search" current-page="currentPage" ng-model="search">*@
+                            <tr dir-paginate="model in StaffGroupShiftList|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize" current-page="currentPage" ng-model="search">
+                                <td>{{(currentPage*pageSize - (pageSize-1))+ $index}}</td>
+                                <td>{{model.ShiftDate | date:'dd-MM-yyyy'}}</td>
+                                <td>{{model.ShiftDate | date:'EEEE'}}</td>
+                                <td>{{model.ShiftName}}</td>
+                                <td>{{model.InTime}}</td>
+                                <td>{{model.OutTime}}</td>
+                                <td>{{model.GapeTime}}</td>
+                                <td>{{model.ShiftDurationString}}</td>
+                                <td ng-if="CanEdit"><button class="btn btn-sm btn-primary" ng-click="editStaffGroupShift(model)"><i class="icon-pencil3"></i></button></td>
+                                <td ng-if="CanDelete"><button class="btn btn-sm btn-danger" ng-click="deleteConfirmation(model.StaffGroupShiftId)"><i class="fa fa-trash"></i></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="clearfix">
+                    <dir-pagination-controls max-size="pageSize" boundary-links="true" template-url="/Scripts/DirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+                </div>
+            </fieldset>
+        </div>
+
+        <div id="modal_Student_Charge" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{StaffGroupShift.StaffGroupShiftId > 0 ? 'Update' : 'New' }} Staff Group Shift</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form name="formStaffGroupShift" novalidate>
+                            <div class="col-sm-12" style="margin-top:10px">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                            <tr role="row">
+                                                <th>Sl. No</th>
+                                                <th>Form Date</th>
+                                                <th>To Date</th>
+                                                <th>Shift</th>
+                                                <th>In Time</th>
+                                                <th>Out Time</th>
+                                                <th>Gape Time</th>
+                                                <th>Shift Duration</th>
+                                                <th>Add</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="model in NewStaffGroupShiftList">
+                                                <td>{{ $index + 1 }} </td>
+                                                <td>{{model.FromDate | date:'dd-MM-yyyy'}}</td>
+                                                <td>{{model.ToDate | date:'dd-MM-yyyy'}}</td>
+                                                <td>
+                                                    <div ng-show="!IsUpdate">
+                                                        {{model.Shift.ShiftName}}
+                                                    </div>
+                                                    <div ng-show="IsUpdate">
+                                                        <select class="form-control" ng-change="model.ShiftId = model.Shift.ShiftId" ng-model="model.Shift" ng-options="option as option.ShiftName for option in ShiftList">
+                                                            <option value="">--Select Shift--</option>
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                                <td>{{model.Shift.InTime}}</td>
+                                                <td>{{model.Shift.OutTime}}</td>
+                                                <td>{{model.Shift.GapeTime}}</td>
+                                                <td>{{model.Shift.ShiftDurationString}}</td>
+                                                <td>
+                                                    @*<button class="btn btn-danger btn-rounded btn-sm" ng-click="deleteConfirmation(model.StaffGroupShiftId)"><span class="fa fa-times"></span></button>*@
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot ng-show="!IsUpdate">
+                                            <tr>
+                                                <td>New</td>
+                                                <td>
+                                                    @*<div ng-show="LastStaffGroupShift.ShiftDate">
+                                                            {{StaffGroupShift.FromDate | date:'dd-MM-yyyy'}}
+                                                        </div>*@
+                                                    <div>
+                                                        <input type="date" class="form-control" ng-model="StaffGroupShift.FromDate" name="FromDate" ng-class="submitted?'ng-dirty':''" required autofocus />
+                                                        <span class="text-danger" ng-show="(formStaffGroupShift.FromDate.$dirty || submitted) && formStaffGroupShift.FromDate.$error.required">From Date is required</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input type="date" min="{{StaffGroupShift.FromDate|date:'yyyy-MM-dd'}}" class="form-control" ng-model="StaffGroupShift.ToDate" name="ToDate" ng-class="submitted?'ng-dirty':''" required autofocus />
+                                                    <span class="text-danger" ng-show="(formStaffGroupShift.ToDate.$dirty || submitted) && formStaffGroupShift.ToDate.$error.required">From Date is required</span>
+
+                                                </td>
+                                                <td>
+                                                    <select class="form-control" name="ShiftId" ng-model="StaffGroupShift.Shift" ng-options="option as option.ShiftName for option in ShiftList" ng-class="submitted?'ng-dirty':''" required autofocus>
+                                                        <option value="">--Select Shift--</option>
+                                                    </select>
+                                                    <span class="text-danger" ng-show="(formStaffGroupShift.ShiftId.$dirty || submitted) && formStaffGroupShift.ShiftId.$error.required">Shift Id is required</span>
+                                                </td>
+                                                <td>{{StaffGroupShift.Shift.InTime}}</td>
+                                                <td>{{StaffGroupShift.Shift.OutTime}}</td>
+                                                <td>{{StaffGroupShift.Shift.GapeTime}}</td>
+                                                <td>{{StaffGroupShift.Shift.ShiftDurationString}}</td>
+                                                <td><button class="btn btn-sm btn-success" ng-click="addStaffGroupShift()"><i class="fa fa-plus"></i> Add</button></td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="col-sm-12 text-centre">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn bg-primary" ng-disabled="NewStaffGroupShiftList.length ==0" ng-click="saveStaffGroupShift()">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal_confirmation" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <h6 class="font-weight-semibold">Are you sure want to delete this record?</h6>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn bg-primary" ng-click="deleteStaffGroupShift()">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

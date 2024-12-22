@@ -1,0 +1,247 @@
+﻿
+@{
+    Layout = null;
+}
+<style>
+    hr {
+        margin-top: 0;
+    }
+
+    tr, td, th {
+        white-space: nowrap
+    }
+</style>
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <a href="#!" class="breadcrumb-item">Registration Online</a>
+                <span class="breadcrumb-item active">Print Admit Card</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Print Admit Card</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-4 form-group">
+                    <label class="col-form-label font-weight-bold col-lg-4">Session</label>
+                    <div class="col-lg-8">
+                        <select ng-model="AcademicSessionId" ng-change="getRegistrationFormList()" ng-options="option.AcademicSessionId as option.SessionName for option in AcademicSessionList" class="form-control">
+                            <option value="">--Select All Session--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-4 form-group">
+                    <label class="col-form-label font-weight-bold col-lg-4">Class </label>
+                    <div class="col-lg-8">
+                        <select ng-model="ClassNo" ng-change="getRegistrationFormList() || getClassStreamTypeList()" ng-options="option.ClassNo as option.ClassName for option in ClassList" class="form-control">
+                            <option value="">--Select All Class--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-4 form-group">
+                    <label class="col-form-label font-weight-bold col-lg-4">Form</label>
+                    <div class="col-lg-8">
+                        <select ng-model="RegistrationFormId" ng-change="changeRegistrationForm()" ng-options="option.RegistrationFormId as option.PhaseName for option in RegistrationFormList" class="form-control">
+                            <option value="">--Select All Form--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4 form-group">
+                    <label class="col-form-label font-weight-bold col-lg-4">Stream</label>
+                    <div class="col-sm-8">
+                        <select ng-model="ClassStreamTypeId" ng-change="getSubjectOptionList()" name="ClassStreamTypeId" ng-options="option.ClassStreamTypeId as option.ClassStreamTypeName for option in ClassStreamTypeList" class="form-control">
+                            <option value="">--Select All Stream Type--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4 form-group">
+                    <label class="col-form-label font-weight-bold col-lg-4">Option </label>
+                    <div class="col-sm-8">
+                        <select ng-model="SubjectOptionOne" ng-options="option.SubjectOptionId as option.SubjectOptionName for option in SubjectOptionOneList" class="form-control">
+                            <option value="">--Select All--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4 form-group">
+                    <label class="col-form-label font-weight-bold col-lg-4">Option 2 </label>
+                    <div class="col-sm-8">
+                        <select ng-model="SubjectOptionTwo" name="SubjectOptionTwo" ng-options="option.SubjectOptionId as option.SubjectOptionName for option in SubjectOptionOneList" class="form-control">
+                            <option value="">--Select All--</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 form-group">
+                    <label class="col-form-label font-weight-bold col-lg-4">School</label>
+                    <div class="col-lg-8">
+                        <select id="allow_same_school" class="form-control" ng-model="IsSameSchool">
+                            <option value="">--Select All--</option>
+                            <option value="1">Same School Students</option>
+                            <option value="0">Others School Students</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4 form-group">
+                    <label class="col-form-label font-weight-bold col-lg-4">Exam Date </label>
+                    <div class="col-sm-8">
+                        <select ng-model="ExamCenterId" name="ExamCenterId" ng-options="option.ExamCenterId as ( (option.ExamDate |date:'dd-MM-yyyy') + ' ' +option.ExamTime) for option in ExamCenterList" class="form-control">
+                            <option value="">--Select All Exam Date--</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-lg-12 text-centre">
+                    <button class="btn btn-sm btn-success" ng-click="getRegistrationOnlineList()"><i class="fa fa-search"></i> Search</button>
+                    <a class="btn btn-sm btn-primary" href="/print/PrintAdmintCardForRO?sessionId={{AcademicSessionId?AcademicSessionId:0}}&classNo={{ClassNo ? ClassNo : 0}}&id=0" target="_blank">Print Admit Card</a>
+                    <button class="btn btn-sm btn-success" ng-click="sendAdmitCardSMSRO()"> Send SMS To All Student</button>
+                </div>
+            </div>
+            <fieldset class="mb-3" ng-if="RegistrationOnlineList.length >0">
+                <legend class="text-uppercase font-size-sm font-weight-bold"></legend>
+                <div class="form-group col-sm-6 float-right">
+                    <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+                </div>
+                <div class="form-group col-sm-6">
+                    Display
+                    <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+                    Records Per Page
+                </div>
+                <div class="col-sm-12">
+                    <a class="text-link font-weight-bold" ng-click="tablesToExcel(['table_registration_list_online'],['Online Registration List'],'OnlineRegistrationList','OnlineRegistrationList')">Export To Excel</a>
+                    @*  <a class="text-link font-weight-bold" ng-click="printA4Portrait('table_registration_list_online','A4','')">Export to PDF </a>&nbsp;&nbsp;*@
+                </div>
+                <div class="form-group col-sm-12 table-responsive">
+                    <table class="table table-bordered table-hover" id="table_registration_list_online">
+                        <thead>
+                            <tr>
+                                <th>Sl. No.</th>
+                                <th ng-if="!IsExporting">Print</th>
+                                <th ng-if="!IsExporting">Send SMS</th>
+                                <th style="cursor: pointer;" ng-click="sort('RegistrationNo')">Registration No <span class="fa" ng-show="sortKey=='RegistrationNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('StudentName')">Student Name  <span class="fa" ng-show="sortKey=='StudentName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('ClassName')">Class  <span class="fa" ng-show="sortKey=='ClassName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('RollNo')">Roll No  <span class="fa" ng-show="sortKey=='RollNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('AllocatedClassStreamTypeName')">Allocated Stream Type  <span class="fa" ng-show="sortKey=='AllocatedClassStreamTypeName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('AllocatedSubjectOptionName')">Allocated Subject Option  <span class="fa" ng-show="sortKey=='AllocatedSubjectOptionName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('ExamCenterName')">Exam Center  <span class="fa" ng-show="sortKey=='ExamCenterName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('ExamDate')">Exam Date  <span class="fa" ng-show="sortKey=='ExamDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('ExamTime')">Exam Time  <span class="fa" ng-show="sortKey=='ExamTime'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('ReportingTime')">Reporting Time <span class="fa" ng-show="sortKey=='ReportingTime'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('ClassStreamTypeName')">Stream Type  <span class="fa" ng-show="sortKey=='ClassStreamTypeName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('SubjectOptionOneName')">Subject Option One  <span class="fa" ng-show="sortKey=='SubjectOptionOneName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('SubjectOptionTwoName')">Subject Option Two  <span class="fa" ng-show="sortKey=='SubjectOptionTwoName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('DOB')">DOB  <span class="fa" ng-show="sortKey=='DOB'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Gender')">Gender  <span class="fa" ng-show="sortKey=='Gender'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('BloodGroup')">Blood Group  <span class="fa" ng-show="sortKey=='BloodGroup'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Religion')">Religion  <span class="fa" ng-show="sortKey=='Religion'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Nationality')">Nationality  <span class="fa" ng-show="sortKey=='Nationality'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Category')">Category  <span class="fa" ng-show="sortKey=='Category'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('MobileNo')">Mobile No  <span class="fa" ng-show="sortKey=='MobileNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('EmailId')">Email Id  <span class="fa" ng-show="sortKey=='EmailId'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('SMSAlertNo')">SMS Alert No  <span class="fa" ng-show="sortKey=='SMSAlertNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('WhatsappNo')">Whatsapp No  <span class="fa" ng-show="sortKey=='WhatsappNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('FathersName')">Father's Name  <span class="fa" ng-show="sortKey=='FathersName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('FathersOccupationDetail')">Father's Occupation Detail  <span class="fa" ng-show="sortKey=='FathersOccupationDetail'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('FathersQualification')">Father's Qualification  <span class="fa" ng-show="sortKey=='FathersQualification'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('FathersDesignation')">Father's Designation  <span class="fa" ng-show="sortKey=='FathersDesignation'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('FathersAnnualIncome')">Father's Annual Income  <span class="fa" ng-show="sortKey=='FathersAnnualIncome'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('FathersMobileNo')">Father's Mobile No  <span class="fa" ng-show="sortKey=='FathersMobileNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('FatherPresentAddress')">Father's Present Address  <span class="fa" ng-show="sortKey=='FatherPresentAddress'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('MothersName')">Mother's Name  <span class="fa" ng-show="sortKey=='MothersName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('MothersOccupation')">Mother's Occupation  <span class="fa" ng-show="sortKey=='MothersOccupation'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('MothersQualification')">Mother's Qualification  <span class="fa" ng-show="sortKey=='MothersQualification'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('MothersMobileNo')">Mother's Mobile No  <span class="fa" ng-show="sortKey=='MothersMobileNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('MothersAnnualIncome')">Mother's Annual Income  <span class="fa" ng-show="sortKey=='MothersAnnualIncome'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('FathersOrMothersEmail')">Parent's Email   <span class="fa" ng-show="sortKey=='FathersOrMothersEmail'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('GuardiansName')">Guardian's Name <span class="fa" ng-show="sortKey=='GuardiansName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('GuardiansMobileNo')">Guardian's MobileNo <span class="fa" ng-show="sortKey=='GuardiansMobileNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('GuardiansAddress')">Guardian's Address <span class="fa" ng-show="sortKey=='GuardiansAddress'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('PreviousSchoolName')">Previous School <span class="fa" ng-show="sortKey=='PreviousSchoolName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('PreviousSchoolMedium')">Previous School Medium <span class="fa" ng-show="sortKey=='PreviousSchoolMedium'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('PreviousSchoolAdmissionNo')">Admission No <span class="fa" ng-show="sortKey=='PreviousSchoolAdmissionNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('PreviousSectionName')">Section Name <span class="fa" ng-show="sortKey=='PreviousSectionName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('RegistrationDate')">Registration Date <span class="fa" ng-show="sortKey=='RegistrationDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('PaymentDate')">Payment Date <span class="fa" ng-show="sortKey=='PaymentDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr dir-paginate="Registration in RegistrationOnlineList|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize" current-page="currentPage" ng-model="search">
+                                <td>{{(currentPage*pageSize - (pageSize-1))+ $index}}</td>
+                                <th ng-if="!IsExporting"><a href="/print/PrintAdmintCardForRO?sessionId=0&classNo=0&id={{Registration.RegistrationOnlineId}}" target="_blank" class="btn btn-sm btn-primary"><i class="fa fa-print"></i></a></th>
+                                <th ng-show="!IsExporting"><button class="btn btn-sm btn-primary" ng-click="sendSMS(Registration)">Send</button></th>
+                                <td>{{Registration.RegistrationNo}}</td>
+                                <td>{{Registration.StudentName}}</td>
+                                <td>{{Registration.ClassName}}</td>
+                                <td>{{Registration.RollNo}}</td>
+                                <td>{{Registration.AllocatedClassStreamTypeName}}</td>
+                                <td>{{Registration.AllocatedSubjectOptionName}}</td>
+                                <td>{{Registration.ExamCenterName}}</td>
+                                <td>{{Registration.ExamDate |date:'dd-MM-yyyy'}}</td>
+                                <td>{{Registration.ExamTime}}</td>
+                                <td>{{Registration.ReportingTime}}</td>
+                                <td>{{Registration.ClassStreamTypeName}}</td>
+                                <td>{{Registration.SubjectOptionOneName}}</td>
+                                <td>{{Registration.SubjectOptionTwoName}}</td>
+                                <td>{{Registration.DOB | date:'dd MMM, yyyy'}}</td>
+                                <td>{{Registration.Gender}}</td>
+                                <td>{{Registration.BloodGroup}}</td>
+                                <td>{{Registration.Religion}}</td>
+                                <td>{{Registration.Nationality}}</td>
+                                <td>{{Registration.Category}}</td>
+                                <td>{{Registration.MobileNo}}</td>
+                                <td>{{Registration.EmailId}}</td>
+                                <td>{{Registration.SMSAlertNo}}</td>
+                                <td>{{Registration.WhatsappNo}}</td>
+                                <td>{{Registration.FathersName}}</td>
+                                <td>{{Registration.FathersOccupationDetail}}</td>
+                                <td>{{Registration.FathersQualification}}</td>
+                                <td>{{Registration.FathersDesignation}}</td>
+                                <td>{{Registration.FathersAnnualIncome|number:2}}</td>
+                                <td>{{Registration.FathersMobileNo}}</td>
+                                <td>{{Registration.FatherPresentAddress}}</td>
+                                <td>{{Registration.MothersName}}</td>
+                                <td>{{Registration.MothersOccupation}}</td>
+                                <td>{{Registration.MothersQualification}}</td>
+                                <td>{{Registration.MothersMobileNo}}</td>
+                                <td>{{Registration.MothersAnnualIncome|number:2}}</td>
+                                <td>{{Registration.FathersOrMothersEmail}}</td>
+                                <td>{{Registration.GuardiansName}}</td>
+                                <td>{{Registration.GuardiansMobileNo}}</td>
+                                <td>{{Registration.GuardiansAddress}}</td>
+                                <td>{{Registration.PreviousSchoolName}}</td>
+                                <td>{{Registration.PreviousSchoolMedium}}</td>
+                                <td>{{Registration.PreviousSchoolAdmissionNo}}</td>
+                                <td>{{Registration.PreviousSectionName}}</td>
+                                <td>{{Registration.RegistrationDate | date:'dd MMM, yyyy'}}</td>
+                                <td>{{Registration.PaymentDate | date:'dd MMM, yyyy'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="clearfix">
+                    <dir-pagination-controls max-size="pageSize" boundary-links="true" template-url="/Scripts/DirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>

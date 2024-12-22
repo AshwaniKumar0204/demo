@@ -1,0 +1,250 @@
+﻿@{
+    Layout = null;
+}
+<style>
+    th, td {
+        white-space: nowrap;
+    }
+</style>
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Staff Advance Payment</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Staff Advance Payment</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-12 form-group">
+                    <button class="btn btn-sm btn-primary" ng-if="CanEdit" ng-click="newStaffAdvancePayment()"> <i class="fa fa-plus"></i> New Advance Payment</button>
+                </div>
+            </div>
+            <fieldset class="mb-3" style="margin-bottom: 0 !important;">
+                <legend class="text-uppercase font-size-sm font-weight-bold">Filter</legend>
+                <div class="row">
+                    <div class="form-group col-sm-3">
+                        <label class="col-form-label col-sm-4">Year</label>
+                        <div class="col-sm-8">
+                            <input type="number" class="form-control" placeholder="All Year" ng-model="Year" />
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-3">
+                        <label class="col-form-label col-sm-4">Month</label>
+                        <div class="col-sm-8">
+                            <select ng-model="MonthNo" ng-change="getStaffAdvancePaymentList()" ng-options="option.Key as option.Value for option in MonthList" class="form-control">
+                                <option value="">--All Month--</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label class="col-form-label col-sm-3">Staff</label>
+                        <div class="col-sm-9">
+                            <angucomplete-alt id="SearchStaffAnguComplete"
+                                              placeholder="Enter Staff Name/Code"
+                                              pause="100"
+                                              selected-object="afterStaffSelectedSearch"
+                                              local-data="StaffList"
+                                              search-fields="StaffName,StaffCode"
+                                              title-field="StaffName,StaffCode"
+                                              description="DesignationName"
+                                              minlength="2"
+                                              input-class="form-control"
+                                              input-placeholder="All Staff"
+                                              match-class="highlight"
+                                              input-changed="selectionChanged"
+                                              field-required="true"
+                                              auto-match="true"
+                                              focus-in="focusIn()">
+                            </angucomplete-alt>
+                            @*<select ng-model="StaffId" ng-options="option.StaffId  as (option.StaffName +' (' + option.StaffCode + ')') for option in StaffList" class="form-control">
+                                <option value="">--All Staff--</option>
+                            </select>*@
+                        </div>
+                    </div>
+                    <div class="col-lg-2 form-group">
+                        <button class="btn btn-sm btn-success" ng-click="getStaffAdvancePaymentList()"> <i class="fa fa-search"></i> Search</button>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="mb-3" style="margin-bottom: 0 !important;" ng-show="StaffAdvancePaymentList.length > 0">
+                <legend class="text-uppercase font-size-sm font-weight-bold">Staff Leave List</legend>
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        Display
+                        <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+                    </div>
+                    <div class="form-group col-sm-6 float-right">
+                        <input type="text" class="float-right input-sm form-control" style="width:200px" ng-model="search" placeholder="Search..." />
+                    </div>
+                    <div class="col-sm-12">
+                        <a class="text-link font-weight-bold" ng-click="tablesToExcel(['table_staff_leave_list'],['Staff Advance Payment List'],'StaffAdvancePaymentList','StaffAdvancePaymentList')">Export To Excel</a>
+                    </div>
+                    <div class="form-group col-sm-12 table-responsive" id="div_SalaryList">
+                        <table class="table table-bordered table-hover" id="table_staff_leave_list">
+                            <thead>
+                                <tr>
+                                    <th>Sl. No.</th>
+                                    <th style="cursor: pointer;" ng-click="sort('StaffName')">Staff <span class="fa" ng-show="sortKey=='StaffName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('DesignationName')">Designation <span class="fa" ng-show="sortKey=='DesignationName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('MonthName')">Month <span class="fa" ng-show="sortKey=='MonthName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('Year')">Year <span class="fa" ng-show="sortKey=='Year'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('AdvanceDate')">Advance Date <span class="fa" ng-show="sortKey=='AdvanceDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('AdvanceAmount')">Advance Amount <span class="fa" ng-show="sortKey=='AdvanceAmount'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('Remarks')">Remarks <span class="fa" ng-show="sortKey=='Remarks'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th ng-if="CanEdit && !IsExporting" class="not_print">Edit </th>
+                                    <th ng-if="CanDelete && !IsExporting" class="not_print">Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr dir-paginate="StaffAdvancePayment in StaffAdvancePaymentList|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize" current-page="currentPage" ng-model="search">
+                                    <td>{{(currentPage*pageSize - (pageSize-1))+ $index}}</td>
+                                    <td>{{StaffAdvancePayment.StaffName}}</td>
+                                    <td>{{StaffAdvancePayment.DesignationName}}</td>
+                                    <td>{{StaffAdvancePayment.MonthName}}</td>
+                                    <td>{{StaffAdvancePayment.Year}}</td>
+                                    <td>{{StaffAdvancePayment.AdvanceDate|date:'dd-MM-yyyy'}}</td>
+                                    <td>{{StaffAdvancePayment.AdvanceAmount|number:2}}</td>
+                                    <td>{{StaffAdvancePayment.Remarks}}</td>
+                                    <td ng-if="CanEdit && !IsExporting" class="not_print"><button class="btn btn-sm btn-primary" ng-click="editStaffAdvancePayment(StaffAdvancePayment)"><i class="icon-pencil3"></i></button></td>
+                                    <td ng-if="CanDelete && !IsExporting" class="not_print"><button class="btn btn-sm btn-danger" ng-click="deleteConfirmation(StaffAdvancePayment.StaffAdvancePaymentId)"><i class="fa fa-trash"></i></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="clearfix col-sm-12">
+                        <dir-pagination-controls max-size="pageSize" boundary-links="true" template-url="/Scripts/DirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+        <div id="modal_Student_Charge" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{StaffAdvancePayment.StaffAdvancePaymentId > 0 ? 'Update' : 'New' }} Staff Advance Payment</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <form name="formStaffAdvancePayment" novalidate>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label class="col-sm-4 col-form-label">Select Staff <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <angucomplete-alt id="StaffAnguComplete"
+                                                          placeholder="Enter Staff Name/Code"
+                                                          pause="100"
+                                                          selected-object="afterStaffSelected"
+                                                          local-data="StaffList"
+                                                          search-fields="StaffName,DesignationName,StaffCode"
+                                                          title-field="StaffName,DesignationName,StaffCode"
+                                                          description="ItemTypeName"
+                                                          minlength="2"
+                                                          input-class="form-control"
+                                                          match-class="highlight"
+                                                          input-changed="selectionChanged"
+                                                          field-required="true"
+                                                          auto-match="true"
+                                                          focus-in="focusIn()">
+                                        </angucomplete-alt>
+                                        <select ng-model="StaffAdvancePayment.StaffId" ng-hide="true" name="StaffId" ng-options="option.StaffId as option.StaffName for option in StaffList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                            <option value="">--Selecty Staff--</option>
+                                        </select>
+                                        <span class="text-danger" ng-if="(formStaffAdvancePayment.StaffId.$dirty || IsSubmitted) && formStaffAdvancePayment.StaffId.$error.required">Staff is required!</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 form-group">
+                                    <label class="col-sm-4 col-form-label">Month <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <select ng-model="StaffAdvancePayment.MonthNo" name="MonthNo" ng-options="option.Key as option.Value for option in MonthList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                            <option value="">--Selecty Month--</option>
+                                        </select>
+                                        <span class="text-danger" ng-if="(formStaffAdvancePayment.MonthNo.$dirty || IsSubmitted) && formStaffAdvancePayment.MonthNo.$error.required">Month is required!</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label class="col-sm-4 col-form-label">Year <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="number" ng-maxlength="4" ng-minlength="4" ng-model="StaffAdvancePayment.Year" name="Year" placeholder="Enter Year" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                                        <span class="text-danger" ng-if="(formStaffAdvancePayment.Year.$dirty || IsSubmitted) && formStaffAdvancePayment.Year.$error.required">Year is required!</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 form-group">
+                                    <label class="col-sm-4 col-form-label">Advance Date <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="date" ng-model="StaffAdvancePayment.AdvanceDate" name="AdvanceDate" placeholder="Enter Advance Date" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                                        <span class="text-danger" ng-if="(formStaffAdvancePayment.AdvanceDate.$dirty || IsSubmitted) && formStaffAdvancePayment.AdvanceDate.$error.required">Advance Date is required!</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 form-group">
+                                    <label class="col-sm-4 col-form-label">Advance Amount <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="number" ng-model="StaffAdvancePayment.AdvanceAmount" name="AdvanceAmount" placeholder="Enter Advance Amount" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                                        <span class="text-danger" ng-if="(formStaffAdvancePayment.AdvanceAmount.$dirty || IsSubmitted) && formStaffAdvancePayment.AdvanceAmount.$error.required">Advance Amount is required!</span>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-6 form-group">
+                                    <label class="col-sm-4 col-form-label">Remarks </label>
+                                    <div class="col-sm-8">
+                                        <textarea ng-model="StaffAdvancePayment.Remarks" name="Remarks" placeholder="Enter Remarks" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn bg-primary" ng-click="saveStaffAdvancePayment()">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal_confirmation" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <h6 class="font-weight-semibold">Are you sure want to delete this record?</h6>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn bg-primary" ng-click="deleteStaffAdvancePayment()">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

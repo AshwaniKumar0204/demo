@@ -1,0 +1,173 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Student Class Detail</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Student Class Detail</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    <label class="col-form-label  col-lg-4">Admission No <span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <angucomplete-alt id="StudentAutoComplete"
+                                          placeholder="Enter Admission No/Student Name"
+                                          pause="100"
+                                          selected-object="afterStudentSelected"
+                                          local-data="AdmissionList"
+                                          search-fields="SearchAdmission"
+                                          title-field="SearchAdmission"
+                                          minlength="1"
+                                          input-class="form-control"
+                                          match-class="highlight"
+                                          input-changed="selectionChanged"
+                                          field-required="true"
+                                          auto-match="true"
+                                          focus-in="focusIn()">
+                        </angucomplete-alt>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                </div>
+            </div>
+            <div ng-if="SelectedAdmission.AdmissionId > 0">
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">Full Name :</label>
+                        <label class="col-form-label col-lg-8 col-8" ng-bind="SelectedAdmission.FullName"></label>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">Session :</label>
+                        <label class="col-form-label col-lg-8 col-8" ng-bind="SelectedAdmission.SessionName"></label>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">Class :</label>
+                        <label class="col-form-label col-lg-8 col-8" ng-bind="SelectedAdmission.ClassName"></label>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">Section :</label>
+                        <label class="col-form-label col-lg-8 col-8" ng-bind="SelectedAdmission.SectionName"></label>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">Contact No :</label>
+                        <label class="col-form-label col-lg-8 col-8" ng-bind="SelectedAdmission.MobileNo"></label>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label col-lg-4 col-4 font-weight-bold">Roll No :</label>
+                        <label class="col-form-label col-lg-8 col-8" ng-bind="SelectedAdmission.RollNo"></label>
+                    </div>
+                </div>
+                <fieldset class="mb-3">
+                    <legend class="text-uppercase font-size-sm font-weight-bold">Student Admission List</legend>
+                    <div class="form-group col-sm-12 float-right">
+                        <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+                    </div>
+                    <div class="form-group col-sm-12 table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Sl. No.</th>
+                                    <th style="cursor: pointer;" ng-click="sort('AdmissionType')">Type <span class="fa" ng-show="sortKey=='AdmissionType'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('SessionName')">Session <span class="fa" ng-show="sortKey=='SessionName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('ClassName')">Class <span class="fa" ng-show="sortKey=='ClassName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('SectionName')">Section <span class="fa" ng-show="sortKey=='SectionName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('RollNo')">Roll No <span class="fa" ng-show="sortKey=='RollNo'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('AdmissionDate')">Admission Date <span class="fa" ng-show="sortKey=='AdmissionDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('LeaveDate')">Leave Date <span class="fa" ng-show="sortKey=='LeaveDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th style="cursor: pointer;" ng-click="sort('AdmissionStatus')">Status <span class="fa" ng-show="sortKey=='AdmissionStatus'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                    <th ng-if="CanEdit">Edit </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="Admission in StudentAdmissionList|orderBy:sortKey:reverse|filter:search" ng-model="search">
+                                    <td>{{$index + 1}}</td>
+                                    <td>{{AdmissionTypeList[Admission.AdmissionType].Value}}</td>
+                                    <td>{{Admission.SessionName}}</td>
+                                    <td>{{Admission.ClassName}}</td>
+                                    <td>{{Admission.SectionName}}</td>
+                                    <td>{{Admission.RollNo}}</td>
+                                    <td>{{Admission.AdmissionDate | date:'dd/MM/yyyy'}}</td>
+                                    <td>{{Admission.LeaveDate | date:'dd/MM/yyyy'}}</td>
+                                    <td>{{AdmissionStatusList[Admission.AdmissionStatus].Value}}</td>
+                                    <td ng-if="CanEdit"><button class="btn btn-sm btn-primary" ng-click="editAdmission(Admission)"><i class="icon-pencil3"></i></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+
+        <div id="modal_Student_Charge" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Update Student Class Detail</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <form name="formAdmission" novalidate>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label>Class <span class="text-danger">*</span></label>
+                                    <select ng-model="Admission.ClassId" ng-change="changeClass()" name="ClassId" ng-options="option.ClassId as option.ClassName for option in ClassList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                                    <span class="text-danger" ng-if="(formAdmission.ClassId.$dirty || IsSubmitted) && formAdmission.ClassId.$error.required">Class is required!</span>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label>Section <span class="text-danger">*</span></label>
+                                    <select ng-model="Admission.SectionId" name="SectionId" ng-options="option.SectionId as option.SectionName for option in SectionList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                                    <span class="text-danger" ng-if="(formAdmission.SectionId.$dirty || IsSubmitted) && formAdmission.SectionId.$error.required">SectionId is required!</span>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label>Roll No <span class="text-danger">*</span></label>
+                                    <input type="number" name="RollNo" ng-model="Admission.RollNo" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus>
+                                    <span class="text-danger" ng-if="(formAdmission.RollNo.$dirty || IsSubmitted) && formAdmission.RollNo.$error.required">Roll No is required!</span>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label>Admission Date <span class="text-danger">*</span></label>
+                                    <input type="date" name="AdmissionDate" ng-model="Admission.AdmissionDate" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus>
+                                    <span class="text-danger" ng-if="(formAdmission.AdmissionDate.$dirty || IsSubmitted) && formAdmission.AdmissionDate.$error.required">Admission Date is required!</span>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label>Status <span class="text-danger">*</span></label>
+                                    <select ng-model="Admission.AdmissionType" name="AdmissionType" ng-options="option.Key as option.Value for option in AdmissionTypeList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                                    <span class="text-danger" ng-if="(formAdmission.AdmissionType.$dirty || IsSubmitted) && formAdmission.AdmissionType.$error.required">Type is required!</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn bg-primary" ng-click="updateAdmission()">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

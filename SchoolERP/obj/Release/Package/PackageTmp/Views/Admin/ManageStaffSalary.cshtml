@@ -1,0 +1,292 @@
+﻿@{
+    Layout = null;
+}
+<style>
+    th, td {
+        white-space: nowrap;
+    }
+</style>
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Staff Salary</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Staff Salary</h6>
+        </div>
+        <div class="card-body">
+            <div class="col-lg-12 form-group">
+                <button class="btn btn-sm btn-primary" ng-if="CanEdit" ng-click="newStaffSalary()"> <i class="fa fa-plus"></i> New Salary</button>
+            </div>
+            <div class="form-group col-sm-3 float-right">
+                <input type="text" class="float-right input-sm form-control" ng-model="search" placeholder="Search..." />
+            </div>
+            <div class="form-group col-sm-2 float-right" ng-show="StaffSalaryList.length > 0">
+                Display
+                <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+            </div>
+
+
+            <div class="form-group col-sm-3">
+                <select ng-model="StaffId" ng-options="option.StaffId as option.StaffName for option in StaffList" class="form-control">
+                    <option value="">--Select All Staff--</option>
+                </select>
+            </div>
+            <div class="col-lg-1 form-group">
+                <button class="btn btn-sm btn-success" ng-click="getStaffSalaryList()"> <i class="fa fa-search"></i> </button>
+            </div>
+
+            <div ng-show="StaffSalaryList.length > 0">
+                <div class="col-sm-12">
+                    <a class="text-link font-weight-bold" ng-click="tablesToExcel(['table_Salary_list'],['Staff Salary List'],'StaffSalaryList','StaffSalaryList')">Export To Excel</a>
+                </div>
+                <div class="form-group col-sm-12 table-responsive" id="div_SalaryList">
+                    <table class="table table-bordered table-hover" id="table_Salary_list">
+                        <thead>
+                            <tr>
+                                <th>Sl. No.</th>
+                                <th style="cursor: pointer;" ng-click="sort('StaffName')">Staff <span class="fa" ng-show="sortKey=='StaffName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('DesignationName')">Designation <span class="fa" ng-show="sortKey=='DesignationName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('BasicAmount')">Basic Amount <span class="fa" ng-show="sortKey=='BasicAmount'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Increament')">Increament <span class="fa" ng-show="sortKey=='Increament'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('DA')">DA <span class="fa" ng-show="sortKey=='DA'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Allowance')">Allowance <span class="fa" ng-show="sortKey=='Allowance'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Arrear')">Arrear <span class="fa" ng-show="sortKey=='Arrear'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('HRA')">HRA <span class="fa" ng-show="sortKey=='HRA'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('MedicalAllowance')">Medical Allowance <span class="fa" ng-show="sortKey=='MedicalAllowance'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('SpecialAllowance')">Special Allowance <span class="fa" ng-show="sortKey=='SpecialAllowance'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('GrossTotal')">Gross Total <span class="fa" ng-show="sortKey=='GrossTotal'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('SalaryStartDate')">Salary Start Date <span class="fa" ng-show="sortKey=='SalaryStartDate'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Remarks')">Remarks <span class="fa" ng-show="sortKey=='Remarks'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Status')">Status <span class="fa" ng-show="sortKey=='Status'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th ng-if="CanEdit && !IsExporting" class="not_print">Edit </th>
+                                <th ng-if="CanDelete && !IsExporting" class="not_print">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr dir-paginate="StaffSalary in StaffSalaryList|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize" current-page="currentPage" ng-model="search">
+                                <td>{{(currentPage*pageSize - (pageSize-1))+ $index}}</td>
+                                <td>{{StaffSalary.StaffName}}</td>
+                                <td>{{StaffSalary.DesignationName}}</td>
+                                <td>{{StaffSalary.BasicAmount|number:2}}</td>
+                                <td>{{StaffSalary.Increament|number:2}}</td>
+                                <td>{{StaffSalary.DA|number:2}}</td>
+                                <td>{{StaffSalary.Allowance|number:2}}</td>
+                                <td>{{StaffSalary.Arrear|number:2}}</td>
+                                <td>{{StaffSalary.HRA|number:2}}</td>
+                                <td>{{StaffSalary.MedicalAllowance|number:2}}</td>
+                                <td>{{StaffSalary.SpecialAllowance|number:2}}</td>
+                                <td>{{StaffSalary.GrossTotal|number:2}}</td>
+                                <td>{{StaffSalary.SalaryStartDate|date:'dd-MM-yyyy'}}</td>
+                                <td>{{StaffSalary.Remarks}}</td>
+                                <td><a ng-class="StaffSalary.Status == 1 ? 'badge bg-success-400' : 'badge bg-danger'"> {{StatusDetail[StaffSalary.Status]}}</a></td>
+                                <td ng-if="CanEdit && !IsExporting" class="not_print"><button class="btn btn-sm btn-primary" ng-click="editStaffSalary(StaffSalary)"><i class="icon-pencil3"></i></button></td>
+                                <td ng-if="CanDelete && !IsExporting" class="not_print"><button class="btn btn-sm btn-danger" ng-click="deleteConfirmation(StaffSalary.StaffSalaryId)"><i class="fa fa-trash"></i></button></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Total</th>
+                                <th></th>
+                                <th></th>
+                                <th>{{TotalBasicAmount |number:2}}</th>
+                                <th>{{TotalIncreament |number:2}}</th>
+                                <th>{{TotalDA |number:2}}</th>
+                                <th>{{TotalAllowance |number:2}}</th>
+                                <th>{{TotalArrear |number:2}}</th>
+                                <th>{{TotalHRA |number:2}}</th>
+                                <th>{{TotalMedicalAllowance |number:2}}</th>
+                                <th>{{TotalSpecialAllowance |number:2}}</th>
+                                <th>{{TotalGrossTotal |number:2}}</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th ng-if="CanEdit && !IsExporting" class="not_print"></th>
+                                <th ng-if="CanDelete && !IsExporting" class="not_print"></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="clearfix">
+                    <dir-pagination-controls max-size="pageSize" boundary-links="true" template-url="/Scripts/DirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal_Student_Charge" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{StaffSalary.StaffSalaryId > 0 ? 'Update' : 'New' }} Staff Salary</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <form name="formStaffSalary" novalidate>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label class="col-sm-4 col-form-label">Select Staff <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <angucomplete-alt id="StaffAnguComplete"
+                                                          placeholder="Enter Staff Name/Code"
+                                                          pause="100"
+                                                          selected-object="afterStaffSelected"
+                                                          local-data="StaffList"
+                                                          search-fields="StaffName,DesignationName,StaffCode"
+                                                          title-field="StaffName,DesignationName,StaffCode"
+                                                          description="ItemTypeName"
+                                                          minlength="2"
+                                                          input-class="form-control"
+                                                          match-class="highlight"
+                                                          input-changed="selectionChanged"
+                                                          field-required="true"
+                                                          auto-match="true"
+                                                          focus-in="focusIn()">
+                                        </angucomplete-alt>
+                                        <select ng-model="StaffSalary.StaffId" ng-hide="true" name="StaffId" ng-options="option.StaffId as option.StaffName for option in StaffList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                            <option value="">--Selecty Staff--</option>
+                                        </select>
+                                        <span class="text-danger" ng-if="(formStaffSalary.StaffId.$dirty || IsSubmitted) && formStaffSalary.StaffId.$error.required">Staff is required!</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 form-group">
+                                    <label class="col-sm-4 col-form-label">Basic Amount <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="number" ng-model="StaffSalary.BasicAmount" ng-change="changeAmount()" name="BasicAmount" placeholder="Enter Basic Amount" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                                        <span class="text-danger" ng-if="(formStaffSalary.BasicAmount.$dirty || IsSubmitted) && formStaffSalary.BasicAmount.$error.required">Basic Amount is required!</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 form-group">
+                                    <label class="col-sm-4 col-form-label">Increament @*<span class="text-danger">*</span>*@</label>
+                                    <div class="col-sm-8">
+                                        <input type="number" ng-model="StaffSalary.Increament" ng-change="changeAmount()" name="Increament" placeholder="Enter Increament" class="form-control" @*ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus*@ />
+                                        @*<span class="text-danger" ng-if="(formStaffSalary.Increament.$dirty || IsSubmitted) && formStaffSalary.Increament.$error.required">Increament is required!</span>*@
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 form-group">
+                                    <label class="col-sm-4 col-form-label">DA @*<span class="text-danger">*</span>*@</label>
+                                    <div class="col-sm-8">
+                                        <input type="number" ng-model="StaffSalary.DA" name="DA" ng-change="changeDA()" placeholder="Enter DA" class="form-control" @*ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus*@ />
+                                        @*<span class="text-danger" ng-if="(formStaffSalary.DA.$dirty || IsSubmitted) && formStaffSalary.DA.$error.required">DA is required!</span>*@
+                                    </div>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label class="col-sm-4 col-form-label">Allowance @*<span class="text-danger">*</span>*@</label>
+                                    <div class="col-sm-8">
+                                        <input type="number" ng-model="StaffSalary.Allowance" ng-change="changeAmount()" name="Allowance" placeholder="Enter Allowance" class="form-control" @*ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus*@ />
+                                        @*<span class="text-danger" ng-if="(formStaffSalary.Allowance.$dirty || IsSubmitted) && formStaffSalary.Allowance.$error.required">Allowance is required!</span>*@
+                                    </div>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label class="col-sm-4 col-form-label">Arrear @*<span class="text-danger">*</span>*@</label>
+                                    <div class="col-sm-8">
+                                        <input type="number" ng-model="StaffSalary.Arrear" ng-change="changeAmount()" name="Arrear" placeholder="Enter Arrear" class="form-control" @*ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus*@ />
+                                        @*<span class="text-danger" ng-if="(formStaffSalary.Arrear.$dirty || IsSubmitted) && formStaffSalary.Arrear.$error.required">Arrear is required!</span>*@
+                                    </div>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label class="col-sm-4 col-form-label">HRA @*<span class="text-danger">*</span>*@</label>
+                                    <div class="col-sm-8">
+                                        <input type="number" ng-model="StaffSalary.HRA" ng-change="changeAmount()" name="HRA" placeholder="Enter HRA" class="form-control" @*ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus*@ />
+                                        @*<span class="text-danger" ng-if="(formStaffSalary.HRA.$dirty || IsSubmitted) && formStaffSalary.HRA.$error.required">HRA is required!</span>*@
+                                    </div>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label class="col-sm-4 col-form-label">Medical Allowance @*<span class="text-danger">*</span>*@</label>
+                                    <div class="col-sm-8">
+                                        <input type="number" ng-model="StaffSalary.MedicalAllowance" ng-change="changeAmount()" name="MedicalAllowance" placeholder="Enter Medical Allowance" class="form-control" @*ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus*@ />
+                                        @*<span class="text-danger" ng-if="(formStaffSalary.MedicalAllowance.$dirty || IsSubmitted) && formStaffSalary.MedicalAllowance.$error.required">Medical Allowance is required!</span>*@
+                                    </div>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label class="col-sm-4 col-form-label">Special Allowance @*<span class="text-danger">*</span>*@</label>
+                                    <div class="col-sm-8">
+                                        <input type="number" ng-model="StaffSalary.SpecialAllowance" ng-change="changeAmount()" name="SpecialAllowance" placeholder="Enter Special Allowance" class="form-control" @*ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus*@ />
+                                        @*<span class="text-danger" ng-if="(formStaffSalary.SpecialAllowance.$dirty || IsSubmitted) && formStaffSalary.SpecialAllowance.$error.required">Special Allowance is required!</span>*@
+                                    </div>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label class="col-sm-4 col-form-label">Gross Total <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="number" ng-disabled="true" ng-model="StaffSalary.GrossTotal" name="GrossTotal" placeholder="Enter Gross Total" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                                        <span class="text-danger" ng-if="(formStaffSalary.GrossTotal.$dirty || IsSubmitted) && formStaffSalary.GrossTotal.$error.required">Gross Total is required!</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 form-group">
+                                    <label class="col-sm-4 col-form-label">Salary Start Date </label>
+                                    <div class="col-sm-8">
+                                        <input type="date" ng-model="StaffSalary.SalaryStartDate" name="SalaryStartDate" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 form-group">
+                                    <label class="col-sm-4 col-form-label">Status <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <select ng-model="StaffSalary.Status" name="Status" ng-options="option.Key as option.Value for option in StatusList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                            <option value="">--Selecty Status--</option>
+                                        </select>
+                                        <span class="text-danger" ng-if="(formStaffSalary.Status.$dirty || IsSubmitted) && formStaffSalary.Status.$error.required">Staff is required!</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label class="col-sm-4 col-form-label">Remarks </label>
+                                    <div class="col-sm-8">
+                                        <textarea ng-model="StaffSalary.Remarks" name="Remarks" placeholder="Enter Remarks" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn bg-primary" ng-click="saveStaffSalary()">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal_confirmation" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <h6 class="font-weight-semibold">Are you sure want to delete this record?</h6>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn bg-primary" ng-click="deleteStaffSalary()">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

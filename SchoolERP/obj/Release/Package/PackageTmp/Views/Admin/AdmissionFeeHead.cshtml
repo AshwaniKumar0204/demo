@@ -1,0 +1,87 @@
+﻿
+@{
+    /**/
+
+    Layout = null;
+}
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <a href="#" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Admission Fee</a>
+                <span class="breadcrumb-item active">Manage Admission Fee Head</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Manage Admission Fee Head</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group row">
+                <div class="col-lg-6">
+                    <label class="col-form-label  col-lg-4">Course <span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <select ng-model="ClassId" ng-change="getAcademicSessionList()" ng-options="option.ClassId as option.ClassName for option in ClassList" class="form-control"></select>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <label class="col-form-label col-lg-4">Student Type <span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <select ng-model="StudentTypeId" ng-change="getAdmissionFeeHeadList()" ng-options="option.StudentTypeId as option.TypeName for option in StudentTypeList" class="form-control"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-lg-6">
+                    <label class="col-form-label  col-lg-4">Session <span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <select ng-model="AcademicSessionId" ng-change="getAdmissionFeeHeadList()" ng-options="option.AcademicSessionId as option.SessionName for option in AcademicSessionList" class="form-control">
+                            <option value="">--Select Section--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <label class="col-form-label  col-lg-4">Admission Type <span class="text-danger">*</span></label>
+                    <div class="col-lg-8">
+                        <select ng-model="AdmissionType" ng-change="getAdmissionFeeHeadList()" ng-options="option.Key as option.Value for option in AdmissionTypeList" class="form-control"></select>
+                    </div>
+                </div>
+            </div>
+
+            <fieldset class="mb-3" ng-if="AdmissionFeeHeadList.length > 0">
+                <legend class="text-uppercase font-size-sm font-weight-bold">Fee Heads</legend>
+                <div class="form-group row">
+                    <div class="col-lg-2 col-md-4 col-6" ng-repeat="AdmissionFeeHead in AdmissionFeeHeadList">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="AdmissionFeeHead.IsSelected">
+                                {{AdmissionFeeHead.FeeHeadTitle}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+        </div>
+        <div class="card-footer text-centre" ng-if="AdmissionFeeHeadList.length > 0 && CanEdit">
+            <button class="btn btn-primary" ng-click="saveAdmissionFeeHead()">Submit</button>
+        </div>
+    </div>
+</div>
+

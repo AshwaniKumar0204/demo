@@ -1,0 +1,336 @@
+﻿
+@{
+    /**/
+
+    Layout = null;
+}
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <a href="#" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Performance 360</a>
+                <span class="breadcrumb-item active">Teacher Feedback Form</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Teacher Feedback Form</h6>
+        </div>
+        <div class="card-body" ng-show="isAlreadySubmitted" style="text-align:center">
+            <img class="img-responsive" src="~/Content/Images/thank_you.png" />
+        </div>
+
+        <div class="card-body" ng-show="!isAlreadySubmitted">
+            <div class="form-group row">
+                <div class="col-lg-4">
+                    <label class="col-form-label font-weight-bold col-lg-12">Session : {{AcademicSession.SessionName}}</label>
+                </div>
+            </div>
+            <fieldset class="mb-3" ng-repeat="parmaOne in ParameterList">
+                <legend class="text-uppercase font-size-sm font-weight-bold">{{parmaOne.ParameterName}}</legend>
+                <div class="form-group row" ng-repeat="parmaTwo in parmaOne.ChildPrameterList">
+                    <div class="col-sm-12" ng-show="parmaTwo.FieldType == 1">
+                        <label class="col-form-label col-lg-5">{{parmaTwo.ParameterName}} :</label>
+                        <div class="col-lg-7">
+                            <input type="text" placeholder="{{parmaTwo.ParameterName}}" ng-model="parmaTwo.Remarks" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-sm-12" ng-show="parmaTwo.FieldType == 2">
+                        <label class="col-sm-12 font-weight-bold"> {{parmaTwo.ParameterName}}</label>
+                        <textarea placeholder="{{parmaTwo.ParameterName}}" ng-model="parmaTwo.Remarks" class="form-control"></textarea>
+                    </div>
+                    <!--Teacher Experience-->
+                    <div class="col-sm-12" ng-show="parmaTwo.ParameterId == TeachingExprienceId">
+                        <label class="col-sm-12 font-weight-bold"> {{parmaTwo.ParameterName}}:</label>
+                        <hr />
+                        <form name="formTeacherExperience" novalidate>
+                            <div class="col-sm-4 form-group">
+                                <label class="col-form-label col-lg-5">Years </label>
+                                <div class="col-lg-7">
+                                    <input type="number" placeholder="Enter Years" ng-model="TeacherExperience.Year" name="TE_Year" class="form-control" ng-class="Is_TE_Submitted ? 'ng-dirty' : ''" required autofocus>
+                                    <span class="text-danger" ng-if="(formTeacherExperience.TE_Year.$dirty || Is_TE_Submitted) && formTeacherExperience.TE_Year.$error.required">Year is required!</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                <label class="col-form-label col-lg-4">School </label>
+                                <div class="col-lg-8">
+                                    <input type="text" placeholder="Enter School Name" ng-model="TeacherExperience.SchoolName" class="form-control" name="TE_SchoolName" ng-class="Is_TE_Submitted ? 'ng-dirty' : ''" required autofocus>
+                                    <span class="text-danger" ng-if="(formTeacherExperience.TE_SchoolName.$dirty || Is_TE_Submitted) && formTeacherExperience.TE_SchoolName.$error.required">School is required!</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-2 form-group">
+                                <button class="btn btn-sm btn-success" ng-click="addTeacherExperience()">Add</button>
+                            </div>
+                        </form>
+                        <div class="form-group col-sm-12 table-responsive" ng-if="TeacherExperienceList.length > 0">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Sl. No.</th>
+                                        <th>Years</th>
+                                        <th>School</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="model in TeacherExperienceList">
+                                        <td>{{$index + 1}}</td>
+                                        <td>{{model.Year}}</td>
+                                        <td>{{model.SchoolName}}</td>
+                                        <td><button class="btn btn-sm btn-danger" ng-click="removeTeacherExperience($index)"><i class="fa fa-trash"></i></button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!--Teacher Subject-->
+                    <div class="col-sm-12" ng-show="parmaTwo.ParameterId == ClassTaught">
+                        <label class="col-sm-12 font-weight-bold"> {{parmaTwo.ParameterName}}:</label>
+                        <hr />
+                        <div class="form-group col-sm-12 table-responsive" ng-show="TeacherSubjectList.length > 0">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Sl. No.</th>
+                                        <th>Class Taught</th>
+                                        <th>Subject</th>
+                                        <th>No. of periods per week</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="model in TeacherSubjectList">
+                                        <td>{{$index + 1}}</td>
+                                        <td>{{model.ClassName2 + " - "+ model.SectionName}}</td>
+                                        <td>{{model.SubjectName}}</td>
+                                        <td>{{model.NoOfPeriods}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!--Teacher CoScholastic-->
+                    <div class="col-sm-12" ng-show="parmaTwo.ParameterId == CoScholastic">
+                        <label class="col-sm-12 font-weight-bold"> {{parmaTwo.ParameterName}}:</label>
+                        <hr />
+                        <form name="formTeacherCoScholastic" novalidate>
+                            <div class="col-sm-4 form-group">
+                                <label class="col-form-label col-lg-4">Events </label>
+                                <div class="col-lg-8">
+                                    <input type="text" placeholder="Enter Events" ng-model="TeacherCoScholastic.Events" name="Events" class="form-control" ng-class="Is_CS_Submitted ? 'ng-dirty' : ''" required autofocus>
+                                    <span class="text-danger" ng-if="(formTeacherCoScholastic.Events.$dirty || Is_CS_Submitted) && formTeacherCoScholastic.Events.$error.required">Events is required!</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 form-group">
+                                <label class="col-form-label col-lg-4">Date </label>
+                                <div class="col-lg-8">
+                                    <input type="date" ng-model="TeacherCoScholastic.EventDate" class="form-control" name="EventDate" ng-class="Is_CS_Submitted ? 'ng-dirty' : ''" required autofocus>
+                                    <span class="text-danger" ng-if="(formTeacherCoScholastic.EventDate.$dirty || Is_CS_Submitted) && formTeacherCoScholastic.EventDate.$error.required">Event Date is required!</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 form-group">
+                                <label class="col-form-label col-lg-4">Teacher Role </label>
+                                <div class="col-lg-8">
+                                    <input type="text" placeholder="Enter Teacher Role" ng-model="TeacherCoScholastic.TeacherRole" class="form-control" name="TeacherRole" ng-class="Is_CS_Submitted ? 'ng-dirty' : ''" required autofocus>
+                                    <span class="text-danger" ng-if="(formTeacherCoScholastic.TeacherRole.$dirty || Is_CS_Submitted) && formTeacherCoScholastic.TeacherRole.$error.required">Teacher Role is required!</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-1 form-group">
+                                <button class="btn btn-sm btn-success" ng-click="addTeacherCoScholastic()">Add</button>
+                            </div>
+                        </form>
+                        <div class="form-group col-sm-12 table-responsive" ng-show="TeacherCoScholasticList.length > 0">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Sl. No.</th>
+                                        <th>Events</th>
+                                        <th>Event Date</th>
+                                        <th>Teacher Role</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="model in TeacherCoScholasticList">
+                                        <td>{{$index + 1}}</td>
+                                        <td>{{model.Events}}</td>
+                                        <td>{{model.EventDate | date:'dd-MM-yyyy'}}</td>
+                                        <td>{{model.TeacherRole}}</td>
+                                        <td><button class="btn btn-sm btn-danger" ng-click="removeTeacherCoScholastic($index)"><i class="fa fa-trash"></i></button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!--Training Programmes-->
+                    <div class="col-sm-12" ng-show="parmaTwo.ParameterId == TrainingProgrammePrameterId">
+                        <label class="col-sm-12 font-weight-bold"> {{parmaTwo.ParameterName}}:</label>
+                        <hr />
+                        <form name="formTrainingProgramme" novalidate>
+                            <div class="col-sm-4 form-group">
+                                <label class="col-form-label col-lg-4">Subject </label>
+                                <div class="col-lg-8">
+                                    <input type="text" placeholder="Enter Subject" ng-model="TrainingProgramme.Subject" name="Subject" class="form-control" ng-class="IsTrainingProgrammeSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                    <span class="text-danger" ng-if="(formTrainingProgramme.Subject.$dirty || IsTrainingProgrammeSubmitted) && formTrainingProgramme.Subject.$error.required">Subject is required!</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 form-group">
+                                <label class="col-form-label col-lg-4">Date </label>
+                                <div class="col-lg-8">
+                                    <input type="date" ng-model="TrainingProgramme.TrainingDate" class="form-control" name="TrainingDate" ng-class="IsTrainingProgrammeSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                    <span class="text-danger" ng-if="(formTrainingProgramme.TrainingDate.$dirty || IsTrainingProgrammeSubmitted) && formTrainingProgramme.TrainingDate.$error.required">Date is required!</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 form-group">
+                                <label class="col-form-label col-lg-4">Place </label>
+                                <div class="col-lg-8">
+                                    <input type="text" placeholder="Enter Place" ng-model="TrainingProgramme.Place" class="form-control" name="Place" ng-class="IsTrainingProgrammeSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                    <span class="text-danger" ng-if="(formTrainingProgramme.Place.$dirty || IsTrainingProgrammeSubmitted) && formTrainingProgramme.Place.$error.required">Place is required!</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-1 form-group">
+                                <button class="btn btn-sm btn-success" ng-click="addTrainingProgramme()">Add</button>
+                            </div>
+                        </form>
+                        <div class="form-group col-sm-12 table-responsive" ng-show="TrainingProgrammeList.length > 0">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Sl. No.</th>
+                                        <th>Subject</th>
+                                        <th>Trainind Date</th>
+                                        <th>Place</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="model in TrainingProgrammeList">
+                                        <td>{{$index + 1}}</td>
+                                        <td>{{model.Subject}}</td>
+                                        <td>{{model.TrainingDate | date:'dd-MM-yyyy'}}</td>
+                                        <td>{{model.Place}}</td>
+                                        <td><button class="btn btn-sm btn-danger" ng-click="removeTrainingProgramme($index)"><i class="fa fa-trash"></i></button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!--Teacher Learning Aids-->
+                    <div class="col-sm-12" ng-show="parmaTwo.ParameterId == TeacherLearningAidsPramaterId">
+                        <label class="col-sm-12 font-weight-bold"> {{parmaTwo.ParameterName}}:</label>
+                        <hr />
+                        <div class="form-group col-sm-12 table-responsive" ng-show="TeachingLearningAidList.length > 0">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Sl. No.</th>
+                                        <th>Class</th>
+                                        <th>Subject</th>
+                                        <th>Topics</th>
+                                        <th>Aids</th>
+                                        <th>Reference Book</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="model in TeachingLearningAidList">
+                                        <td>{{$index + 1}}</td>
+                                        <td>{{model.ClassName2}}</td>
+                                        <td>{{model.SubjectName}}</td>
+                                        <td>
+                                            <textarea ng-model="model.Topics" placeholder="Enter Topics" class="form-control"></textarea>
+                                        </td>
+                                        <td>
+                                            <textarea ng-model="model.Aids" placeholder="Enter Aids" class="form-control"></textarea>
+                                        </td>
+                                        <td>
+                                            <textarea ng-model="model.ReferanceBooks" placeholder="Enter Referance Books" class="form-control"></textarea>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!--Teacher Book Read-->
+                    <div class="col-sm-12" ng-show="parmaTwo.ParameterId == BookReading">
+                        <label class="col-sm-12 font-weight-bold"> {{parmaTwo.ParameterName}}:</label>
+                        <hr />
+                        <form name="formTeacherBookRead" novalidate>
+                            <div class="col-sm-3 form-group">
+                                <label class="col-form-label col-lg-5">Book Type </label>
+                                <div class="col-lg-7">
+                                    <select ng-options="option as option.Value for option in BookReadTypeList" ng-model="TeacherBookRead.BookReadTypeDetail" name="TE_BookReadType" class="form-control" ng-class="IsFromTeacherBookReadSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                        <option value="">--Book Type--</option>
+                                    </select>
+                                    <span class="text-danger" ng-if="(formTeacherBookRead.TE_BookReadType.$dirty || IsFromTeacherBookReadSubmitted) && formTeacherBookRead.TE_BookReadType.$error.required">Book Type is required!</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 form-group">
+                                <label class="col-form-label col-lg-4">Book Name </label>
+                                <div class="col-lg-8">
+                                    <input type="text" placeholder="Enter Book Name" ng-model="TeacherBookRead.BookName" class="form-control" name="TE_BookName" ng-class="IsFromTeacherBookReadSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                    <span class="text-danger" ng-if="(formTeacherBookRead.TE_BookName.$dirty || IsFromTeacherBookReadSubmitted) && formTeacherBookRead.TE_BookName.$error.required">Book Name is required!</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 form-group">
+                                <label class="col-form-label col-lg-4">Author </label>
+                                <div class="col-lg-8">
+                                    <input type="text" placeholder="Enter Author" ng-model="TeacherBookRead.Author" class="form-control" name="TE_Author" ng-class="IsFromTeacherBookReadSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                    <span class="text-danger" ng-if="(formTeacherBookRead.TE_Author.$dirty || IsFromTeacherBookReadSubmitted) && formTeacherBookRead.TE_Author.$error.required">Author is required!</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-1 form-group">
+                                <button class="btn btn-sm btn-success" ng-click="addTeacherBookRead()">Add</button>
+                            </div>
+                        </form>
+                        <div class="form-group col-sm-12 table-responsive" ng-if="TeacherBookReadList.length > 0">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Sl. No.</th>
+                                        <th>Book Type</th>
+                                        <th>Book Name</th>
+                                        <th>Author</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="model in TeacherBookReadList">
+                                        <td>{{$index + 1}}</td>
+                                        <td>{{model.BookReadTypeName}}</td>
+                                        <td>{{model.BookName}}</td>
+                                        <td>{{model.Author}}</td>
+                                        <td><button class="btn btn-sm btn-danger" ng-click="removeTeacherBookRead($index)"><i class="fa fa-trash"></i></button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="card-footer text-centre" ng-show="ParameterList.length > 0">
+            <button class="btn btn-primary" ng-click="saveTeacherPerformance()">Submit</button>
+        </div>
+    </div>
+</div>
+

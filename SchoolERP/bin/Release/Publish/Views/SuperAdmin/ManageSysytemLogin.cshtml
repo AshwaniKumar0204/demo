@@ -1,0 +1,197 @@
+﻿@{
+    Layout = null;
+}
+@*<style>
+        th, td {
+            white-space: nowrap
+        }
+    </style>*@
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Manage System Login</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Manage System Login</h6>
+        </div>
+        <div class="card-body">
+            @*<div class="form-group row" style="margin-bottom:20px">
+            <div class="col-sm-6">
+                <label class="col-form-label  col-lg-4">Select Employee </label>
+                <div class="col-lg-8">
+                    <select class="form-control" ng-model="EmployeeId" ng-change="getSystemLoginList()" ng-options="option.EmployeeId as option.SearchEmployee for option in EmployeeList">
+                        <option value="">--All Employee--</option>
+                    </select>
+                </div>
+            </div>
+        </div>*@
+
+            <div class="form-group col-sm-3 float-right">
+                <input type="text" class="float-right input-sm form-control" ng-model="search" style="width:200px;" placeholder="Search..." />
+            </div>
+            <div class="form-group col-sm-2">
+                <button class="btn btn-sm btn-primary" ng-click="newSystemLogin()"> <i class="fa fa-plus"></i> New Login</button>
+            </div>
+            <div class="form-group col-sm-3">
+                <select class="form-control" ng-model="EmployeeId" ng-change="getSystemLoginList()" ng-options="option.EmployeeId as option.SearchEmployee for option in EmployeeList">
+                    <option value="">--All Employee--</option>
+                </select>
+            </div>
+            <div class="form-group col-sm-2">
+                Display
+                <select aria-controls="basicExample" ng-model="pageSize" class="input-sm form-control selectpicker" style="width:90px;display:initial" ng-options="option as option for option in sizeOptions"></select>
+            </div>
+
+            <div class="form-group col-sm-12">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Sl. No.</th>
+                                <th style="cursor: pointer;" ng-click="sort('Employee.EmployeeName')">Employee Name <span class="fa" ng-show="sortKey=='Employee.EmployeeName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('Employee.EmployeeCode')">Employee Code <span class="fa" ng-show="sortKey=='Employee.EmployeeCode'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('UserName')">User Name <span class="fa" ng-show="sortKey=='UserName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('LoginName')">Login Id <span class="fa" ng-show="sortKey=='LoginName'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th style="cursor: pointer;" ng-click="sort('LoginPassword')">Password <span class="fa" ng-show="sortKey=='LoginPassword'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th>Roles</th>
+                                <th style="cursor: pointer;" ng-click="sort('LoginStatus')">Status <span class="fa" ng-show="sortKey=='LoginStatus'" ng-class="{'fa-arrow-up':reverse,'fa-arrow-down':!reverse}"></span></th>
+                                <th>Edit </th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @*<tr ng-repeat="SystemLogin in SystemLoginList|orderBy:sortKey:reverse|filter:search" ng-model="search" >*@
+                            <tr dir-paginate="SystemLogin in SystemLoginList|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize" current-page="currentPage" ng-model="search" ng-if="!SystemLogin.Employee.IsSuperAdmin">
+                                <td ng-if="!IsExporting">{{(currentPage*pageSize - (pageSize-1))+ $index}}</td>
+                                <td>{{SystemLogin.Employee.EmployeeName}}</td>
+                                <td>{{SystemLogin.Employee.EmployeeCode}}</td>
+                                <td>{{SystemLogin.UserName}}</td>
+                                <td>{{SystemLogin.LoginName}}</td>
+                                <td>{{SystemLogin.LoginPassword}}</td>
+                                <td>
+                                    <div ng-repeat="role in SystemLogin.RoleList" ng-if="role.SystemLoginRoleId != 0">{{($index + 1) + ". " +role.RoleTitle }}</div>
+                                </td>
+                                <td><a ng-class="SystemLogin.LoginStatus == 1 ? 'badge bg-success-400' : 'badge bg-danger'"> {{LoginStatusList[SystemLogin.LoginStatus].Value}}</a></td>
+                                <td><button class="btn btn-sm btn-primary" ng-click="editSystemLogin(SystemLogin)"><i class="icon-pencil3"></i></button></td>
+                                <td><button class="btn btn-sm btn-danger" ng-click="deleteConfirmation(SystemLogin.LoginId)"><i class="fa fa-trash"></i></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="clearfix">
+                <dir-pagination-controls max-size="pageSize" boundary-links="true" template-url="/Scripts/DirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal_Student_Charge" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{SystemLogin.SystemLoginId > 0 ? 'Update' : 'New' }} Login</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <form name="formSystemLogin" novalidate>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <label>Select Employee <span class="text-danger">*</span></label>
+                                <select class="form-control" ng-model="SystemLogin.EmployeeId" name="EmployeeId" ng-options="option.EmployeeId as option.SearchEmployee for option in EmployeeList" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus>
+                                    <option value="">--Select Employee--</option>
+                                </select>
+                                <span class="text-danger" ng-if="(formSystemLogin.EmployeeId.$dirty || IsSubmitted) && formSystemLogin.EmployeeId.$error.required">School is required!</span>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label>Select School <span class="text-danger">*</span></label>
+                                <select ng-model="SystemLogin.SchoolId" name="SchoolId" ng-options="option.SchoolId as option.ShortName for option in SchoolList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                                <span class="text-danger" ng-if="(formSystemLogin.SchoolId.$dirty || IsSubmitted) && formSystemLogin.SchoolId.$error.required">School is required!</span>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label>User Name <span class="text-danger">*</span></label>
+                                <input type="text" name="UserName" ng-model="SystemLogin.UserName" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter User Name" required autofocus>
+                                <span class="text-danger" ng-if="(formSystemLogin.UserName.$dirty || IsSubmitted) && formSystemLogin.UserName.$error.required">User Name is required!</span>
+                            </div>
+                            @*<div class="col-md-12 form-group">
+                                    <label>Login Id <span class="text-danger">*</span></label>
+                                    <input type="text" name="LoginName" ng-model="SystemLogin.LoginName" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter User Id" required autofocus>
+                                    <span class="text-danger" ng-if="(formSystemLogin.LoginName.$dirty || IsSubmitted) && formSystemLogin.LoginName.$error.required">Login Id is required!</span>
+                                </div>*@
+                            <div class="col-md-12 form-group">
+                                <label>Login Password <span class="text-danger">*</span></label>
+                                <input type="password" name="LoginPassword" ng-model="SystemLogin.LoginPassword" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" placeholder="Enter Login Password" required autofocus>
+                                <span class="text-danger" ng-if="(formSystemLogin.LoginPassword.$dirty || IsSubmitted) && formSystemLogin.LoginPassword.$error.required">Login Password is required!</span>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label>Status <span class="text-danger">*</span></label>
+                                <select ng-model="SystemLogin.LoginStatus" name="LoginStatus" ng-options="option.Key as option.Value for option in LoginStatusList" class="form-control" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                                <span class="text-danger" ng-if="(formSystemLogin.LoginStatus.$dirty || IsSubmitted) && formSystemLogin.LoginStatus.$error.required">Status is required!</span>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <fieldset class="mb-3">
+                                    <legend class="text-uppercase font-size-sm font-weight-bold">Select Roles</legend>
+                                    <div class=" col-sm-6" ng-repeat="role in SystemLogin.RoleList">
+                                        <div class="form-check form-check-inline">
+                                            <label class="form-check-label">
+                                                <input type="checkbox" class="form-check-input" ng-model="role.IsSelected">
+                                                {{role.RoleTitle}}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer text-centre">
+                        <div class="col-sm-12">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn bg-primary" ng-click="saveSystemLogin()">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal_confirmation" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmation</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <h6 class="font-weight-semibold">Are you sure want to delete this record?</h6>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn bg-primary" ng-click="deleteSystemLogin()">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,93 @@
+﻿@{
+    Layout = null;
+}
+<style>
+    .form-control:disabled {
+        color: #3e3c3c !important;
+    }
+</style>
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#!" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Update Book</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Update Book</h6>
+        </div>
+        <div class="card-body">
+            <form name="formBookAccession" novalidate>
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+                        <label class="col-form-label col-lg-4">Accession No <span class="text-danger">*</span></label>
+                        <div class="col-lg-8">
+                            <input type="number" class="form-control" placeholder="Enter Accession No. " name="AccessionNo" ng-model="AccessionNo" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus />
+                            <span class="text-danger" ng-if="(formBookAccession.AccessionNo.$dirty || IsSubmitted) && formBookAccession.AccessionNo.$error.required">Accession No. is required!</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-2 form-group">
+                        <button class="btn btn-success" ng-click="getBookAccessionDetail()">Search</button>
+                    </div>
+                </div>
+
+                <div class="row" ng-show="BookAccession.BookAccessionId >0">
+                    <div class="col-sm-6 form-group">
+                        <label class="col-form-label col-lg-4">Book Name </label>
+                        <div class="col-lg-8">
+                            <input type="text" value="{{BookAccession.BookName}}" class="form-control" ng-disabled="true">
+                        </div>
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        <label class="col-form-label col-lg-4">Author </label>
+                        <div class="col-lg-8">
+                            <input type="text" value="{{BookAccession.Author}}" class="form-control" ng-disabled="true">
+                        </div>
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        <label class="col-form-label col-lg-4">Publisher </label>
+                        <div class="col-lg-8">
+                            <input type="text" value="{{BookAccession.Publisher}}" class="form-control" ng-disabled="true">
+                        </div>
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        <label class="col-form-label col-lg-4">Edition </label>
+                        <div class="col-lg-8">
+                            <input type="text" value="{{BookAccession.Edition}}" class="form-control" ng-disabled="true">
+                        </div>
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        <label class="col-form-label col-lg-4">Status <span class="text-danger">*</span></label>
+                        <div class="col-lg-8">
+                            <select name="BookPosition" ng-model="BookAccession.BookPosition" ng-options="option.Key as option.Value for option in BookPositionList" ng-class="IsSubmitted ? 'ng-dirty' : ''" class="form-control required" required autofocus>
+                                <option value="">--Select Status--</option>
+                            </select>
+                            <span class="text-danger" ng-if="(formBookAccession.BookPosition.$dirty || IsSubmitted) && formBookAccession.BookPosition.$error.required">Status is required!</span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="card-footer text-centre" ng-show="BookAccession.BookAccessionId >0">
+            <button class="btn btn-primary" ng-click="saveBookAccession()">Update</button>
+        </div>
+    </div>
+</div>
+

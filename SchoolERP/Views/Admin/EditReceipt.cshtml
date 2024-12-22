@@ -1,0 +1,213 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="fullDiv" ng-if="dataLoading">
+    <div class="processDiv">
+        <i class="icon-spinner2 spinner" style="font-size:6rem;color:#178076"></i>
+    </div>
+</div>
+
+<div id="myModal" class="Modal is-hidden is-visuallyHidden" ng-if="dataLoading">
+</div>
+
+<div class="page-header page-header-light" ng-cloak>
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="#" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <a href="#" class="breadcrumb-item"> Fee</a>
+                <span class="breadcrumb-item active">Edit Receipt </span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content" ng-cloak>
+    <div class="card">
+        <div class="card-body">
+            <fieldset class="mb-3">
+                <legend class="text-uppercase font-size-sm font-weight-bold">Edit Receipt </legend>
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="form-group row">
+                                    <label class="col-form-label col-lg-4 font-weight-bold">Receipt No </label>
+                                    <div class="col-lg-6">
+                                        <div class="row">
+                                            <input type="text" placeholder="Enter Receipt No" name="ReceiptNo" class="form-control" ng-model="ReceiptNo" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <button class="btn btn-sm btn-primary" ng-click="getFeeCollectionDetailByReceiptNo()">Search</button>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-4 font-weight-bold">Student Name :</label>
+                                    <label class="col-lg-8 col-8" ng-bind="StudentDetail.FullName"></label>
+                                    <label class="col-lg-4 col-4 font-weight-bold">Class :</label>
+                                    <label class="col-lg-8 col-8" ng-bind="StudentDetail.ClassName"></label>
+                                    <label class="col-lg-4 col-4 font-weight-bold">Section :</label>
+                                    <label class="col-lg-8 col-8" ng-bind="StudentDetail.SectionName"></label>
+                                    <label class="col-lg-4 col-4 font-weight-bold">Roll No :</label>
+                                    <label class="col-lg-8 col-8" ng-bind="StudentDetail.RollNo"></label>
+                                    <label class="col-lg-4 col-4 font-weight-bold">Father's Name :</label>
+                                    <label class="col-lg-8 col-8" ng-bind="StudentDetail.FatherName"></label>
+                                    <label class="col-lg-4 col-4 font-weight-bold">Mother's Name :</label>
+                                    <label class="col-lg-8 col-8" ng-bind="StudentDetail.MotherName"></label>
+                                    <label class="col-lg-4 col-4 font-weight-bold">Mobile No :</label>
+                                    <label class="col-lg-8 col-8" ng-bind="StudentDetail.MobileNo"></label>
+                                    
+                                </div>
+
+                                <fieldset class="mb-3">
+                                    <legend class="text-uppercase font-size-sm font-weight-bold">Payment Detail </legend>
+                                   
+                                    <div class="row">
+                                        <label class="col-md-4 col-6 font-weight-bold">Payment Date : </label>
+                                        <label class="col-md-8 col-6">{{FeeCollection.PaymentDate | date:'dd-MM-yyyy'}}</label>
+
+                                        <label class="col-lg-4 col-4 font-weight-bold">Student Remarks :</label>
+                                        <div class="col-lg-8 col-8">
+                                            <textarea class="form-control" ng-model="FeeCollection.RemarksForStudent" placeholder="Enter Student Remarks..."></textarea>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <fieldset class="mb-3">
+                                    <legend class="text-uppercase font-size-sm font-weight-bold"> Fee Details</legend>
+                                    <div class="form-group table-responsive">
+                                        <table class="table my-table table-bordered table-hover">
+                                            <thead>
+                                                <tr class="panel-dark-purpul">
+                                                    <th>Fee Head</th>
+                                                    <th>Concession</th>
+                                                    <th>Amount</th>
+                                                    <th>Line Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="feeHead in FeeCollection.FeeCollectionDetailList">
+                                                    <th>{{feeHead.FeeHeadTitle + " [" + FeeTypeList[feeHead.FeeType] + "]"}}</th>
+                                                    <th>
+                                                        <input type="number" ng-change="changeConcession(feeHead)" style="width:90px" ng-model="feeHead.Concession" />
+                                                    </th>
+                                                    <th>
+                                                        <input type="number" style="width:90px" ng-change="changeFeeAmount(feeHead)" ng-model="feeHead.Total" />
+                                                    </th>
+                                                    <th>{{feeHead.Total - feeHead.Concession}}</th>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>TOTAL</th>
+                                                    <th>{{FeeCollection.Concession | number:2}}</th>
+                                                    <th>{{FeeCollection.LineTotal | number:2}}</th>
+                                                    <th>{{FeeCollection.PaidAmount | number:2}}</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </fieldset>
+
+                                <fieldset class="mb-3">
+                                    <legend class="text-uppercase font-size-sm font-weight-bold">Payout </legend>
+                                    <form novalidate name="formFeeCollection">
+                                        @*<div class="row">
+                                            <label class="col-md-4 col-6 font-weight-bold">Total Amount : </label>
+                                            <label class="col-md-8 col-6">{{FeeCollection.LineTotal | number:2}}</label>
+                                        </div>
+                                        <div class="row">
+                                            <label class="col-md-4 col-6 font-weight-bold">Concession : </label>
+                                            <label class="col-md-8 col-6">{{FeeCollection.Concession | number:2}}</label>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-4 col-6 font-weight-bold">Total Payout : </label>
+                                            <label class="col-md-8 col-6 font-weight-bold">&#8377; {{FeeCollection.PaidAmount | number:2}}</label>
+                                        </div>*@
+
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-lg-4 font-weight-bold">Payment Mode <span class="text-danger">*</span></label>
+                                            <div class="col-lg-8">
+                                                <select name="PaymentMode" ng-model="FeeCollection.PaymentMode" class="form-control required" ng-options="option.Key as option.Value for option in PaymentModeList" ng-class="IsSubmitted ? 'ng-dirty' : ''" required autofocus></select>
+                                                <span class="text-danger" ng-if="(formFeeCollection.PaymentMode.$dirty || IsSubmitted) && formFeeCollection.PaymentMode.$error.required">Payment Mode is required!</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row" ng-show="FeeCollection.PaymentMode == 4">
+                                            <label class="col-form-label col-lg-4 font-weight-bold">DD No <span class="text-danger">*</span></label>
+                                            <div class="col-lg-8">
+                                                <input type="text" ng-model="FeeCollection.DemandDraftNo" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row" ng-show="FeeCollection.PaymentMode == 4">
+                                            <label class="col-form-label col-lg-4 font-weight-bold">DD Date <span class="text-danger">*</span></label>
+                                            <div class="col-lg-8">
+                                                <input type="date" ng-model="FeeCollection.DemandDraftDate" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row" ng-show="FeeCollection.PaymentMode == 4">
+                                            <label class="col-form-label col-lg-4 font-weight-bold">DD Bank Name <span class="text-danger">*</span></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" ng-model="FeeCollection.DemandDraftBank" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row" ng-show="FeeCollection.PaymentMode == 5">
+                                            <label class="col-form-label col-lg-4 font-weight-bold">Cheque No <span class="text-danger">*</span></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" ng-model="FeeCollection.ChequeNo" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row" ng-show="FeeCollection.PaymentMode == 5">
+                                            <label class="col-form-label col-lg-4 font-weight-bold">Cheque Date <span class="text-danger">*</span></label>
+                                            <div class="col-sm-8">
+                                                <input type="date" ng-model="FeeCollection.ChequeDate" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row" ng-show="FeeCollection.PaymentMode == 5">
+                                            <label class="col-form-label col-lg-4 font-weight-bold">Cheque Bank Name </label>
+                                            <div class="col-sm-8">
+                                                <input type="text" ng-model="FeeCollection.ChequeBank" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row" ng-show="FeeCollection.PaymentMode == 5">
+                                            <label class="col-form-label col-lg-4 font-weight-bold">Cheque Bank Branch </label>
+                                            <div class="col-sm-8">
+                                                <input type="text" ng-model="FeeCollection.ChequeBankBranch" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row" ng-show="FeeCollection.PaymentMode == 6 || FeeCollection.PaymentMode == 8 ">
+                                            <label class="col-form-label col-lg-4 font-weight-bold">Transaction No (If Any) <span class="text-danger">*</span></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" ng-model="FeeCollection.TransactionNo" class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-lg-4 font-weight-bold">Remarks</label>
+                                            <div class="col-sm-8">
+                                                <textarea name="Remarks" ng-model="FeeCollection.Remarks" class="form-control"></textarea>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </fieldset>
+                            </div>
+                            <div class="card-footer text-centre" ng-show="FeeCollection.FeeCollectionId > 0">
+                                <button class="btn btn-primary" ng-click="updateFeePayment()">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+    </div>
+</div>
+
